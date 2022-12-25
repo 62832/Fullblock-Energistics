@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "merequester:requester_terminal"
-            ]
+            "items": ["merequester:requester_terminal"]
           }
         ]
       },
@@ -20,15 +18,8 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "requirements": [
-    [
-      "has_terminal",
-      "has_the_recipe"
-    ]
-  ],
+  "requirements": [["has_terminal", "has_the_recipe"]],
   "rewards": {
-    "recipes": [
-      "fulleng:terminals/block_terminal_from_part"
-    ]
+    "recipes": ["fulleng:terminals/block_terminal_from_part"]
   }
 }
