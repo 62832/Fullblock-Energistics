@@ -29,7 +29,9 @@ jobs:
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v1
         with:
-          files: 'build/libs/fulleng-*.jar'
+          files:
+            'build/libs/fulleng-fabric-*.jar'
+            'build/libs/fulleng-forge-*.jar'
           tag_name: ${{ github.event.release.tag_name }}
       - name: Upload to mod repositories
         env:

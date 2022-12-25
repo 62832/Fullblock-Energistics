@@ -92,12 +92,6 @@ tasks {
     jar {
         archiveClassifier.set("dev")
     }
-
-    sourcesJar {
-        val commonSources = project(":common").tasks.sourcesJar
-        dependsOn(commonSources)
-        from(commonSources.get().archiveFile.map { zipTree(it) })
-    }
 }
 
 val javaComponent = components["java"] as AdhocComponentWithVariants

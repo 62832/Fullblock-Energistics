@@ -101,8 +101,6 @@ allprojects {
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-
-        withSourcesJar()
     }
 
     configure<SpotlessExtension> {
@@ -156,7 +154,7 @@ subprojects {
         injectInjectables = false
     }
 
-    if ((project.name == "fabric" || project.name == "forge") && project.version != "0.0.0") {
+    if ((project.name == "fabric" || project.name == "forge") && project.version != "0.0") {
         configure<UnifiedPublishingExtension> {
             project {
                 val modVersion = project.version.toString()
