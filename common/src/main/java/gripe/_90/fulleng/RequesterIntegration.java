@@ -19,11 +19,10 @@ public final class RequesterIntegration {
         // load static
     }
 
-    public static final BlockDefinition<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BLOCK = FullblockEnergistics
-            .block("ME Requester Terminal", "requester_terminal", TerminalBlock<RequesterTerminalBlockEntity>::new);
-    public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = FullblockEnergistics
-            .blockEntity("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new,
-                    REQUESTER_TERMINAL_BLOCK);
+    // spotless:off
+    public static final BlockDefinition<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BLOCK = FullblockEnergistics.block("ME Requester Terminal", "requester_terminal", TerminalBlock<RequesterTerminalBlockEntity>::new);
+    public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = FullblockEnergistics.blockEntity("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL_BLOCK);
+    // spotless:on
 
     static class RequesterTerminalBlockEntity extends TerminalBlockEntity {
         public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
