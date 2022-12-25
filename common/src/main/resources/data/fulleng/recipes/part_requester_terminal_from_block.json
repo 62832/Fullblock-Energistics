@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "fulleng:requester_terminal"
+    }
+  ],
+  "result": {
+    "item": "merequester:requester_terminal"
+  }
+}
