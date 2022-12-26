@@ -14,7 +14,6 @@ import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.TerminalBlockEntity;
 
 public final class RequesterIntegration {
-    @SuppressWarnings("unused")
     public static void init() {
         // load static
     }
@@ -25,7 +24,7 @@ public final class RequesterIntegration {
     // spotless:on
 
     static class RequesterTerminalBlockEntity extends TerminalBlockEntity {
-        public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
+        RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
             super(REQUESTER_TERMINAL, pos, blockState);
         }
 

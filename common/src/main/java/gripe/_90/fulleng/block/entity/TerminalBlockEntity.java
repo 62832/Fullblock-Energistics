@@ -23,7 +23,6 @@ import appeng.util.ConfigManager;
 
 public abstract class TerminalBlockEntity extends AENetworkBlockEntity
         implements IConfigurableObject, IColorableBlockEntity {
-
     private final IConfigManager cm = new ConfigManager(this::saveChanges);
     private AEColor paintedColour = AEColor.TRANSPARENT;
     private boolean isActive = false;
