@@ -70,7 +70,7 @@ public class FullEngForge {
                     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap,
                             @Nullable Direction dir) {
                         patternSlotHandler = LazyOptional
-                                .of(patternTerm.getLogic().getBlankPatternInv()::toItemHandler);
+                                .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
                         return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, patternSlotHandler);
                     }
 
