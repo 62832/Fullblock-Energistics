@@ -74,6 +74,7 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
     public void loadTag(CompoundTag data) {
         super.loadTag(data);
         cm.readFromNBT(data);
+
         if (data.contains("paintedColor")) {
             paintedColour = AEColor.values()[data.getByte("paintedColor")];
         }
@@ -94,6 +95,7 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
     @Override
     public void onReady() {
         super.onReady();
+
         if (!isClientSide()) {
             this.isActive = true;
         }
@@ -106,11 +108,7 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
     }
 
     public boolean isActive() {
-        if (isClientSide()) {
-            return isActive;
-        } else {
-            return getMainNode().isOnline();
-        }
+        return isClientSide() ? isActive : getMainNode().isOnline();
     }
 
     public abstract MenuType<?> getMenuType(Player player);

@@ -67,10 +67,7 @@ public abstract class StorageTerminalBlockEntity extends TerminalBlockEntity
     @Override
     public MEStorage getInventory() {
         var grid = getMainNode().getGrid();
-        if (grid != null) {
-            return grid.getStorageService().getInventory();
-        }
-        return null;
+        return grid != null ? grid.getStorageService().getInventory() : null;
     }
 
     @Override

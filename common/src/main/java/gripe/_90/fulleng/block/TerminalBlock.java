@@ -45,6 +45,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends AEBaseEntityBl
         }
 
         var be = getBlockEntity(level, pos);
+
         if (be != null) {
             if (!level.isClientSide()) {
                 be.openMenu(p);
@@ -52,6 +53,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends AEBaseEntityBl
 
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
+
         return InteractionResult.PASS;
     }
 }

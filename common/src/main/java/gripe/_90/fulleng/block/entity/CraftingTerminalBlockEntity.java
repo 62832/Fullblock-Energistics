@@ -51,18 +51,13 @@ public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType(Player player) {
-        if (Platform.checkPermissions(player, this, SecurityPermissions.CRAFT, false, false)) {
-            return CraftingTermMenu.TYPE;
-        }
-        return MEStorageMenu.TYPE;
+        return Platform.checkPermissions(player, this, SecurityPermissions.CRAFT, false, false)
+                ? CraftingTermMenu.TYPE
+                : MEStorageMenu.TYPE;
     }
 
     @Override
     public InternalInventory getSubInventory(ResourceLocation id) {
-        if (id.equals(CraftingTerminalPart.INV_CRAFTING)) {
-            return craftingGrid;
-        } else {
-            return super.getSubInventory(id);
-        }
+        return id.equals(CraftingTerminalPart.INV_CRAFTING) ? craftingGrid : super.getSubInventory(id);
     }
 }

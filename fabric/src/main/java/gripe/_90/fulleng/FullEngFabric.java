@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
@@ -18,6 +19,7 @@ import appeng.client.render.StaticItemColor;
 import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.hooks.ModelsReloadCallback;
 
+@SuppressWarnings("UnstableApiUsage")
 public class FullEngFabric implements IAEAddonEntrypoint {
     @Override
     public void onAe2Initialized() {
@@ -30,6 +32,9 @@ public class FullEngFabric implements IAEAddonEntrypoint {
             Registry.register(Registry.ITEM, b.id(), b.asItem());
         });
         FullblockEnergistics.getBlockEntities().forEach((k, v) -> Registry.register(Registry.BLOCK_ENTITY_TYPE, k, v));
+
+        ItemStorage.SIDED.registerForBlockEntity((be, context) -> be.getLogic().getBlankPatternInv().toStorage(),
+                FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
     }
 
     @SuppressWarnings("unused")

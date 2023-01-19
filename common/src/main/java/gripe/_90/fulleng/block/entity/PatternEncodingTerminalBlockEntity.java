@@ -31,12 +31,8 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
 
     @Override
     public void addAdditionalDrops(Level level, BlockPos pos, List<ItemStack> drops) {
-        for (var is : this.logic.getBlankPatternInv()) {
-            drops.add(is);
-        }
-        for (var is : this.logic.getEncodedPatternInv()) {
-            drops.add(is);
-        }
+        logic.getBlankPatternInv().forEach(drops::add);
+        logic.getEncodedPatternInv().forEach(drops::add);
     }
 
     @Override
@@ -53,10 +49,9 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
 
     @Override
     public MenuType<?> getMenuType(Player p) {
-        if (Platform.checkPermissions(p, this, SecurityPermissions.CRAFT, false, false)) {
-            return PatternEncodingTermMenu.TYPE;
-        }
-        return MEStorageMenu.TYPE;
+        return Platform.checkPermissions(p, this, SecurityPermissions.CRAFT, false, false)
+                ? PatternEncodingTermMenu.TYPE
+                : MEStorageMenu.TYPE;
     }
 
     @Override
