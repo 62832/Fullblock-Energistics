@@ -35,7 +35,6 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -60,10 +59,6 @@ public class FullEngDataGenerators {
         generator.addProvider(true, new RecipeProvider(generator));
         generator.addProvider(true, new DropProvider(generator));
         generator.addProvider(true, new TagProvider(generator, existing));
-
-        for (var en : List.of("en_us", "en_gb", "en_ca", "en_au", "en_nz")) {
-            generator.addProvider(true, new LangProvider(generator, en));
-        }
     }
 
     public static final class StateProvider extends BlockStateProvider {
@@ -190,17 +185,6 @@ public class FullEngDataGenerators {
         @Override
         protected void addTags() {
             FullblockEnergistics.getBlocks().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE).add(b.block()));
-        }
-    }
-
-    public static final class LangProvider extends LanguageProvider {
-        public LangProvider(DataGenerator gen, String locale) {
-            super(gen, FullblockEnergistics.MODID, locale);
-        }
-
-        @Override
-        protected void addTranslations() {
-            FullblockEnergistics.getBlocks().forEach(b -> add(b.block(), b.getEnglishName()));
         }
     }
 }

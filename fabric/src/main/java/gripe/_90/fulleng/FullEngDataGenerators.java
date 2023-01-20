@@ -1,13 +1,11 @@
 package gripe._90.fulleng;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -45,10 +43,6 @@ public class FullEngDataGenerators implements DataGeneratorEntrypoint {
         generator.addProvider(RecipeProvider::new);
         generator.addProvider(DropProvider::new);
         generator.addProvider(TagProvider::new);
-
-        for (var en : List.of("en_us", "en_gb", "en_ca", "en_au", "en_nz")) {
-            generator.addProvider(new LangProvider(generator, en));
-        }
     }
 
     private static class ModelProvider extends FabricModelProvider {
@@ -137,17 +131,6 @@ public class FullEngDataGenerators implements DataGeneratorEntrypoint {
         @Override
         protected void generateTags() {
             FullblockEnergistics.getBlocks().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE).add(b.block()));
-        }
-    }
-
-    private static class LangProvider extends FabricLanguageProvider {
-        protected LangProvider(FabricDataGenerator gen, String lang) {
-            super(gen, lang);
-        }
-
-        @Override
-        public void generateTranslations(TranslationBuilder builder) {
-            FullblockEnergistics.getBlocks().forEach(b -> builder.add(b.block(), b.getEnglishName()));
         }
     }
 }

@@ -19,13 +19,18 @@ import appeng.block.AEBaseBlockItem;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
 import appeng.core.CreativeTab;
+import appeng.core.definitions.AEParts;
 import appeng.core.definitions.BlockDefinition;
+import appeng.core.definitions.ItemDefinition;
+import appeng.items.parts.PartItem;
+import appeng.parts.reporting.AbstractDisplayPart;
 
 import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.CraftingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.ItemTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.TerminalBlockEntity;
 
 public final class FullblockEnergistics {
     public static final String MODID = "fulleng";
@@ -48,16 +53,22 @@ public final class FullblockEnergistics {
     // spotless:off
     public static final BlockBehaviour.Properties DEFAULT_PROPS = BlockBehaviour.Properties.of(Material.METAL).strength(2.2f, 11.0f).sound(SoundType.METAL);
 
-    public static final BlockDefinition<TerminalBlock<ItemTerminalBlockEntity>> TERMINAL_BLOCK = block("ME Terminal", "terminal", TerminalBlock<ItemTerminalBlockEntity>::new);
-    public static final BlockDefinition<TerminalBlock<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL_BLOCK = block("ME Crafting Terminal", "crafting_terminal", TerminalBlock<CraftingTerminalBlockEntity>::new);
-    public static final BlockDefinition<TerminalBlock<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL_BLOCK = block("ME Pattern Encoding Terminal", "pattern_encoding_terminal", TerminalBlock<PatternEncodingTerminalBlockEntity>::new);
-    public static final BlockDefinition<TerminalBlock<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL_BLOCK = block("ME Pattern Access Terminal", "pattern_access_terminal", TerminalBlock<PatternAccessTerminalBlockEntity>::new);
+    public static final BlockDefinition<TerminalBlock<ItemTerminalBlockEntity>> TERMINAL_BLOCK = terminal(AEParts.TERMINAL);
+    public static final BlockDefinition<TerminalBlock<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL_BLOCK = terminal(AEParts.CRAFTING_TERMINAL);
+    public static final BlockDefinition<TerminalBlock<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL_BLOCK = terminal(AEParts.PATTERN_ENCODING_TERMINAL);
+    public static final BlockDefinition<TerminalBlock<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL_BLOCK = terminal(AEParts.PATTERN_ACCESS_TERMINAL);
 
     public static final BlockEntityType<ItemTerminalBlockEntity> TERMINAL = blockEntity("terminal", ItemTerminalBlockEntity.class, ItemTerminalBlockEntity::new, TERMINAL_BLOCK);
     public static final BlockEntityType<CraftingTerminalBlockEntity> CRAFTING_TERMINAL = blockEntity("crafting_terminal", CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, CRAFTING_TERMINAL_BLOCK);
     public static final BlockEntityType<PatternEncodingTerminalBlockEntity> PATTERN_ENCODING_TERMINAL = blockEntity("pattern_encoding_terminal", PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, PATTERN_ENCODING_TERMINAL_BLOCK);
     public static final BlockEntityType<PatternAccessTerminalBlockEntity> PATTERN_ACCESS_TERMINAL = blockEntity("pattern_access_terminal", PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, PATTERN_ACCESS_TERMINAL_BLOCK);
     // spotless:on
+
+    static <P extends AbstractDisplayPart, E extends TerminalBlockEntity> BlockDefinition<TerminalBlock<E>> terminal(
+            ItemDefinition<PartItem<P>> equivalentPart) {
+        return block(equivalentPart.getEnglishName(), equivalentPart.id().getPath(),
+                () -> new TerminalBlock<>(equivalentPart));
+    }
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> supplier) {
         T block = supplier.get();
