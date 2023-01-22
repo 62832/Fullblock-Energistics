@@ -30,19 +30,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 import appeng.api.util.AEColor;
+import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.client.render.model.AutoRotatingBakedModel;
+import appeng.init.client.InitScreens;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.RequesterIntegration;
+import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullEngForge {
+    private static final boolean REQUESTER_PRESENT = ModList.get().isLoaded("merequester");
 
     public FullEngForge() {
-        if (ModList.get().isLoaded("merequester")) {
+        if (REQUESTER_PRESENT) {
             RequesterIntegration.init();
         }
 
@@ -55,8 +59,19 @@ public class FullEngForge {
                     ForgeRegistries.ITEMS.register(b.id(), b.asItem());
                 });
             }
+
             if (event.getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
                 FullblockEnergistics.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
+            }
+
+            if (event.getRegistryKey().equals(Registry.MENU_REGISTRY)) {
+                ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
+                        PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK);
+
+                if (REQUESTER_PRESENT) {
+                    ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
+                            RequesterIntegration.Menu.TYPE_FULLBLOCK);
+                }
             }
         });
 
@@ -84,32 +99,40 @@ public class FullEngForge {
             }
         });
 
-        bus.addListener(FullEngDataGenerators::onGatherData);
+        var clientSetup = new DistExecutor.SafeRunnable() {
+            @Override
+            public void run() {
+                bus.addListener((RegisterColorHandlersEvent.Block event) -> FullblockEnergistics.getBlocks()
+                        .forEach(b -> event.register(new ColorableBlockEntityBlockColor(), b.block())));
+                bus.addListener((RegisterColorHandlersEvent.Item event) -> FullblockEnergistics.getBlocks()
+                        .forEach(b -> event.register(new StaticItemColor(AEColor.TRANSPARENT), b.block())));
 
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> Client::new);
-    }
+                bus.addListener((FMLClientSetupEvent event) -> {
+                    FullblockEnergistics.getBlocks()
+                            .forEach(b -> ItemBlockRenderTypes.setRenderLayer(b.block(), RenderType.cutout()));
+                    InitScreens.<PatternAccessTerminalBlockEntity.Menu, PatternAccessTermScreen<PatternAccessTerminalBlockEntity.Menu>>register(
+                            PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
+                            "/screens/pattern_access_terminal.json");
 
-    private static class Client {
-        private Client() {
-            var bus = FMLJavaModLoadingContext.get().getModEventBus();
-
-            bus.addListener((RegisterColorHandlersEvent.Block event) -> FullblockEnergistics.getBlocks()
-                    .forEach(b -> event.register(new ColorableBlockEntityBlockColor(), b.block())));
-            bus.addListener((RegisterColorHandlersEvent.Item event) -> FullblockEnergistics.getBlocks()
-                    .forEach(b -> event.register(new StaticItemColor(AEColor.TRANSPARENT), b.block())));
-            bus.addListener((FMLClientSetupEvent event) -> FullblockEnergistics.getBlocks()
-                    .forEach(b -> ItemBlockRenderTypes.setRenderLayer(b.block(), RenderType.cutout())));
-
-            bus.addListener((ModelEvent.BakingCompleted event) -> {
-                var modelRegistry = event.getModels();
-                for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
-                    if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
-                        continue;
+                    if (REQUESTER_PRESENT) {
+                        RequesterIntegration.initScreen();
                     }
+                });
 
-                    modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
-                }
-            });
-        }
+                bus.addListener((ModelEvent.BakingCompleted event) -> {
+                    var modelRegistry = event.getModels();
+                    for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
+                        if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
+                            continue;
+                        }
+
+                        modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
+                    }
+                });
+            }
+        };
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> clientSetup);
+
+        bus.addListener(FullEngDataGenerators::onGatherData);
     }
 }
