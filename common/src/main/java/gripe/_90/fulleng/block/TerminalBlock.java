@@ -19,6 +19,7 @@ import appeng.block.AEBaseEntityBlock;
 import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.FullblockEnergistics;
+import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.TerminalBlockEntity;
 
 public class TerminalBlock<T extends TerminalBlockEntity> extends AEBaseEntityBlock<T> {
@@ -61,6 +62,18 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends AEBaseEntityBl
         }
 
         return InteractionResult.PASS;
+    }
+
+    @Override
+    protected boolean isInventory() {
+        return this == FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK.block();
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return (getBlockEntity(level, pos)instanceof PatternEncodingTerminalBlockEntity patternTerminal)
+                ? patternTerminal.getLogic().getBlankPatternInv().getRedstoneSignal()
+                : 0;
     }
 
     @NotNull

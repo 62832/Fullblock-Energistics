@@ -71,13 +71,13 @@ public abstract class StorageTerminalBlockEntity extends TerminalBlockEntity
     }
 
     @Override
-    public ItemStack getMainMenuIcon() {
-        return new ItemStack(getItemFromBlockEntity());
+    public void onChangeInventory(InternalInventory inv, int slot) {
+        markForUpdate();
     }
 
     @Override
-    public void onChangeInventory(InternalInventory inv, int slot) {
-        markForUpdate();
+    public ItemStack getMainMenuIcon() {
+        return new ItemStack(getItemFromBlockEntity());
     }
 
     @Override

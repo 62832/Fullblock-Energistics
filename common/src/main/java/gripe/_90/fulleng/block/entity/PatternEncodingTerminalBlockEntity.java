@@ -61,6 +61,7 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
 
     @Override
     public void markForSave() {
+        saveChanges();
         markForUpdate();
     }
 }
