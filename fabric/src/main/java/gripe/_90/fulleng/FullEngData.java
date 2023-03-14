@@ -36,7 +36,7 @@ import appeng.core.definitions.ItemDefinition;
 
 import gripe._90.fulleng.block.TerminalBlock;
 
-public class FullEngDataGenerators implements DataGeneratorEntrypoint {
+public class FullEngData implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         generator.addProvider(ModelProvider::new);

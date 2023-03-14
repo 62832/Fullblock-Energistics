@@ -16,9 +16,9 @@
   "environment": "*",
   "entrypoints": {
     "ae2": ["gripe._90.fulleng.FullEngFabric"],
-    "ae2:client": ["gripe._90.fulleng.FullEngFabric<%='$'%>Client"],
+    "ae2:client": ["gripe._90.fulleng.FullEngClient"],
 
-    "fabric-datagen": ["gripe._90.fulleng.FullEngDataGenerators"]
+    "fabric-datagen": ["gripe._90.fulleng.FullEngData"]
   },
   "mixins": ["fulleng.mixins.json"],
 

@@ -48,7 +48,7 @@ import gripe._90.fulleng.RequesterIntegration;
 import gripe._90.fulleng.block.TerminalBlock;
 
 @Mod.EventBusSubscriber(modid = FullblockEnergistics.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class FullEngDataGenerators {
+public class FullEngData {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
         var generator = event.getGenerator();
