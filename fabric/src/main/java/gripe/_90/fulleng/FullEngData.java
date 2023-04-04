@@ -64,7 +64,7 @@ public class FullEngData implements DataGeneratorEntrypoint {
             terminal(gen, FullblockEnergistics.CRAFTING_TERMINAL_BLOCK, "ae2:part/crafting_terminal");
             terminal(gen, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, "ae2:part/pattern_encoding_terminal");
             terminal(gen, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, "ae2:part/pattern_access_terminal");
-            terminal(gen, RequesterIntegration.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
+            terminal(gen, FullblockEnergistics.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
         }
 
         @Override

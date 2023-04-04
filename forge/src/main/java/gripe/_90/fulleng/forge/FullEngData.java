@@ -44,7 +44,6 @@ import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.RequesterIntegration;
 import gripe._90.fulleng.block.TerminalBlock;
 
 @Mod.EventBusSubscriber(modid = FullblockEnergistics.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -101,7 +100,7 @@ public class FullEngData {
             terminal(FullblockEnergistics.CRAFTING_TERMINAL_BLOCK, "ae2:part/crafting_terminal");
             terminal(FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, "ae2:part/pattern_encoding_terminal");
             terminal(FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, "ae2:part/pattern_access_terminal");
-            terminal(RequesterIntegration.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
+            terminal(FullblockEnergistics.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
         }
 
         private void terminal(BlockDefinition<?> terminal, String texturePrefix) {

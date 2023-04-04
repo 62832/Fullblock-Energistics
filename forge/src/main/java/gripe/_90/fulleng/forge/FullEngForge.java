@@ -14,7 +14,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.items.IItemHandler;
@@ -28,13 +27,7 @@ import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullEngForge {
-    static final boolean REQUESTER_PRESENT = ModList.get().isLoaded("merequester");
-
     public FullEngForge() {
-        if (REQUESTER_PRESENT) {
-            RequesterIntegration.init();
-        }
-
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener((RegisterEvent event) -> {
@@ -53,7 +46,7 @@ public class FullEngForge {
                 ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
                         PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK);
 
-                if (REQUESTER_PRESENT) {
+                if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
                     ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
                             RequesterIntegration.Menu.TYPE_FULLBLOCK);
                 }
