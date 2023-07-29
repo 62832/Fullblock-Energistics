@@ -1,6 +1,7 @@
 package gripe._90.fulleng;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 
 import appeng.api.IAEAddonEntrypoint;
@@ -29,5 +30,12 @@ public class FullEngFabric implements IAEAddonEntrypoint {
 
         ItemStorage.SIDED.registerForBlockEntity((be, context) -> be.getLogic().getBlankPatternInv().toStorage(),
                 FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
+    }
+
+    public static class Platform implements FullblockEnergistics.Platform {
+        @Override
+        public boolean isRequesterLoaded() {
+            return FabricLoader.getInstance().isModLoaded("merequester");
+        }
     }
 }

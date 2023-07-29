@@ -1,5 +1,6 @@
 package gripe._90.fulleng.forge;
 
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,5 +78,12 @@ public class FullEngForge {
         });
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> FullEngClient::new);
+    }
+
+    public static class Platform implements FullblockEnergistics.Platform {
+        @Override
+        public boolean isRequesterLoaded() {
+            return ModList.get().isLoaded("merequester");
+        }
     }
 }
