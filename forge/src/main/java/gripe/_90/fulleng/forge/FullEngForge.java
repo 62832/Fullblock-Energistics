@@ -57,13 +57,12 @@ public class FullEngForge {
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, (AttachCapabilitiesEvent<BlockEntity> event) -> {
             if (event.getObject() instanceof PatternEncodingTerminalBlockEntity patternTerm) {
                 var capabilityProvider = new ICapabilityProvider() {
-                    private LazyOptional<IItemHandler> patternSlotHandler;
+                    private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional
+                            .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
 
                     @Override
                     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap,
                             @Nullable Direction dir) {
-                        patternSlotHandler = LazyOptional
-                                .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
                         return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, patternSlotHandler);
                     }
 
