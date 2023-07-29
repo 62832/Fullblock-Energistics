@@ -71,7 +71,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends AEBaseEntityBl
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return (getBlockEntity(level, pos)instanceof PatternEncodingTerminalBlockEntity patternTerminal)
+        return (getBlockEntity(level, pos) instanceof PatternEncodingTerminalBlockEntity patternTerminal)
                 ? patternTerminal.getLogic().getBlankPatternInv().getRedstoneSignal()
                 : 0;
     }

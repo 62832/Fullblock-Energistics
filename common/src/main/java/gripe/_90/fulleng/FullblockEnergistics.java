@@ -27,7 +27,6 @@ import appeng.core.definitions.ItemDefinition;
 import appeng.items.parts.PartItem;
 import appeng.parts.reporting.AbstractDisplayPart;
 
-import gripe._90.fulleng.block.RequesterTerminalBlock;
 import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.CraftingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.ItemTerminalBlockEntity;
@@ -35,6 +34,7 @@ import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.RequesterTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.TerminalBlockEntity;
+import gripe._90.fulleng.integration.RequesterTerminalBlock;
 
 public final class FullblockEnergistics {
     public static final String MODID = "fulleng";

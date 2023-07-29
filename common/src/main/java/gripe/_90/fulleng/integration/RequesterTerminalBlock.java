@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block;
+package gripe._90.fulleng.integration;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import appeng.core.CreativeTab;
 import appeng.core.definitions.AEParts;
 
 import gripe._90.fulleng.FullblockEnergistics;
+import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.RequesterTerminalBlockEntity;
 
 public class RequesterTerminalBlock extends TerminalBlock<RequesterTerminalBlockEntity> {

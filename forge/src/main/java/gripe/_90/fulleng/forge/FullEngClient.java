@@ -18,8 +18,8 @@ import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.init.client.InitScreens;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.RequesterIntegration;
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.integration.RequesterIntegration;
 
 public class FullEngClient {
     public FullEngClient() {

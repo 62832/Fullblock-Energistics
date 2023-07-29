@@ -7,6 +7,7 @@ import appeng.api.IAEAddonEntrypoint;
 import appeng.core.AppEng;
 
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.integration.RequesterIntegration;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FullEngFabric implements IAEAddonEntrypoint {

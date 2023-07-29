@@ -19,6 +19,7 @@ import appeng.hooks.ModelsReloadCallback;
 import appeng.init.client.InitScreens;
 
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.integration.RequesterIntegration;
 
 @Environment(EnvType.CLIENT)
 public class FullEngClient implements IAEAddonEntrypoint {

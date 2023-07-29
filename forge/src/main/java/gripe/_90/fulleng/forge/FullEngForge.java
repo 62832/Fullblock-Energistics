@@ -21,9 +21,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.RequesterIntegration;
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.integration.RequesterIntegration;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullEngForge {
@@ -55,7 +55,7 @@ public class FullEngForge {
 
         // https://www.youtube.com/watch?v=GQPM4_fMIEg&t=44s
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, (AttachCapabilitiesEvent<BlockEntity> event) -> {
-            if (event.getObject()instanceof PatternEncodingTerminalBlockEntity patternTerm) {
+            if (event.getObject() instanceof PatternEncodingTerminalBlockEntity patternTerm) {
                 var capabilityProvider = new ICapabilityProvider() {
                     private LazyOptional<IItemHandler> patternSlotHandler;
 
@@ -78,7 +78,5 @@ public class FullEngForge {
         });
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> FullEngClient::new);
-
-        bus.addListener(FullEngData::onGatherData);
     }
 }

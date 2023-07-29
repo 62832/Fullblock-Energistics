@@ -1,21 +1,31 @@
-import com.diffplug.gradle.spotless.SpotlessExtension
-import me.shedaniel.unifiedpublishing.UnifiedPublishingExtension
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     java
+    id("dev.architectury.loom") version "1.3-SNAPSHOT" apply false
     id("architectury-plugin") version "3.4-SNAPSHOT"
-    id("dev.architectury.loom") version "1.0-SNAPSHOT" apply false
-    id("io.github.juuxel.loom-quiltflower") version "1.7.1" apply false
-    id("me.shedaniel.unified-publishing") version "0.1.+" apply false
-    id("com.diffplug.spotless") version "6.4.1" apply false
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("me.shedaniel.unified-publishing") version "0.1.+"
+    id("com.diffplug.spotless") version "6.20.0"
 }
 
-val mcVersion = property("minecraft_version").toString()
-val modId = property("mod_id").toString()
+val modId: String by project
+val minecraftVersion: String by project
+val javaVersion: String by project
 
-architectury {
-    minecraft = mcVersion
+val platforms by extra {
+    property("enabledPlatforms").toString().split(',')
+}
+
+fun capitalise(str: String): String {
+    return str.replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase()
+        } else {
+            it.toString()
+        }
+    }
 }
 
 tasks {
@@ -29,26 +39,49 @@ tasks {
     assemble {
         dependsOn(collectJars)
     }
+
+    withType<Jar> {
+        enabled = false
+    }
 }
 
-allprojects {
+subprojects {
     apply(plugin = "java")
     apply(plugin = "architectury-plugin")
+    apply(plugin = "dev.architectury.loom")
     apply(plugin = "com.diffplug.spotless")
 
     base.archivesName.set("$modId-${project.name}")
     version = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)
-    group = "${property("maven_group")}.$modId"
+    group = "${property("mavenGroup")}.$modId"
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    architectury {
+        minecraft = minecraftVersion
+        injectInjectables = false
+    }
+
+    configure<LoomGradleExtensionAPI> {
+        silentMojangMappingsLicense()
+
+        val accessWidenerFile = project(":common").file("src/main/resources/$modId.accesswidener")
+
+        if (accessWidenerFile.exists()) {
+            accessWidenerPath.set(accessWidenerFile)
+        }
+    }
 
     repositories {
-        mavenLocal()
-        mavenCentral()
-
         maven {
             name = "ModMaven (K4U-NL)"
             url = uri("https://modmaven.dev/")
             content {
                 includeGroup("appeng")
+                includeGroup("mezz.jei")
             }
         }
 
@@ -69,20 +102,17 @@ allprojects {
         }
 
         maven {
-            name = "Progwml6"
-            url = uri("https://dvs1.progwml6.com/files/maven/")
-            content {
-                includeGroup("mezz.jei")
-            }
-        }
-
-        maven {
             name = "TerraformersMC"
             url = uri("https://maven.terraformersmc.com/")
             content {
                 includeGroup("com.terraformersmc")
             }
         }
+    }
+
+    dependencies {
+        "minecraft"("com.mojang:minecraft:$minecraftVersion")
+        "mappings"(project.extensions.getByName<LoomGradleExtensionAPI>("loom").officialMojangMappings())
     }
 
     tasks {
@@ -98,12 +128,7 @@ allprojects {
         }
     }
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    configure<SpotlessExtension> {
+    spotless {
         java {
             target("src/**/java/**/*.java")
             endWithNewline()
@@ -133,69 +158,99 @@ allprojects {
     }
 }
 
-subprojects {
-    apply(plugin = "dev.architectury.loom")
-    apply(plugin = "io.github.juuxel.loom-quiltflower")
-    apply(plugin = "me.shedaniel.unified-publishing")
+for (platform in platforms) {
+    project(":$platform") {
+        apply(plugin = "com.github.johnrengelman.shadow")
+        apply(plugin = "me.shedaniel.unified-publishing")
 
-    configure<LoomGradleExtensionAPI> {
-        silentMojangMappingsLicense()
-        mixin {
-            defaultRefmapName.set("${base.archivesName}-refmap.json")
+        architectury {
+            platformSetupLoomIde()
+            loader(platform)
         }
-    }
 
-    dependencies {
-        "minecraft"("com.mojang:minecraft:$mcVersion")
-        "mappings"(project.extensions.getByName<LoomGradleExtensionAPI>("loom").officialMojangMappings())
-    }
+        val common: Configuration by configurations.creating
+        val shadowCommon: Configuration by configurations.creating
 
-    architectury {
-        injectInjectables = false
-    }
+        configurations {
+            compileClasspath.get().extendsFrom(common)
+            runtimeClasspath.get().extendsFrom(common)
+            named("development${capitalise(platform)}").get().extendsFrom(common)
+        }
 
-    if ((project.name == "fabric" || project.name == "forge") && project.version != "0.0") {
-        configure<UnifiedPublishingExtension> {
-            project {
-                val modVersion = project.version.toString()
+        dependencies {
+            common(project(path = ":common", configuration = "namedElements")) { isTransitive = false }
+            shadowCommon(project(path = ":common", configuration = "transformProduction${capitalise(platform)}")) { isTransitive = false }
+        }
 
-                gameVersions.set(listOf(mcVersion))
-                gameLoaders.set(listOf(project.name))
-                version.set("${project.name}-$modVersion")
+        tasks {
+            shadowJar {
+                exclude("architectury.common.json")
 
-                val loader = project.name.substring(0, 1).toUpperCase() + project.name.substring(1)
-                val changes = System.getenv("CHANGELOG") ?: "No changelog provided?"
+                configurations = listOf(shadowCommon)
+                archiveClassifier.set("dev-shadow")
+            }
 
-                releaseType.set("release")
-                changelog.set(changes)
-                displayName.set(String.format("%s (%s %s)", modVersion, loader, mcVersion))
+            withType<RemapJarTask> {
+                inputFile.set(shadowJar.get().archiveFile)
+                dependsOn(shadowJar)
+                archiveClassifier.set(null as String?)
+            }
 
-                mainPublication(project.tasks.getByName("remapJar")) // Declares the published jar
+            jar {
+                archiveClassifier.set("dev")
+            }
+        }
 
-                relations {
-                    depends {
-                        curseforge.set("applied-energistics-2")
-                        modrinth.set("ae2")
+        val javaComponent = components["java"] as AdhocComponentWithVariants
+        javaComponent.withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
+            skip()
+        }
+
+        if (project.version != "0.0") {
+            unifiedPublishing {
+                project {
+                    val modVersion = project.version.toString()
+
+                    gameVersions.set(listOf(minecraftVersion))
+                    gameLoaders.set(listOf(platform))
+                    version.set("$platform-$modVersion")
+
+                    val changes = System.getenv("CHANGELOG") ?: "No changelog provided?"
+
+                    releaseType.set("release")
+                    changelog.set(changes)
+                    displayName.set(String.format("%s (%s %s)",
+                            modVersion.substring(0, modVersion.lastIndexOf("-")),
+                            capitalise(platform),
+                            minecraftVersion))
+
+                    mainPublication(project.tasks.getByName("remapJar"))
+
+                    relations {
+                        depends {
+                            curseforge.set("applied-energistics-2")
+                            modrinth.set("ae2")
+                        }
+                        optional {
+                            curseforge.set("merequester")
+                            modrinth.set("merequester")
+                        }
                     }
-                    optional {
-                        curseforge.set("merequester")
-                        modrinth.set("merequester")
-                    }
-                }
 
-                val cfToken = System.getenv("CURSEFORGE_TOKEN")
-                if (cfToken != null) {
-                    curseforge {
-                        token.set(cfToken)
-                        id.set("776293")
+                    val cfToken = System.getenv("CURSEFORGE_TOKEN")
+                    if (cfToken != null) {
+                        curseforge {
+                            token.set(cfToken)
+                            id.set("776293")
+                        }
                     }
-                }
 
-                val mrToken = System.getenv("MODRINTH_TOKEN")
-                if (mrToken != null) {
-                    modrinth {
-                        token.set(mrToken)
-                        id.set("oRg5rweB")
+                    val mrToken = System.getenv("MODRINTH_TOKEN")
+                    if (mrToken != null) {
+                        modrinth {
+                            token.set(mrToken)
+                            id.set("oRg5rweB")
+                        }
                     }
                 }
             }

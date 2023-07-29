@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import appeng.menu.me.common.MEStorageMenu;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.RequesterIntegration;
+import gripe._90.fulleng.integration.RequesterIntegration;
 
 public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {

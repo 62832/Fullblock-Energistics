@@ -1,4 +1,4 @@
-package gripe._90.fulleng;
+package gripe._90.fulleng.integration;
 
 import com.almostreliable.merequester.client.RequesterTerminalScreen;
 import com.almostreliable.merequester.terminal.RequesterTerminalMenu;
