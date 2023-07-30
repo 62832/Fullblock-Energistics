@@ -3,15 +3,15 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     java
-    id("dev.architectury.loom") version "1.3-SNAPSHOT" apply false
-    id("architectury-plugin") version "3.4-SNAPSHOT"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("me.shedaniel.unified-publishing") version "0.1.+"
-    id("com.diffplug.spotless") version "6.20.0"
+    alias(libs.plugins.architectury)
+    alias(libs.plugins.archLoom) apply false
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.unifiedPublishing)
+    alias(libs.plugins.spotless)
 }
 
 val modId: String by project
-val minecraftVersion: String by project
+val minecraftVersion: String = libs.versions.minecraft.get()
 
 val platforms by extra {
     property("enabledPlatforms").toString().split(',')
@@ -36,9 +36,9 @@ tasks {
 
 subprojects {
     apply(plugin = "java")
-    apply(plugin = "architectury-plugin")
-    apply(plugin = "dev.architectury.loom")
-    apply(plugin = "com.diffplug.spotless")
+    apply(plugin = rootProject.libs.plugins.architectury.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.archLoom.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.spotless.get().pluginId)
 
     base.archivesName.set("$modId-${project.name}")
     version = "${(System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)}-$minecraftVersion"
@@ -79,7 +79,7 @@ subprojects {
     }
 
     dependencies {
-        "minecraft"("com.mojang:minecraft:$minecraftVersion")
+        "minecraft"(rootProject.libs.minecraft)
         "mappings"(project.extensions.getByName<LoomGradleExtensionAPI>("loom").officialMojangMappings())
     }
 
@@ -126,10 +126,20 @@ subprojects {
     }
 }
 
+fun capitalise(str: String): String {
+    return str.replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase()
+        } else {
+            it.toString()
+        }
+    }
+}
+
 for (platform in platforms) {
     project(":$platform") {
-        apply(plugin = "com.github.johnrengelman.shadow")
-        apply(plugin = "me.shedaniel.unified-publishing")
+        apply(plugin = rootProject.libs.plugins.shadow.get().pluginId)
+        apply(plugin = rootProject.libs.plugins.unifiedPublishing.get().pluginId)
 
         architectury {
             platformSetupLoomIde()
@@ -139,16 +149,6 @@ for (platform in platforms) {
         val common: Configuration by configurations.creating
         val shadowCommon: Configuration by configurations.creating
 
-        fun capitalise(str: String): String {
-            return str.replaceFirstChar {
-                if (it.isLowerCase()) {
-                    it.titlecase()
-                } else {
-                    it.toString()
-                }
-            }
-        }
-
         configurations {
             compileClasspath.get().extendsFrom(common)
             runtimeClasspath.get().extendsFrom(common)
@@ -156,8 +156,13 @@ for (platform in platforms) {
         }
 
         dependencies {
-            common(project(path = ":common", configuration = "namedElements")) { isTransitive = false }
-            shadowCommon(project(path = ":common", configuration = "transformProduction${capitalise(platform)}")) { isTransitive = false }
+            common(project(path = ":common", configuration = "namedElements")) {
+                isTransitive = false
+            }
+
+            shadowCommon(project(path = ":common", configuration = "transformProduction${capitalise(platform)}")) {
+                isTransitive = false
+            }
         }
 
         tasks {
@@ -165,8 +170,8 @@ for (platform in platforms) {
                 val commonProps by extra { mapOf(
                         "version"           to project.version,
                         "minecraftVersion"  to minecraftVersion,
-                        "ae2Version"        to project.extra.get("ae2Version"),
-                        "requesterVersion"  to project.extra.get("requesterVersion"))
+                        "ae2Version"        to rootProject.libs.versions.ae2.get(),
+                        "requesterVersion"  to rootProject.libs.versions.requester.get())
                 }
 
                 inputs.properties(commonProps)

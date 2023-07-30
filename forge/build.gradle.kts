@@ -1,19 +1,16 @@
-val forgeVersion: String by extra
-val ae2Version: String by extra
-
 dependencies {
     val minecraftVersion: String by project
 
-    forge("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
+    forge(libs.forge)
 
-    modImplementation("appeng:appliedenergistics2-forge:$ae2Version")
-    modRuntimeOnly("maven.modrinth:merequester:$minecraftVersion-${property("requesterVersion")}+forge")
+    modImplementation(libs.ae2.forge)
+    modRuntimeOnly(libs.requester.forge)
 }
 
 tasks.processResources {
     val forgeProps = mapOf(
-            "loaderVersion" to forgeVersion.substringBefore('.'),
-            "ae2VersionEnd" to ae2Version.substringBefore('.').toInt() + 1
+            "loaderVersion" to libs.forge.get().version!!.substringAfter('-').substringBefore('.'),
+            "ae2VersionEnd" to libs.versions.ae2.get().substringBefore('.').toInt() + 1
     )
 
     inputs.properties(forgeProps)

@@ -11,7 +11,7 @@ loom {
             })
 
             property("fabric-api.datagen")
-            property("fabric-api.datagen.modid", property("modId").toString())
+            property("fabric-api.datagen.modid", rootProject.property("modId").toString())
             property("fabric-api.datagen.output-dir", project(":common").file("src/generated/resources").absolutePath)
             property("fabric-api.datagen.strict-validation")
         }
@@ -19,14 +19,12 @@ loom {
 }
 
 dependencies {
-    val minecraftVersion: String by project
+    modImplementation(libs.fabric.loader)
+    modApi(libs.fabric.api)
 
-    modImplementation("net.fabricmc:fabric-loader:${property("fabricLoaderVersion")}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${property("fabricApiVersion")}+$minecraftVersion")
-
-    modImplementation("appeng:appliedenergistics2-fabric:${property("ae2Version")}")
-    modRuntimeOnly("maven.modrinth:merequester:$minecraftVersion-${property("requesterVersion")}+fabric")
-    modRuntimeOnly("maven.modrinth:midnightlib:${property("midnightLibVersion")}-fabric")
+    modImplementation(libs.ae2.fabric)
+    modRuntimeOnly(libs.requester.fabric)
+    modRuntimeOnly(libs.midnightLib)
 }
 
 tasks.processResources {
