@@ -21,6 +21,7 @@ import appeng.init.client.InitScreens;
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterIntegration;
 
+@SuppressWarnings("RedundantTypeArguments")
 @Environment(EnvType.CLIENT)
 public class FullEngClient implements IAEAddonEntrypoint {
     @Override

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "id": "fulleng",
-  "version": "${version}",
+  "version": "$version",
 
   "name": "Fullblock Energistics",
   "description": "A more retrospective feel for AE2. Adds full-block versions of terminals and potentially more.",
   "authors": ["90"],
   "contact": {
-    "homepage": "https://fulleng.90.gripe",
+    "homepage": "https://github.com/62832/Fullblock-Energistics",
     "sources": "https://github.com/62832/Fullblock-Energistics"
   },
   "icon": "icon.png",
@@ -22,13 +22,12 @@
   },
 
   "depends": {
-    "fabricloader": ">=0.14.9",
+    "fabricloader": "*",
     "fabric-api": "*",
-    "minecraft": "~1.19",
-    "java": ">=17",
-    "ae2": ">=12.8.4"
+    "minecraft": "$minecraftVersion",
+    "ae2": ">=$ae2Version"
   },
   "suggests": {
-    "merequester": ">=1.0.2"
+    "merequester": ">=$requesterVersion"
   }
 }

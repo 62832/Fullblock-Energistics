@@ -11,6 +11,7 @@ import appeng.api.config.SecurityPermissions;
 import appeng.init.client.InitScreens;
 import appeng.menu.implementations.MenuTypeBuilder;
 
+@SuppressWarnings("RedundantTypeArguments")
 public final class RequesterIntegration {
     public static void initScreen() {
         InitScreens.<Menu, RequesterTerminalScreen<Menu>>register(Menu.TYPE_FULLBLOCK, RequesterTerminalScreen::new,

@@ -12,20 +12,9 @@ plugins {
 
 val modId: String by project
 val minecraftVersion: String by project
-val javaVersion: String by project
 
 val platforms by extra {
     property("enabledPlatforms").toString().split(',')
-}
-
-fun capitalise(str: String): String {
-    return str.replaceFirstChar {
-        if (it.isLowerCase()) {
-            it.titlecase()
-        } else {
-            it.toString()
-        }
-    }
 }
 
 tasks {
@@ -52,12 +41,14 @@ subprojects {
     apply(plugin = "com.diffplug.spotless")
 
     base.archivesName.set("$modId-${project.name}")
-    version = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)
+    version = "${(System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)}-$minecraftVersion"
     group = "${property("mavenGroup")}.$modId"
 
+    val javaVersion: String by project
+
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.valueOf("VERSION_$javaVersion")
+        targetCompatibility = JavaVersion.valueOf("VERSION_$javaVersion")
     }
 
     architectury {
@@ -67,12 +58,6 @@ subprojects {
 
     configure<LoomGradleExtensionAPI> {
         silentMojangMappingsLicense()
-
-        val accessWidenerFile = project(":common").file("src/main/resources/$modId.accesswidener")
-
-        if (accessWidenerFile.exists()) {
-            accessWidenerPath.set(accessWidenerFile)
-        }
     }
 
     repositories {
@@ -81,15 +66,6 @@ subprojects {
             url = uri("https://modmaven.dev/")
             content {
                 includeGroup("appeng")
-                includeGroup("mezz.jei")
-            }
-        }
-
-        maven {
-            name = "CurseMaven"
-            url = uri("https://cursemaven.com")
-            content {
-                includeGroup("curse.maven")
             }
         }
 
@@ -98,14 +74,6 @@ subprojects {
             url = uri("https://api.modrinth.com/maven")
             content {
                 includeGroup("maven.modrinth")
-            }
-        }
-
-        maven {
-            name = "TerraformersMC"
-            url = uri("https://maven.terraformersmc.com/")
-            content {
-                includeGroup("com.terraformersmc")
             }
         }
     }
@@ -124,7 +92,7 @@ subprojects {
 
         withType<JavaCompile> {
             options.encoding = "UTF-8"
-            options.release.set(17)
+            options.release.set(javaVersion.toInt())
         }
     }
 
@@ -171,6 +139,16 @@ for (platform in platforms) {
         val common: Configuration by configurations.creating
         val shadowCommon: Configuration by configurations.creating
 
+        fun capitalise(str: String): String {
+            return str.replaceFirstChar {
+                if (it.isLowerCase()) {
+                    it.titlecase()
+                } else {
+                    it.toString()
+                }
+            }
+        }
+
         configurations {
             compileClasspath.get().extendsFrom(common)
             runtimeClasspath.get().extendsFrom(common)
@@ -183,6 +161,17 @@ for (platform in platforms) {
         }
 
         tasks {
+            processResources {
+                val commonProps by extra { mapOf(
+                        "version"           to project.version,
+                        "minecraftVersion"  to minecraftVersion,
+                        "ae2Version"        to project.extra.get("ae2Version"),
+                        "requesterVersion"  to project.extra.get("requesterVersion"))
+                }
+
+                inputs.properties(commonProps)
+            }
+
             shadowJar {
                 exclude("architectury.common.json")
 

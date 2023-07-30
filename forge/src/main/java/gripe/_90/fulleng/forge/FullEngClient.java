@@ -21,6 +21,7 @@ import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterIntegration;
 
+@SuppressWarnings("RedundantTypeArguments")
 public class FullEngClient {
     public FullEngClient() {
         var bus = FMLJavaModLoadingContext.get().getModEventBus();

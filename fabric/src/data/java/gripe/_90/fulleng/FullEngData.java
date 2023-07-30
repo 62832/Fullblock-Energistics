@@ -36,6 +36,7 @@ import appeng.core.definitions.ItemDefinition;
 
 import gripe._90.fulleng.block.TerminalBlock;
 
+@SuppressWarnings("unused")
 public class FullEngData implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {

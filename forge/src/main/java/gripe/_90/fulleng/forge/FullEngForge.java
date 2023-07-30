@@ -61,9 +61,9 @@ public class FullEngForge {
                     private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional
                             .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
 
+                    @NotNull
                     @Override
-                    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap,
-                            @Nullable Direction dir) {
+                    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction dir) {
                         return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, patternSlotHandler);
                     }
 

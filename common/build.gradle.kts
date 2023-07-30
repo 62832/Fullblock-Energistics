@@ -5,11 +5,11 @@ architectury {
 }
 
 dependencies {
-    modImplementation("net.fabricmc:fabric-loader:${property("fabricLoaderVersion")}")
+    modImplementation("net.fabricmc:fabric-loader:${project(":fabric").dependencyProject.property("fabricLoaderVersion")}")
     modCompileOnly("net.fabricmc.fabric-api:fabric-api:${project(":fabric").dependencyProject.property("fabricApiVersion")}+${property("minecraftVersion")}")
 
     modCompileOnly("appeng:appliedenergistics2-fabric:${property("ae2Version")}")
-    modCompileOnly("curse.maven:merequester-688367:${project(":fabric").dependencyProject.property("requesterFileId")}")
+    modCompileOnly("maven.modrinth:merequester:${property("minecraftVersion")}-${property("requesterVersion")}+fabric")
 }
 
 sourceSets {

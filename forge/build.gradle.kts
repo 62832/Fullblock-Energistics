@@ -1,23 +1,25 @@
-loom {
-    val modId: String by project
-
-    forge {
-        convertAccessWideners.set(true)
-        extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
-    }
-}
+val forgeVersion: String by extra
+val ae2Version: String by extra
 
 dependencies {
-    forge("net.minecraftforge:forge:${property("minecraftVersion")}-43.1.65")
+    val minecraftVersion: String by project
 
-    modImplementation("appeng:appliedenergistics2-forge:${property("ae2Version")}")
-    modRuntimeOnly("curse.maven:merequester-688367:4094402")
+    forge("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
+
+    modImplementation("appeng:appliedenergistics2-forge:$ae2Version")
+    modRuntimeOnly("maven.modrinth:merequester:$minecraftVersion-${property("requesterVersion")}+forge")
 }
 
 tasks.processResources {
-    inputs.property("version", project.version)
+    val forgeProps = mapOf(
+            "loaderVersion" to forgeVersion.substringBefore('.'),
+            "ae2VersionEnd" to ae2Version.substringBefore('.').toInt() + 1
+    )
+
+    inputs.properties(forgeProps)
 
     filesMatching("META-INF/mods.toml") {
-        expand("version" to project.version)
+        val commonProps: Map<String, *> by extra
+        expand(commonProps + forgeProps)
     }
 }

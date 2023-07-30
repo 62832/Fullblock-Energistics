@@ -11,7 +11,7 @@ loom {
             })
 
             property("fabric-api.datagen")
-            property("fabric-api.datagen.modid", rootProject.property("modId").toString())
+            property("fabric-api.datagen.modid", property("modId").toString())
             property("fabric-api.datagen.output-dir", project(":common").file("src/generated/resources").absolutePath)
             property("fabric-api.datagen.strict-validation")
         }
@@ -25,20 +25,13 @@ dependencies {
     modApi("net.fabricmc.fabric-api:fabric-api:${property("fabricApiVersion")}+$minecraftVersion")
 
     modImplementation("appeng:appliedenergistics2-fabric:${property("ae2Version")}")
-    modRuntimeOnly("curse.maven:merequester-688367:${property("requesterFileId")}")
-    modRuntimeOnly("maven.modrinth:midnightlib:0.6.0")
+    modRuntimeOnly("maven.modrinth:merequester:$minecraftVersion-${property("requesterVersion")}+fabric")
+    modRuntimeOnly("maven.modrinth:midnightlib:${property("midnightLibVersion")}-fabric")
 }
 
-tasks {
-    processResources {
-        inputs.property("version", project.version)
-
-        filesMatching("fabric.mod.json") {
-            expand("version" to project.version)
-        }
-    }
-
-    remapJar {
-        injectAccessWidener.set(true)
+tasks.processResources {
+    filesMatching("fabric.mod.json") {
+        val commonProps: Map<String, *> by extra
+        expand(commonProps)
     }
 }
