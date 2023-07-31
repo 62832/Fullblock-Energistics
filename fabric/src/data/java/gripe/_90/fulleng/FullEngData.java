@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
+import appeng.core.AppEng;
 import appeng.core.definitions.AEParts;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
@@ -53,9 +54,9 @@ public class FullEngData implements DataGeneratorEntrypoint {
         private static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
 
         private static final ModelTemplate TERMINAL = new ModelTemplate(
-                Optional.of(FullblockEnergistics.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT,
+                Optional.of(AppEng.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT,
                 LIGHTS_MEDIUM, LIGHTS_DARK);
-        private static final ResourceLocation TERMINAL_OFF = FullblockEnergistics.makeId("block/terminal_off");
+        private static final ResourceLocation TERMINAL_OFF = AppEng.makeId("block/terminal_off");
 
         public ModelProvider(FabricDataGenerator gen) {
             super(gen);
@@ -79,8 +80,8 @@ public class FullEngData implements DataGeneratorEntrypoint {
 
         private void terminal(BlockModelGenerators gen, BlockDefinition<?> terminal, String texturePrefix) {
             var onModel = terminal == FullblockEnergistics.TERMINAL_BLOCK
-                    ? FullblockEnergistics.makeId("block/terminal")
-                    : TERMINAL.create(terminal.block(), new TextureMapping()
+                    ? AppEng.makeId("block/terminal")
+                    : TERMINAL.create(AppEng.makeId("block/" + terminal.id().getPath()), new TextureMapping()
                             .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
                             .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
                             .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
@@ -89,24 +90,29 @@ public class FullEngData implements DataGeneratorEntrypoint {
                     .with(PropertyDispatch.property(FullBlock.POWERED)
                             .select(false, Variant.variant().with(VariantProperties.MODEL, TERMINAL_OFF))
                             .select(true, Variant.variant().with(VariantProperties.MODEL, onModel))));
+            gen.delegateItemModel(terminal.block(), onModel);
         }
 
         private void monitor(BlockModelGenerators gen, BlockDefinition<?> monitor, String texturePrefix) {
             var storage = monitor == FullblockEnergistics.STORAGE_MONITOR_BLOCK;
-            var unlockedModel = TERMINAL.create(monitor.block(), new TextureMapping()
+            var unlockedModel = TERMINAL.create(AppEng.makeId("block/" + monitor.id().getPath()), new TextureMapping()
                     .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
                     .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
                     .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                     gen.modelOutput);
-            var lockedModel = TERMINAL.createWithSuffix(monitor.block(), "_locked", new TextureMapping()
-                    .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
-                    .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium" + (storage ? "" : "_locked")))
-                    .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
+            var lockedModel = TERMINAL.create(
+                    AppEng.makeId("block/" + monitor.id().getPath() + "_locked"), new TextureMapping()
+                            .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
+                            .put(LIGHTS_MEDIUM,
+                                    new ResourceLocation(texturePrefix + "_medium" + (storage ? "" : "_locked")))
+                            .put(LIGHTS_DARK,
+                                    new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
                     gen.modelOutput);
             gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(monitor.block())
                     .with(PropertyDispatch.properties(FullBlock.POWERED, MonitorBlock.LOCKED)
                             .generate((powered, locked) -> Variant.variant().with(VariantProperties.MODEL,
                                     !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel))));
+            gen.delegateItemModel(monitor.block(), unlockedModel);
         }
     }
 

@@ -21,7 +21,8 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
     private final ItemLike equivalentPart;
 
     public FullBlock(ItemLike equivalentPart) {
-        super(BlockBehaviour.Properties.of(Material.METAL).strength(2.2f, 11.0f).sound(SoundType.METAL));
+        super(BlockBehaviour.Properties.of(Material.METAL).strength(2.2f, 11.0f).sound(SoundType.METAL)
+                .lightLevel(state -> state.getValue(POWERED) ? 9 : 0));
         this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
         this.equivalentPart = equivalentPart;
     }
