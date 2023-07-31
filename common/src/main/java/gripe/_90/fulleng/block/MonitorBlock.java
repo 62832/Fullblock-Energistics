@@ -41,8 +41,8 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
         var be = getBlockEntity(level, pos);
 
         if (be != null) {
-            if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
-                if (!level.isClientSide()) {
+            if (!level.isClientSide()) {
+                if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
                     if (InteractionUtil.isInAlternateUseMode(player)) {
                         be.onShiftClicked(player);
                     } else {
@@ -59,17 +59,17 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
         var be = getBlockEntity(level, pos);
 
         if (be != null) {
-            if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
-                if (!level.isClientSide()) {
+            if (!level.isClientSide()) {
+                if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
                     if (InteractionUtil.isInAlternateUseMode(player)) {
                         be.onShiftActivated(player, hand);
                     } else {
                         be.onActivated(player, hand);
                     }
                 }
-
-                return InteractionResult.sidedSuccess(level.isClientSide());
             }
+
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         return InteractionResult.PASS;
