@@ -17,7 +17,7 @@ import appeng.core.definitions.AEParts;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.TerminalBlock;
-import gripe._90.fulleng.block.entity.RequesterTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.RequesterTerminalBlockEntity;
 
 public class RequesterTerminalBlock extends TerminalBlock<RequesterTerminalBlockEntity> {
     public RequesterTerminalBlock() {

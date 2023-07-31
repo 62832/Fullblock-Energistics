@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block.entity;
+package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 
@@ -22,7 +22,6 @@ import gripe._90.fulleng.FullblockEnergistics;
 
 public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEntity
         implements IPatternTerminalLogicHost, IPatternTerminalMenuHost {
-
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
     public PatternEncodingTerminalBlockEntity(BlockPos pos, BlockState blockState) {

@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -14,34 +13,27 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
-import appeng.api.util.IConfigManager;
-import appeng.api.util.IConfigurableObject;
 import appeng.blockentity.grid.AENetworkBlockEntity;
-import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocators;
-import appeng.util.ConfigManager;
 
-public abstract class TerminalBlockEntity extends AENetworkBlockEntity
-        implements IConfigurableObject, IColorableBlockEntity {
-    private final IConfigManager cm = new ConfigManager(this::saveChanges);
+public abstract class FullBlockEntity extends AENetworkBlockEntity implements IColorableBlockEntity {
     private AEColor paintedColour = AEColor.TRANSPARENT;
     private boolean isActive = false;
 
-    public TerminalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
+    public FullBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
         this.getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(0.5);
     }
 
     @Override
     protected boolean readFromStream(FriendlyByteBuf data) {
-        final boolean c = super.readFromStream(data);
-        final boolean wasActive = this.isActive;
-        this.isActive = data.readBoolean();
+        var needRedraw = super.readFromStream(data);
+        var wasActive = isActive;
+        isActive = data.readBoolean();
 
-        final AEColor oldPaintedColor = this.paintedColour;
-        this.paintedColour = AEColor.values()[data.readByte()];
+        var oldPaintedColor = paintedColour;
+        paintedColour = AEColor.values()[data.readByte()];
 
-        return oldPaintedColor != this.paintedColour || wasActive != this.isActive || c;
+        return oldPaintedColor != paintedColour || wasActive != isActive || needRedraw;
     }
 
     @Override
@@ -66,14 +58,12 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
     @Override
     public void saveAdditional(CompoundTag data) {
         super.saveAdditional(data);
-        cm.writeToNBT(data);
         data.putByte("paintedColor", (byte) paintedColour.ordinal());
     }
 
     @Override
     public void loadTag(CompoundTag data) {
         super.loadTag(data);
-        cm.readFromNBT(data);
 
         if (data.contains("paintedColor")) {
             paintedColour = AEColor.values()[data.getByte("paintedColor")];
@@ -83,7 +73,7 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
     @Override
     public void onMainNodeStateChanged(IGridNodeListener.State reason) {
         if (reason != IGridNodeListener.State.GRID_BOOT) {
-            this.markForUpdate();
+            markForUpdate();
         }
     }
 
@@ -97,29 +87,18 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
         super.onReady();
 
         if (!isClientSide()) {
-            this.isActive = true;
+            isActive = true;
         }
     }
 
     @Override
     public void setRemoved() {
         super.setRemoved();
-        this.isActive = false;
+        isActive = false;
     }
 
     public boolean isActive() {
         return isClientSide() ? isActive : getMainNode().isOnline();
-    }
-
-    public abstract MenuType<?> getMenuType(Player player);
-
-    public void openMenu(Player player) {
-        MenuOpener.open(getMenuType(player), player, MenuLocators.forBlockEntity(this));
-    }
-
-    @Override
-    public IConfigManager getConfigManager() {
-        return cm;
     }
 
     @Override
@@ -129,13 +108,13 @@ public abstract class TerminalBlockEntity extends AENetworkBlockEntity
 
     @Override
     public boolean recolourBlock(Direction side, AEColor colour, Player who) {
-        if (this.paintedColour == colour) {
+        if (paintedColour == colour) {
             return false;
         }
 
-        this.paintedColour = colour;
-        this.saveChanges();
-        this.markForUpdate();
+        paintedColour = colour;
+        saveChanges();
+        markForUpdate();
         return true;
     }
 }

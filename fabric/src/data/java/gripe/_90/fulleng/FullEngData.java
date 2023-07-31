@@ -34,7 +34,8 @@ import appeng.core.definitions.AEParts;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
 
-import gripe._90.fulleng.block.TerminalBlock;
+import gripe._90.fulleng.block.FullBlock;
+import gripe._90.fulleng.block.MonitorBlock;
 
 @SuppressWarnings("unused")
 public class FullEngData implements DataGeneratorEntrypoint {
@@ -47,13 +48,14 @@ public class FullEngData implements DataGeneratorEntrypoint {
     }
 
     private static class ModelProvider extends FabricModelProvider {
-        static final TextureSlot LIGHTS_BRIGHT = TextureSlot.create("lightsBright");
-        static final TextureSlot LIGHTS_MEDIUM = TextureSlot.create("lightsMedium");
-        static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
+        private static final TextureSlot LIGHTS_BRIGHT = TextureSlot.create("lightsBright");
+        private static final TextureSlot LIGHTS_MEDIUM = TextureSlot.create("lightsMedium");
+        private static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
 
-        static final ModelTemplate TERMINAL = new ModelTemplate(
+        private static final ModelTemplate TERMINAL = new ModelTemplate(
                 Optional.of(FullblockEnergistics.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT,
                 LIGHTS_MEDIUM, LIGHTS_DARK);
+        private static final ResourceLocation TERMINAL_OFF = FullblockEnergistics.makeId("block/terminal_off");
 
         public ModelProvider(FabricDataGenerator gen) {
             super(gen);
@@ -66,6 +68,9 @@ public class FullEngData implements DataGeneratorEntrypoint {
             terminal(gen, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, "ae2:part/pattern_encoding_terminal");
             terminal(gen, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, "ae2:part/pattern_access_terminal");
             terminal(gen, FullblockEnergistics.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
+
+            monitor(gen, FullblockEnergistics.STORAGE_MONITOR_BLOCK, "ae2:part/storage_monitor");
+            monitor(gen, FullblockEnergistics.CONVERSION_MONITOR_BLOCK, "ae2:part/conversion_monitor");
         }
 
         @Override
@@ -73,7 +78,6 @@ public class FullEngData implements DataGeneratorEntrypoint {
         }
 
         private void terminal(BlockModelGenerators gen, BlockDefinition<?> terminal, String texturePrefix) {
-            var offModel = FullblockEnergistics.makeId("block/terminal_off");
             var onModel = terminal == FullblockEnergistics.TERMINAL_BLOCK
                     ? FullblockEnergistics.makeId("block/terminal")
                     : TERMINAL.create(terminal.block(), new TextureMapping()
@@ -82,9 +86,27 @@ public class FullEngData implements DataGeneratorEntrypoint {
                             .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                             gen.modelOutput);
             gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(terminal.block())
-                    .with(PropertyDispatch.property(TerminalBlock.POWERED)
-                            .select(false, Variant.variant().with(VariantProperties.MODEL, offModel))
+                    .with(PropertyDispatch.property(FullBlock.POWERED)
+                            .select(false, Variant.variant().with(VariantProperties.MODEL, TERMINAL_OFF))
                             .select(true, Variant.variant().with(VariantProperties.MODEL, onModel))));
+        }
+
+        private void monitor(BlockModelGenerators gen, BlockDefinition<?> monitor, String texturePrefix) {
+            var storage = monitor == FullblockEnergistics.STORAGE_MONITOR_BLOCK;
+            var unlockedModel = TERMINAL.create(monitor.block(), new TextureMapping()
+                    .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
+                    .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
+                    .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
+                    gen.modelOutput);
+            var lockedModel = TERMINAL.createWithSuffix(monitor.block(), "_locked", new TextureMapping()
+                    .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
+                    .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium" + (storage ? "" : "_locked")))
+                    .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
+                    gen.modelOutput);
+            gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(monitor.block())
+                    .with(PropertyDispatch.properties(FullBlock.POWERED, MonitorBlock.LOCKED)
+                            .generate((powered, locked) -> Variant.variant().with(VariantProperties.MODEL,
+                                    !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel))));
         }
     }
 
@@ -95,13 +117,16 @@ public class FullEngData implements DataGeneratorEntrypoint {
 
         @Override
         protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
-            terminal(consumer, FullblockEnergistics.TERMINAL_BLOCK, AEParts.TERMINAL);
-            terminal(consumer, FullblockEnergistics.CRAFTING_TERMINAL_BLOCK, AEParts.CRAFTING_TERMINAL);
-            terminal(consumer, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, AEParts.PATTERN_ENCODING_TERMINAL);
-            terminal(consumer, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, AEParts.PATTERN_ACCESS_TERMINAL);
+            block(consumer, FullblockEnergistics.TERMINAL_BLOCK, AEParts.TERMINAL);
+            block(consumer, FullblockEnergistics.CRAFTING_TERMINAL_BLOCK, AEParts.CRAFTING_TERMINAL);
+            block(consumer, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, AEParts.PATTERN_ENCODING_TERMINAL);
+            block(consumer, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, AEParts.PATTERN_ACCESS_TERMINAL);
+
+            block(consumer, FullblockEnergistics.STORAGE_MONITOR_BLOCK, AEParts.STORAGE_MONITOR);
+            block(consumer, FullblockEnergistics.CONVERSION_MONITOR_BLOCK, AEParts.CONVERSION_MONITOR);
         }
 
-        private void terminal(Consumer<FinishedRecipe> consumer, BlockDefinition<?> block, ItemDefinition<?> part) {
+        private void block(Consumer<FinishedRecipe> consumer, BlockDefinition<?> block, ItemDefinition<?> part) {
             var partId = part.id().getPath();
             ShapelessRecipeBuilder.shapeless(block).requires(part).unlockedBy("has_" + partId, has(part))
                     .save(consumer, FullblockEnergistics.makeId("terminals/block_" + partId + "_from_part"));

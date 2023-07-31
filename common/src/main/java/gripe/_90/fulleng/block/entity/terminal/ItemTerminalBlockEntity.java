@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block.entity;
+package gripe._90.fulleng.block.entity.terminal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

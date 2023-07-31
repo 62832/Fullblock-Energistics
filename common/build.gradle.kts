@@ -5,9 +5,7 @@ architectury {
 }
 
 dependencies {
-    modImplementation(libs.fabric.loader)
     modCompileOnly(libs.fabric.api)
-
     modCompileOnly(libs.ae2.fabric)
     modCompileOnly(libs.requester.fabric)
 }

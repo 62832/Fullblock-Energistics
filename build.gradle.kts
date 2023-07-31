@@ -58,6 +58,7 @@ subprojects {
 
     configure<LoomGradleExtensionAPI> {
         silentMojangMappingsLicense()
+        accessWidenerPath.set(project(":common").file("src/main/resources/$modId.accesswidener"))
     }
 
     repositories {

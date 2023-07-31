@@ -1,6 +1,11 @@
-dependencies {
-    val minecraftVersion: String by project
+loom {
+    forge {
+        convertAccessWideners.set(true)
+        extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
+    }
+}
 
+dependencies {
     forge(libs.forge)
 
     modImplementation(libs.ae2.forge)

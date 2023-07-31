@@ -40,7 +40,10 @@ dependencyResolutionManagement {
 }
 
 include("common")
-include("fabric")
-include("forge")
 
-rootProject.name = "Fullblock-Energistics"
+for (platform in providers.gradleProperty("enabledPlatforms").get().split(',')) {
+    include(platform)
+}
+
+val modName: String by settings
+rootProject.name = modName

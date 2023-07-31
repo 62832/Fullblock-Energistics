@@ -27,9 +27,15 @@ dependencies {
     modRuntimeOnly(libs.midnightLib)
 }
 
-tasks.processResources {
-    filesMatching("fabric.mod.json") {
-        val commonProps: Map<String, *> by extra
-        expand(commonProps)
+tasks {
+    processResources {
+        filesMatching("fabric.mod.json") {
+            val commonProps: Map<String, *> by extra
+            expand(commonProps)
+        }
+    }
+
+    remapJar {
+        injectAccessWidener.set(true)
     }
 }

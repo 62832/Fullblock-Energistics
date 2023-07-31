@@ -4,9 +4,13 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -18,7 +22,9 @@ import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.init.client.InitScreens;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.client.hook.BlockAttackHook;
+import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
 import gripe._90.fulleng.integration.RequesterIntegration;
 
 @SuppressWarnings("RedundantTypeArguments")
@@ -43,6 +49,11 @@ public class FullEngClient {
             }
         });
 
+        bus.addListener((ModelEvent.RegisterGeometryLoaders event) -> {
+            BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
+            BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
+        });
+
         bus.addListener((ModelEvent.BakingCompleted event) -> {
             var modelRegistry = event.getModels();
             for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
@@ -51,6 +62,19 @@ public class FullEngClient {
                 }
 
                 modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
+            }
+        });
+
+        MinecraftForge.EVENT_BUS.addListener((PlayerInteractEvent.LeftClickBlock event) -> {
+            var level = event.getLevel();
+
+            if (level.isClientSide()) {
+                var result = BlockAttackHook.onBlockAttackedOnClient(event.getEntity(), level);
+
+                if (result != InteractionResult.PASS) {
+                    event.setCanceled(true);
+                    event.setCancellationResult(result);
+                }
             }
         });
     }

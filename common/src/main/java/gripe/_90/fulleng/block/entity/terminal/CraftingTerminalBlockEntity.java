@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block.entity;
+package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
 
     @Override
     public void addAdditionalDrops(Level level, BlockPos pos, List<ItemStack> drops) {
-        for (ItemStack is : this.craftingGrid) {
+        for (var is : craftingGrid) {
             if (!is.isEmpty()) {
                 drops.add(is);
             }
@@ -40,13 +40,13 @@ public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
     @Override
     public void loadTag(CompoundTag data) {
         super.loadTag(data);
-        this.craftingGrid.readFromNBT(data, "craftingGrid");
+        craftingGrid.readFromNBT(data, "craftingGrid");
     }
 
     @Override
     public void saveAdditional(CompoundTag data) {
         super.saveAdditional(data);
-        this.craftingGrid.writeToNBT(data, "craftingGrid");
+        craftingGrid.writeToNBT(data, "craftingGrid");
     }
 
     @Override

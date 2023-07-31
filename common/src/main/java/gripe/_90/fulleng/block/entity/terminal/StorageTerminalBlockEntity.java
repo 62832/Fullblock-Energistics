@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block.entity;
+package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 

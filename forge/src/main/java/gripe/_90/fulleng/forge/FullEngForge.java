@@ -22,8 +22,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.block.entity.PatternAccessTerminalBlockEntity;
-import gripe._90.fulleng.block.entity.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterIntegration;
 
 @Mod(FullblockEnergistics.MODID)
