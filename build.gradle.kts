@@ -22,8 +22,8 @@ tasks {
     val releaseInfo by registering {
         doLast {
             val outputFile = File(System.getenv("GITHUB_OUTPUT"))
-            outputFile.appendText("MOD_VERSION=$modVersion")
-            outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion")
+            outputFile.appendText("MOD_VERSION=$modVersion\n")
+            outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion\n")
         }
     }
 
