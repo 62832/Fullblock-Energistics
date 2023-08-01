@@ -30,55 +30,56 @@ import gripe._90.fulleng.platform.Loader;
 @Mod(FullblockEnergistics.MODID)
 public class FullEngForge {
     public FullEngForge() {
-        var bus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        bus.addListener((RegisterEvent event) -> {
-            if (event.getRegistryKey().equals(Registry.BLOCK_REGISTRY)) {
-                FullblockEnergistics.getBlocks().forEach(b -> {
-                    ForgeRegistries.BLOCKS.register(b.id(), b.block());
-                    ForgeRegistries.ITEMS.register(b.id(), b.asItem());
-                });
-            }
-
-            if (event.getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
-                FullblockEnergistics.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
-            }
-
-            if (event.getRegistryKey().equals(Registry.MENU_REGISTRY)) {
-                ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
-                        PatternAccessTerminalMenu.TYPE_FULLBLOCK);
-
-                if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-                    ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
-                            RequesterTerminalMenu.TYPE_FULLBLOCK);
-                }
-            }
-        });
-
-        // https://www.youtube.com/watch?v=GQPM4_fMIEg&t=44s
-        MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, (AttachCapabilitiesEvent<BlockEntity> event) -> {
-            if (event.getObject() instanceof PatternEncodingTerminalBlockEntity patternTerm) {
-                var capabilityProvider = new ICapabilityProvider() {
-                    private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional
-                            .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
-
-                    @NotNull
-                    @Override
-                    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction dir) {
-                        return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, patternSlotHandler);
-                    }
-
-                    private void invalidate() {
-                        patternSlotHandler.invalidate();
-                    }
-                };
-
-                event.addCapability(FullblockEnergistics.makeId("pattern_encoding_terminal"), capabilityProvider);
-                event.addListener(capabilityProvider::invalidate);
-            }
-        });
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerAll);
+        MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, this::attachPatternStorageCapability);
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> FullEngClient::new);
+    }
+
+    private void registerAll(RegisterEvent event) {
+        if (event.getRegistryKey().equals(Registry.BLOCK_REGISTRY)) {
+            FullblockEnergistics.getBlocks().forEach(b -> {
+                ForgeRegistries.BLOCKS.register(b.id(), b.block());
+                ForgeRegistries.ITEMS.register(b.id(), b.asItem());
+            });
+        }
+
+        if (event.getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
+            FullblockEnergistics.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
+        }
+
+        if (event.getRegistryKey().equals(Registry.MENU_REGISTRY)) {
+            ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
+                    PatternAccessTerminalMenu.TYPE_FULLBLOCK);
+
+            if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
+                ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
+                        RequesterTerminalMenu.TYPE_FULLBLOCK);
+            }
+        }
+    }
+
+    private void attachPatternStorageCapability(AttachCapabilitiesEvent<BlockEntity> event) {
+        if (event.getObject() instanceof PatternEncodingTerminalBlockEntity patternTerm) {
+            // https://www.youtube.com/watch?v=GQPM4_fMIEg&t=44s
+            var capabilityProvider = new ICapabilityProvider() {
+                private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional
+                        .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
+
+                @NotNull
+                @Override
+                public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction dir) {
+                    return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, patternSlotHandler);
+                }
+
+                private void invalidate() {
+                    patternSlotHandler.invalidate();
+                }
+            };
+
+            event.addCapability(FullblockEnergistics.makeId("pattern_encoding_terminal"), capabilityProvider);
+            event.addListener(capabilityProvider::invalidate);
+        }
     }
 
     public static class Platform implements gripe._90.fulleng.platform.Platform {

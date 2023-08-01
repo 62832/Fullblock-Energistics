@@ -38,54 +38,75 @@ public class FullEngClient {
     public FullEngClient() {
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        bus.addListener((RegisterColorHandlersEvent.Block event) -> FullblockEnergistics.getBlocks()
-                .forEach(b -> event.register(new ColorableBlockEntityBlockColor(), b.block())));
-        bus.addListener((RegisterColorHandlersEvent.Item event) -> FullblockEnergistics.getBlocks()
-                .forEach(b -> event.register(new StaticItemColor(AEColor.TRANSPARENT), b.block())));
+        bus.addListener(this::initScreens);
+        bus.addListener(this::initBlockEntityRenders);
 
-        bus.addListener((FMLClientSetupEvent event) -> {
-            FullblockEnergistics.getBlocks()
-                    .forEach(b -> ItemBlockRenderTypes.setRenderLayer(b.block(), RenderType.cutout()));
-            InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
-                    PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
-                    "/screens/pattern_access_terminal.json");
+        bus.addListener(this::registerColourProviders);
+        bus.addListener(this::setRenderLayers);
+        bus.addListener(this::addAutoRotatingModels);
 
-            if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-                RequesterIntegration.initScreen();
+        MinecraftForge.EVENT_BUS.addListener(this::addConversionMonitorHook);
+    }
+
+    private void initScreens(FMLClientSetupEvent event) {
+        InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
+                PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
+                "/screens/pattern_access_terminal.json");
+
+        if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
+            RequesterIntegration.initScreen();
+        }
+    }
+
+    private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders event) {
+        BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
+        BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
+    }
+
+    private void registerColourProviders(RegisterColorHandlersEvent event) {
+        for (var block : FullblockEnergistics.getBlocks()) {
+            if (event instanceof RegisterColorHandlersEvent.Block blockEvent) {
+                blockEvent.register(new ColorableBlockEntityBlockColor(), block.block());
             }
-        });
 
-        bus.addListener((ModelEvent.RegisterGeometryLoaders event) -> {
-            BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
-            BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
-        });
-
-        bus.addListener((ModelEvent.BakingCompleted event) -> {
-            var modelRegistry = event.getModels();
-            for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
-                if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
-                    continue;
-                }
-
-                modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
+            if (event instanceof RegisterColorHandlersEvent.Item itemEvent) {
+                itemEvent.register(new StaticItemColor(AEColor.TRANSPARENT), block.block());
             }
-        });
+        }
+    }
 
-        MinecraftForge.EVENT_BUS.addListener((PlayerInteractEvent.LeftClickBlock event) -> {
-            var level = event.getLevel();
+    private void setRenderLayers(FMLClientSetupEvent event) {
+        for (var block : FullblockEnergistics.getBlocks()) {
+            ItemBlockRenderTypes.setRenderLayer(block.block(), RenderType.cutout());
+        }
+    }
 
-            if (level.isClientSide()) {
-                if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
-                    return;
-                }
+    private void addAutoRotatingModels(ModelEvent.BakingCompleted event) {
+        var modelRegistry = event.getModels();
 
-                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                    NetworkHandler.instance().sendToServer(new PartLeftClickPacket(hitResult,
-                            InteractionUtil.isInAlternateUseMode(event.getEntity())));
-                    Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
-                    event.setCanceled(true);
-                }
+        for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
+            if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
+                continue;
             }
-        });
+
+            modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
+        }
+    }
+
+    private void addConversionMonitorHook(PlayerInteractEvent.LeftClickBlock event) {
+        var level = event.getLevel();
+
+        if (level.isClientSide()) {
+            if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
+                return;
+            }
+
+            if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
+                NetworkHandler.instance().sendToServer(new PartLeftClickPacket(hitResult,
+                        InteractionUtil.isInAlternateUseMode(event.getEntity())));
+                Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
+                event.setCanceled(true);
+            }
+        }
     }
 }

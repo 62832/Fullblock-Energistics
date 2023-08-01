@@ -1,5 +1,6 @@
 package gripe._90.fulleng;
 
+import java.util.Map;
 import java.util.Objects;
 
 import com.google.common.collect.Sets;
@@ -12,8 +13,14 @@ import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.IAEAddonEntrypoint;
@@ -22,6 +29,7 @@ import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.client.render.model.AutoRotatingBakedModel;
+import appeng.core.definitions.BlockDefinition;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PartLeftClickPacket;
 import appeng.hooks.ModelsReloadCallback;
@@ -38,25 +46,17 @@ import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 public class FullEngClient implements IAEAddonEntrypoint {
     @Override
     public void onAe2Initialized() {
-        FullblockEnergistics.getBlocks().forEach(b -> {
-            ColorProviderRegistry.BLOCK.register(new ColorableBlockEntityBlockColor(), b.block());
-            ColorProviderRegistry.ITEM.register(new StaticItemColor(AEColor.TRANSPARENT), b.block());
-            BlockRenderLayerMap.INSTANCE.putBlock(b.block(), RenderType.cutout());
-        });
+        initScreens();
+        initBlockEntityRenderers();
 
-        ModelsReloadCallback.EVENT.register(modelRegistry -> {
-            for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
-                if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
-                    continue;
-                }
+        FullblockEnergistics.getBlocks().forEach(this::setRenderLayer);
+        FullblockEnergistics.getBlocks().forEach(this::addColourProviders);
 
-                modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
-            }
-        });
+        ModelsReloadCallback.EVENT.register(this::addAutoRotatingModels);
+        AttackBlockCallback.EVENT.register(this::registerConversionMonitorHook);
+    }
 
-        BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
-        BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
-
+    private void initScreens() {
         InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
                 PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
                 "/screens/pattern_access_terminal.json");
@@ -64,22 +64,47 @@ public class FullEngClient implements IAEAddonEntrypoint {
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
             RequesterIntegration.initScreen();
         }
+    }
 
-        AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
-            if (level.isClientSide()) {
-                if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
-                    return InteractionResult.PASS;
-                }
+    private void initBlockEntityRenderers() {
+        BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
+        BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
+    }
 
-                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                    NetworkHandler.instance().sendToServer(
-                            new PartLeftClickPacket(hitResult, InteractionUtil.isInAlternateUseMode(player)));
-                    Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
-                    return InteractionResult.FAIL;
-                }
+    private void setRenderLayer(BlockDefinition<?> block) {
+        BlockRenderLayerMap.INSTANCE.putBlock(block.block(), RenderType.cutout());
+    }
+
+    private void addColourProviders(BlockDefinition<?> block) {
+        ColorProviderRegistry.BLOCK.register(new ColorableBlockEntityBlockColor(), block.block());
+        ColorProviderRegistry.ITEM.register(new StaticItemColor(AEColor.TRANSPARENT), block.block());
+    }
+
+    private void addAutoRotatingModels(Map<ResourceLocation, BakedModel> modelRegistry) {
+        for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
+            if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
+                continue;
             }
 
-            return InteractionResult.PASS;
-        });
+            modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
+        }
+    }
+
+    private InteractionResult registerConversionMonitorHook(Player player, Level level, InteractionHand hand,
+            BlockPos pos, Direction direction) {
+        if (level.isClientSide()) {
+            if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
+                return InteractionResult.PASS;
+            }
+
+            if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
+                NetworkHandler.instance().sendToServer(
+                        new PartLeftClickPacket(hitResult, InteractionUtil.isInAlternateUseMode(player)));
+                Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
+                return InteractionResult.FAIL;
+            }
+        }
+
+        return InteractionResult.PASS;
     }
 }
