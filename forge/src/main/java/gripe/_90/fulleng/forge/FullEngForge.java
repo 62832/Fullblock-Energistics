@@ -25,6 +25,7 @@ import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.platform.Loader;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullEngForge {
@@ -80,7 +81,12 @@ public class FullEngForge {
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> FullEngClient::new);
     }
 
-    public static class Platform implements FullblockEnergistics.Platform {
+    public static class Platform implements gripe._90.fulleng.platform.Platform {
+        @Override
+        public Loader getLoader() {
+            return Loader.FORGE;
+        }
+
         @Override
         public boolean isRequesterLoaded() {
             return ModList.get().isLoaded("merequester");

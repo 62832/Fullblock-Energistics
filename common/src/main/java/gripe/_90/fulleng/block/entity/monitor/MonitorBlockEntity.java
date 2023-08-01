@@ -122,12 +122,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
         }
     }
 
-    public void onClicked(Player player) {
-    }
-
-    public void onShiftClicked(Player player) {
-    }
-
     private void configureWatchers() {
         if (stackWatcher != null) {
             stackWatcher.reset();

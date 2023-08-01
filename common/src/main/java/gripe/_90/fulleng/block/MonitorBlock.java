@@ -37,22 +37,6 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
         return super.updateBlockStateFromBlockEntity(currentState, be).setValue(LOCKED, be.isLocked());
     }
 
-    public void onClicked(Level level, BlockPos pos, Player player) {
-        var be = getBlockEntity(level, pos);
-
-        if (be != null) {
-            if (!level.isClientSide()) {
-                if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
-                    if (InteractionUtil.isInAlternateUseMode(player)) {
-                        be.onShiftClicked(player);
-                    } else {
-                        be.onClicked(player);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public InteractionResult onActivated(Level level, BlockPos pos, Player player, InteractionHand hand,
             ItemStack heldItem, BlockHitResult hit) {

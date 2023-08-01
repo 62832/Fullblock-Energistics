@@ -9,6 +9,7 @@ import appeng.core.AppEng;
 
 import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.platform.Loader;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FullEngFabric implements IAEAddonEntrypoint {
@@ -32,7 +33,12 @@ public class FullEngFabric implements IAEAddonEntrypoint {
                 FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
     }
 
-    public static class Platform implements FullblockEnergistics.Platform {
+    public static class Platform implements gripe._90.fulleng.platform.Platform {
+        @Override
+        public Loader getLoader() {
+            return Loader.FABRIC;
+        }
+
         @Override
         public boolean isRequesterLoaded() {
             return FabricLoader.getInstance().isModLoaded("merequester");

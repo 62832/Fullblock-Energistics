@@ -38,6 +38,7 @@ import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntit
 import gripe._90.fulleng.block.entity.terminal.RequesterTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.integration.RequesterTerminalBlock;
+import gripe._90.fulleng.platform.Platform;
 
 public final class FullblockEnergistics {
     public static final String MODID = "fulleng";
@@ -113,9 +114,5 @@ public final class FullblockEnergistics {
         AEBaseBlockEntity.registerBlockEntityItem(type, block.asItem());
         block.block().setBlockEntity(entityClass, type, null, null);
         return type;
-    }
-
-    public interface Platform {
-        boolean isRequesterLoaded();
     }
 }

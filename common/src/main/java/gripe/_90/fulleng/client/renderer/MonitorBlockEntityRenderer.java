@@ -2,14 +2,19 @@ package gripe._90.fulleng.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 import appeng.client.render.BlockEntityRenderHelper;
 
+import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.monitor.MonitorBlockEntity;
+import gripe._90.fulleng.platform.Loader;
 
+@Environment(EnvType.CLIENT)
 public class MonitorBlockEntityRenderer<E extends MonitorBlockEntity> implements BlockEntityRenderer<E> {
     public MonitorBlockEntityRenderer(BlockEntityRendererProvider.Context ignoredContext) {
     }
@@ -36,9 +41,9 @@ public class MonitorBlockEntityRenderer<E extends MonitorBlockEntity> implements
     private byte getSpin(MonitorBlockEntity be) {
         return (byte) switch (be.getUp()) {
             case UP -> 0;
-            case WEST -> 1;
+            case WEST -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 3 : 1;
             case DOWN, NORTH, SOUTH -> 2;
-            case EAST -> 3;
+            case EAST -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 1 : 3;
         };
     }
 

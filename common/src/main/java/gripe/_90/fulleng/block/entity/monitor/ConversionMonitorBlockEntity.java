@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.storage.StorageHelper;
 import appeng.me.helpers.PlayerSource;
-import appeng.util.InteractionUtil;
 import appeng.util.inv.PlayerInternalInventory;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -25,15 +24,7 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
         var eq = player.getItemInHand(hand);
 
         if (isLocked()) {
-            if (eq.isEmpty()) {
-                insertItem(player, hand, true);
-            } else if (InteractionUtil.canWrenchRotate(eq)
-                    && (this.getDisplayed() == null || !AEItemKey.matches(getDisplayed(), eq))) {
-                // wrench it
-                super.onActivated(player, hand);
-            } else {
-                insertItem(player, hand, false);
-            }
+            insertItem(player, hand, eq.isEmpty());
         } else if (getDisplayed() != null && AEItemKey.matches(getDisplayed(), eq)) {
             insertItem(player, hand, false);
         } else {
@@ -41,14 +32,12 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
         }
     }
 
-    @Override
     public void onClicked(Player player) {
         if (getDisplayed() instanceof AEItemKey item) {
             extractItem(player, item.getItem().getMaxStackSize());
         }
     }
 
-    @Override
     public void onShiftClicked(Player player) {
         if (getDisplayed() instanceof AEItemKey) {
             extractItem(player, 1);
