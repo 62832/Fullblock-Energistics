@@ -18,7 +18,7 @@ val platforms by extra {
 }
 
 tasks {
-    val releaseInfo by registering {
+    register("releaseInfo") {
         doLast {
             val outputFile = File(System.getenv("GITHUB_OUTPUT"))
             outputFile.appendText("MOD_VERSION=$modVersion\n")
