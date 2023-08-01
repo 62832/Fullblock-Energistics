@@ -10,13 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import appeng.block.AEBaseBlockItem;
-import appeng.core.CreativeTab;
 
 import gripe._90.fulleng.FullblockEnergistics;
 
 public class RequesterTerminalBlockItem extends AEBaseBlockItem {
     public RequesterTerminalBlockItem(Block id) {
-        super(id, new Item.Properties().tab(CreativeTab.INSTANCE));
+        super(id, new Item.Properties());
     }
 
     @Override

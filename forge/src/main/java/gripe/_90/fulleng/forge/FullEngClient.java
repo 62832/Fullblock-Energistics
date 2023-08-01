@@ -2,13 +2,10 @@ package gripe._90.fulleng.forge;
 
 import java.util.Objects;
 
-import com.google.common.collect.Sets;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -21,7 +18,6 @@ import appeng.api.util.AEColor;
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
-import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PartLeftClickPacket;
 import appeng.init.client.InitScreens;
@@ -33,7 +29,7 @@ import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
-@SuppressWarnings({ "RedundantTypeArguments", "removal" })
+@SuppressWarnings({ "RedundantTypeArguments", "deprecation" })
 public class FullEngClient {
     public FullEngClient() {
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -43,7 +39,6 @@ public class FullEngClient {
 
         bus.addListener(this::registerColourProviders);
         bus.addListener(this::setRenderLayers);
-        bus.addListener(this::addAutoRotatingModels);
 
         MinecraftForge.EVENT_BUS.addListener(this::addConversionMonitorHook);
     }
@@ -78,18 +73,6 @@ public class FullEngClient {
     private void setRenderLayers(FMLClientSetupEvent event) {
         for (var block : FullblockEnergistics.getBlocks()) {
             ItemBlockRenderTypes.setRenderLayer(block.block(), RenderType.cutout());
-        }
-    }
-
-    private void addAutoRotatingModels(ModelEvent.BakingCompleted event) {
-        var modelRegistry = event.getModels();
-
-        for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
-            if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
-                continue;
-            }
-
-            modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
         }
     }
 

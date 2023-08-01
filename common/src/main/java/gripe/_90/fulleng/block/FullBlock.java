@@ -8,8 +8,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
+import appeng.api.orientation.IOrientationStrategy;
+import appeng.api.orientation.OrientationStrategies;
 import appeng.block.AEBaseEntityBlock;
 import appeng.core.definitions.ItemDefinition;
 
@@ -21,7 +23,7 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
     private final ItemDefinition<?> equivalentPart;
 
     public FullBlock(ItemDefinition<?> equivalentPart) {
-        super(BlockBehaviour.Properties.of(Material.METAL).strength(2.2f, 11.0f).sound(SoundType.METAL)
+        super(BlockBehaviour.Properties.of().strength(2.2f, 11.0f).mapColor(MapColor.METAL).sound(SoundType.METAL)
                 .lightLevel(state -> state.getValue(POWERED) ? 9 : 0));
         this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
         this.equivalentPart = equivalentPart;
@@ -36,6 +38,11 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
     @Override
     protected BlockState updateBlockStateFromBlockEntity(BlockState currentState, F be) {
         return super.updateBlockStateFromBlockEntity(currentState, be).setValue(POWERED, be.isActive());
+    }
+
+    @Override
+    public IOrientationStrategy getOrientationStrategy() {
+        return OrientationStrategies.full();
     }
 
     public ItemDefinition<?> getEquivalentPart() {

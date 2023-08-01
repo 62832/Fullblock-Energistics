@@ -11,29 +11,71 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import appeng.api.behaviors.ContainerItemStrategies;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IStackWatcher;
+import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.storage.IStorageWatcherNode;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.AmountFormat;
 import appeng.api.util.INetworkToolAware;
 import appeng.core.localization.PlayerMessages;
-import appeng.menu.me.interaction.StackInteractions;
 
 import gripe._90.fulleng.block.entity.FullBlockEntity;
 
-public abstract class MonitorBlockEntity extends FullBlockEntity
-        implements IStorageWatcherNode, INetworkToolAware {
+@SuppressWarnings("UnstableApiUsage")
+public abstract class MonitorBlockEntity extends FullBlockEntity implements INetworkToolAware {
     @Nullable
     private AEKey configuredItem;
     private long amount;
+    private boolean canCraft;
     private String lastHumanReadableText;
     private boolean isLocked;
-    private IStackWatcher stackWatcher;
+    private IStackWatcher storageWatcher;
+    private IStackWatcher craftingWatcher;
 
     public MonitorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.getMainNode().addService(IStorageWatcherNode.class, this);
+        getMainNode().addService(IStorageWatcherNode.class, new IStorageWatcherNode() {
+            @Override
+            public void updateWatcher(IStackWatcher newWatcher) {
+                storageWatcher = newWatcher;
+                configureWatchers();
+            }
+
+            @Override
+            public void onStackChange(AEKey what, long amount) {
+                if (what.equals(configuredItem)) {
+                    MonitorBlockEntity.this.amount = amount;
+
+                    var humanReadableText = amount == 0 && canCraft ? "Craft"
+                            : what.formatAmount(amount, AmountFormat.SLOT);
+
+                    if (!humanReadableText.equals(lastHumanReadableText)) {
+                        lastHumanReadableText = humanReadableText;
+                        saveChanges();
+                        markForUpdate();
+                    }
+                }
+            }
+        });
+
+        getMainNode().addService(ICraftingWatcherNode.class, new ICraftingWatcherNode() {
+            @Override
+            public void updateWatcher(IStackWatcher newWatcher) {
+                craftingWatcher = newWatcher;
+            }
+
+            @Override
+            public void onRequestChange(AEKey what) {
+            }
+
+            @Override
+            public void onCraftableChange(AEKey what) {
+                getMainNode().ifPresent(MonitorBlockEntity.this::updateReportingValue);
+            }
+        });
     }
 
     @Override
@@ -45,9 +87,11 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
         if (data.readBoolean()) {
             configuredItem = AEKey.readKey(data);
             amount = data.readVarLong();
+            canCraft = data.readBoolean();
         } else {
             configuredItem = null;
             amount = 0;
+            canCraft = false;
         }
 
         return wasLocked != isLocked || needRedraw;
@@ -62,6 +106,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
         if (configuredItem != null) {
             AEKey.writeKey(data, configuredItem);
             data.writeVarLong(amount);
+            data.writeBoolean(canCraft);
         }
     }
 
@@ -69,12 +114,14 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     protected void saveVisualState(CompoundTag data) {
         super.saveVisualState(data);
         data.putLong("amount", amount);
+        data.putBoolean("canCraft", canCraft);
     }
 
     @Override
     protected void loadVisualState(CompoundTag data) {
         super.loadVisualState(data);
         amount = data.getLong("amount");
+        canCraft = data.getBoolean("canCraft");
     }
 
     @Override
@@ -99,7 +146,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
             var eq = player.getItemInHand(hand);
 
             if (AEItemKey.matches(configuredItem, eq)) {
-                var containedStack = StackInteractions.getContainedStack(eq);
+                var containedStack = ContainerItemStrategies.getContainedStack(eq);
 
                 if (containedStack != null) {
                     configuredItem = containedStack.what();
@@ -125,46 +172,39 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     }
 
     private void configureWatchers() {
-        if (stackWatcher != null) {
-            stackWatcher.reset();
+        if (storageWatcher != null) {
+            storageWatcher.reset();
+        }
+
+        if (craftingWatcher != null) {
+            craftingWatcher.reset();
         }
 
         if (configuredItem != null) {
-            if (stackWatcher != null) {
-                stackWatcher.add(configuredItem);
+            if (storageWatcher != null) {
+                storageWatcher.add(configuredItem);
             }
 
-            getMainNode().ifPresent(grid -> {
-                lastHumanReadableText = null;
+            if (craftingWatcher != null) {
+                craftingWatcher.add(configuredItem);
+            }
 
-                if (configuredItem != null) {
-                    amount = grid.getStorageService().getCachedInventory().get(configuredItem);
-                } else {
-                    amount = 0;
-                }
-            });
+            getMainNode().ifPresent(this::updateReportingValue);
         }
     }
 
-    @Override
-    public void updateWatcher(IStackWatcher newWatcher) {
-        stackWatcher = newWatcher;
-        configureWatchers();
-    }
+    private void updateReportingValue(IGrid grid) {
+        lastHumanReadableText = null;
 
-    @Override
-    public void onStackChange(AEKey what, long amount) {
-        if (what.equals(configuredItem)) {
-            this.amount = amount;
-
-            var humanReadableText = what.formatAmount(amount, AmountFormat.SLOT);
-
-            if (!humanReadableText.equals(lastHumanReadableText)) {
-                lastHumanReadableText = humanReadableText;
-                saveChanges();
-                markForUpdate();
-            }
+        if (configuredItem != null) {
+            amount = grid.getStorageService().getCachedInventory().get(configuredItem);
+            canCraft = grid.getCraftingService().isCraftable(configuredItem);
+        } else {
+            amount = 0;
+            canCraft = false;
         }
+
+        markForUpdate();
     }
 
     public AEKey getDisplayed() {
@@ -173,6 +213,10 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
 
     public long getAmount() {
         return amount;
+    }
+
+    public boolean canCraft() {
+        return canCraft;
     }
 
     public boolean isLocked() {

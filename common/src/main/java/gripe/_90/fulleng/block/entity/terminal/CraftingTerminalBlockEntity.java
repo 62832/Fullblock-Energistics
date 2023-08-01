@@ -11,12 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import appeng.api.config.SecurityPermissions;
 import appeng.api.inventories.InternalInventory;
-import appeng.menu.me.common.MEStorageMenu;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.parts.reporting.CraftingTerminalPart;
-import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -51,9 +48,7 @@ public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType(Player player) {
-        return Platform.checkPermissions(player, this, SecurityPermissions.CRAFT, false, false)
-                ? CraftingTermMenu.TYPE
-                : MEStorageMenu.TYPE;
+        return CraftingTermMenu.TYPE;
     }
 
     @Override

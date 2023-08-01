@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import appeng.block.AEBaseBlockItem;
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
-import appeng.core.CreativeTab;
 import appeng.core.definitions.AEParts;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
@@ -39,7 +38,6 @@ import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlock;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockItem;
-import gripe._90.fulleng.platform.Platform;
 
 public final class FullblockEnergistics {
     public static final String MODID = "fulleng";
@@ -94,7 +92,7 @@ public final class FullblockEnergistics {
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> supplier) {
         return block(englishName, id, supplier,
-                block -> new AEBaseBlockItem(block, new Item.Properties().tab(CreativeTab.INSTANCE)));
+                block -> new AEBaseBlockItem(block, new Item.Properties()));
     }
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> blockSupplier,
@@ -103,7 +101,6 @@ public final class FullblockEnergistics {
         var item = itemFunction.apply(block);
         var definition = new BlockDefinition<>(englishName, makeId(id), block, item);
         BLOCKS.add(definition);
-        CreativeTab.add(definition);
         return definition;
     }
 
@@ -115,5 +112,9 @@ public final class FullblockEnergistics {
         AEBaseBlockEntity.registerBlockEntityItem(type, block.asItem());
         block.block().setBlockEntity(entityClass, type, null, null);
         return type;
+    }
+
+    public interface Platform {
+        boolean isRequesterLoaded();
     }
 }

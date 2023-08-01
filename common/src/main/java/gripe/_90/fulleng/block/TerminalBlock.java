@@ -32,7 +32,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
         if (be != null) {
             if (!level.isClientSide()) {
-                if (hit.getDirection().equals(be.getForward())) {
+                if (hit.getDirection().equals(be.getFront())) {
                     be.openMenu(p);
                 }
             }
@@ -44,7 +44,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
     }
 
     @Override
-    protected boolean isInventory() {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return this == FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK.block();
     }
 

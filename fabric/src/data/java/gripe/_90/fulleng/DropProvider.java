@@ -2,7 +2,7 @@ package gripe._90.fulleng;
 
 import java.util.function.BiConsumer;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -13,12 +13,12 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 class DropProvider extends SimpleFabricLootTableProvider {
-    public DropProvider(FabricDataGenerator gen) {
-        super(gen, LootContextParamSets.BLOCK);
+    public DropProvider(FabricDataOutput output) {
+        super(output, LootContextParamSets.BLOCK);
     }
 
     @Override
-    public void accept(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
         FullblockEnergistics.getBlocks()
                 .forEach(b -> consumer.accept(FullblockEnergistics.makeId("blocks/" + b.id().getPath()),
                         LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))

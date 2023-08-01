@@ -44,7 +44,7 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
 
         if (be != null) {
             if (!level.isClientSide()) {
-                if (hit.getDirection().equals(be.getForward())) {
+                if (hit.getDirection().equals(be.getFront())) {
                     if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
                         if (InteractionUtil.isInAlternateUseMode(player)) {
                             be.onShiftActivated(player, hand);

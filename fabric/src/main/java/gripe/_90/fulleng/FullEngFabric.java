@@ -1,18 +1,20 @@
 package gripe._90.fulleng;
 
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import appeng.api.IAEAddonEntrypoint;
+import appeng.api.ids.AECreativeTabIds;
 import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
 
 import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
-import gripe._90.fulleng.platform.Loader;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FullEngFabric implements IAEAddonEntrypoint {
@@ -26,20 +28,22 @@ public class FullEngFabric implements IAEAddonEntrypoint {
     }
 
     private void registerBlock(BlockDefinition<?> block) {
-        Registry.register(Registry.BLOCK, block.id(), block.block());
-        Registry.register(Registry.ITEM, block.id(), block.asItem());
+        Registry.register(BuiltInRegistries.BLOCK, block.id(), block.block());
+        Registry.register(BuiltInRegistries.ITEM, block.id(), block.asItem());
+
+        ItemGroupEvents.modifyEntriesEvent(AECreativeTabIds.MAIN).register(content -> content.accept(block));
     }
 
     private void registerBlockEntity(ResourceLocation id, BlockEntityType<?> blockEntityType) {
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, id, blockEntityType);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, blockEntityType);
     }
 
     private void registerMenus() {
-        Registry.register(Registry.MENU, AppEng.makeId("patternaccessterminal_f"),
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId("patternaccessterminal_f"),
                 PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-            Registry.register(Registry.MENU, AppEng.makeId("requester_terminal_f"),
+            Registry.register(BuiltInRegistries.MENU, AppEng.makeId("requester_terminal_f"),
                     RequesterTerminalMenu.TYPE_FULLBLOCK);
         }
     }
@@ -49,12 +53,7 @@ public class FullEngFabric implements IAEAddonEntrypoint {
                 FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
     }
 
-    public static class Platform implements gripe._90.fulleng.platform.Platform {
-        @Override
-        public Loader getLoader() {
-            return Loader.FABRIC;
-        }
-
+    public static class Platform implements FullblockEnergistics.Platform {
         @Override
         public boolean isRequesterLoaded() {
             return FabricLoader.getInstance().isModLoaded("merequester");

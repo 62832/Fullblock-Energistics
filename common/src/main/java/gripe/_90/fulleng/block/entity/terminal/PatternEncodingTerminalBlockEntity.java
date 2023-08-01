@@ -10,13 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import appeng.api.config.SecurityPermissions;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
-import appeng.menu.me.common.MEStorageMenu;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.parts.encoding.PatternEncodingLogic;
-import appeng.util.Platform;
 
 import gripe._90.fulleng.FullblockEnergistics;
 
@@ -48,9 +45,7 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
 
     @Override
     public MenuType<?> getMenuType(Player p) {
-        return Platform.checkPermissions(p, this, SecurityPermissions.CRAFT, false, false)
-                ? PatternEncodingTermMenu.TYPE
-                : MEStorageMenu.TYPE;
+        return PatternEncodingTermMenu.TYPE;
     }
 
     @Override

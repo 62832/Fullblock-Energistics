@@ -15,16 +15,16 @@ dependencyResolutionManagement {
             plugin("shadow", "com.github.johnrengelman.shadow").version("8.1.1")
             plugin("spotless", "com.diffplug.spotless").version("6.20.0")
 
-            val minecraftVersion = "1.19.2"
+            val minecraftVersion = "1.20.1"
             version("minecraft", minecraftVersion)
             library("minecraft", "com.mojang", "minecraft").versionRef("minecraft")
 
-            library("fabric-loader", "net.fabricmc", "fabric-loader").version("0.14.16")
-            library("fabric-api", "net.fabricmc.fabric-api", "fabric-api").version("0.76.0+$minecraftVersion")
+            library("fabric-loader", "net.fabricmc", "fabric-loader").version("0.14.21")
+            library("fabric-api", "net.fabricmc.fabric-api", "fabric-api").version("0.84.0+$minecraftVersion")
 
-            library("forge", "net.minecraftforge", "forge").version("$minecraftVersion-43.2.0")
+            library("forge", "net.minecraftforge", "forge").version("$minecraftVersion-47.1.3")
 
-            version("ae2", "12.9.5")
+            version("ae2", "15.0.5-beta")
             library("ae2-fabric", "appeng", "appliedenergistics2-fabric").versionRef("ae2")
             library("ae2-forge", "appeng", "appliedenergistics2-forge").versionRef("ae2")
 
@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             library("requester-fabric", "maven.modrinth", "merequester").version("$minecraftVersion-$requesterVersion+fabric")
             library("requester-forge", "maven.modrinth", "merequester").version("$minecraftVersion-$requesterVersion+forge")
 
-            library("midnightLib", "maven.modrinth", "midnightlib").version("1.0.0-fabric")
+            library("midnightLib", "maven.modrinth", "midnightlib").version("1.4.1-fabric")
         }
     }
 }

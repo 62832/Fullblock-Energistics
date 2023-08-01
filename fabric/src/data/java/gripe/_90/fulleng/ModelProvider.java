@@ -2,7 +2,9 @@ package gripe._90.fulleng;
 
 import java.util.Optional;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import com.google.gson.JsonPrimitive;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
@@ -10,11 +12,15 @@ import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.blockstates.VariantProperty;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import appeng.api.orientation.BlockOrientation;
+import appeng.api.orientation.IOrientationStrategy;
 import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
 
@@ -22,6 +28,9 @@ import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
 
 class ModelProvider extends FabricModelProvider {
+    private static final VariantProperty<VariantProperties.Rotation> Z_ROT = new VariantProperty<>("ae2:z",
+            r -> new JsonPrimitive(r.ordinal() * 90));
+
     private static final TextureSlot LIGHTS_BRIGHT = TextureSlot.create("lightsBright");
     private static final TextureSlot LIGHTS_MEDIUM = TextureSlot.create("lightsMedium");
     private static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
@@ -31,8 +40,8 @@ class ModelProvider extends FabricModelProvider {
             LIGHTS_MEDIUM, LIGHTS_DARK);
     private static final ResourceLocation TERMINAL_OFF = AppEng.makeId("block/terminal_off");
 
-    public ModelProvider(FabricDataGenerator gen) {
-        super(gen);
+    public ModelProvider(FabricDataOutput output) {
+        super(output);
     }
 
     @Override
@@ -59,10 +68,21 @@ class ModelProvider extends FabricModelProvider {
                         .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
                         .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                         gen.modelOutput);
+
         gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(terminal.block())
-                .with(PropertyDispatch.property(FullBlock.POWERED)
-                        .select(false, Variant.variant().with(VariantProperties.MODEL, TERMINAL_OFF))
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, onModel))));
+                .with(PropertyDispatch
+                        .properties(BlockStateProperties.FACING, IOrientationStrategy.SPIN, FullBlock.POWERED)
+                        .generate((facing, spin, powered) -> {
+                            var orientation = BlockOrientation.get(facing, spin);
+                            var variant = Variant.variant().with(VariantProperties.MODEL,
+                                    powered ? onModel : TERMINAL_OFF);
+
+                            return applyRotation(variant,
+                                    orientation.getAngleX(),
+                                    orientation.getAngleY(),
+                                    orientation.getAngleZ());
+                        })));
+
         gen.delegateItemModel(terminal.block(), onModel);
     }
 
@@ -81,10 +101,51 @@ class ModelProvider extends FabricModelProvider {
                         .put(LIGHTS_DARK,
                                 new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
                 gen.modelOutput);
+
         gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(monitor.block())
-                .with(PropertyDispatch.properties(FullBlock.POWERED, MonitorBlock.LOCKED)
-                        .generate((powered, locked) -> Variant.variant().with(VariantProperties.MODEL,
-                                !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel))));
+                .with(PropertyDispatch.properties(BlockStateProperties.FACING, IOrientationStrategy.SPIN,
+                        FullBlock.POWERED, MonitorBlock.LOCKED).generate((facing, spin, powered, locked) -> {
+                            var orientation = BlockOrientation.get(facing, spin);
+                            var variant = Variant.variant().with(VariantProperties.MODEL,
+                                    !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel);
+
+                            return applyRotation(variant,
+                                    orientation.getAngleX(),
+                                    orientation.getAngleY(),
+                                    orientation.getAngleZ());
+                        })));
+
         gen.delegateItemModel(monitor.block(), unlockedModel);
+    }
+
+    private Variant applyRotation(Variant variant, int angleX, int angleY, int angleZ) {
+        angleX = normalizeAngle(angleX);
+        angleY = normalizeAngle(angleY);
+        angleZ = normalizeAngle(angleZ);
+
+        if (angleX != 0) {
+            variant = variant.with(VariantProperties.X_ROT, rotationByAngle(angleX));
+        }
+        if (angleY != 0) {
+            variant = variant.with(VariantProperties.Y_ROT, rotationByAngle(angleY));
+        }
+        if (angleZ != 0) {
+            variant = variant.with(Z_ROT, rotationByAngle(angleZ));
+        }
+        return variant;
+    }
+
+    private int normalizeAngle(int angle) {
+        return angle - (angle / 360) * 360;
+    }
+
+    private VariantProperties.Rotation rotationByAngle(int angle) {
+        return switch (angle) {
+            case 0 -> VariantProperties.Rotation.R0;
+            case 90 -> VariantProperties.Rotation.R90;
+            case 180 -> VariantProperties.Rotation.R180;
+            case 270 -> VariantProperties.Rotation.R270;
+            default -> throw new IllegalArgumentException("Invalid angle: " + angle);
+        };
     }
 }

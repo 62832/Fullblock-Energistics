@@ -1,9 +1,6 @@
 package gripe._90.fulleng;
 
-import java.util.Map;
 import java.util.Objects;
-
-import com.google.common.collect.Sets;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,10 +10,8 @@ import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,11 +23,9 @@ import appeng.api.util.AEColor;
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
-import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PartLeftClickPacket;
-import appeng.hooks.ModelsReloadCallback;
 import appeng.init.client.InitScreens;
 import appeng.util.InteractionUtil;
 
@@ -52,7 +45,6 @@ public class FullEngClient implements IAEAddonEntrypoint {
         FullblockEnergistics.getBlocks().forEach(this::setRenderLayer);
         FullblockEnergistics.getBlocks().forEach(this::addColourProviders);
 
-        ModelsReloadCallback.EVENT.register(this::addAutoRotatingModels);
         AttackBlockCallback.EVENT.register(this::registerConversionMonitorHook);
     }
 
@@ -78,16 +70,6 @@ public class FullEngClient implements IAEAddonEntrypoint {
     private void addColourProviders(BlockDefinition<?> block) {
         ColorProviderRegistry.BLOCK.register(new ColorableBlockEntityBlockColor(), block.block());
         ColorProviderRegistry.ITEM.register(new StaticItemColor(AEColor.TRANSPARENT), block.block());
-    }
-
-    private void addAutoRotatingModels(Map<ResourceLocation, BakedModel> modelRegistry) {
-        for (ResourceLocation location : Sets.newHashSet(modelRegistry.keySet())) {
-            if (!location.getNamespace().equals(FullblockEnergistics.MODID)) {
-                continue;
-            }
-
-            modelRegistry.put(location, new AutoRotatingBakedModel(modelRegistry.get(location)));
-        }
     }
 
     private InteractionResult registerConversionMonitorHook(Player player, Level level, InteractionHand hand,
