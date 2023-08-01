@@ -32,18 +32,6 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
         }
     }
 
-    public void onClicked(Player player) {
-        if (getDisplayed() instanceof AEItemKey item) {
-            extractItem(player, item.getItem().getMaxStackSize());
-        }
-    }
-
-    public void onShiftClicked(Player player) {
-        if (getDisplayed() instanceof AEItemKey) {
-            extractItem(player, 1);
-        }
-    }
-
     private void insertItem(Player player, InteractionHand hand, boolean allItems) {
         getMainNode().ifPresent(grid -> {
             var energy = grid.getEnergyService();
@@ -80,17 +68,18 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
         });
     }
 
-    private void extractItem(Player player, int count) {
-        if (!(this.getDisplayed() instanceof AEItemKey itemKey)) {
+    public void extractItem(Player player, boolean shift) {
+        if (!(this.getDisplayed() instanceof AEItemKey item)) {
             return;
         }
 
         getMainNode().ifPresent(grid -> {
+            var count = shift ? 1 : item.getItem().getMaxStackSize();
             var retrieved = StorageHelper.poweredExtraction(grid.getEnergyService(),
-                    grid.getStorageService().getInventory(), itemKey, count, new PlayerSource(player, this));
+                    grid.getStorageService().getInventory(), item, count, new PlayerSource(player, this));
 
             if (retrieved != 0) {
-                var newItems = itemKey.toStack((int) retrieved);
+                var newItems = item.toStack((int) retrieved);
 
                 if (!player.getInventory().add(newItems)) {
                     player.drop(newItems, false);

@@ -1,14 +1,20 @@
 package gripe._90.fulleng;
 
+import java.util.Objects;
+
 import com.google.common.collect.Sets;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.IAEAddonEntrypoint;
 import appeng.api.util.AEColor;
@@ -16,9 +22,13 @@ import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.client.render.model.AutoRotatingBakedModel;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PartLeftClickPacket;
 import appeng.hooks.ModelsReloadCallback;
 import appeng.init.client.InitScreens;
+import appeng.util.InteractionUtil;
 
+import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
@@ -54,5 +64,22 @@ public class FullEngClient implements IAEAddonEntrypoint {
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
             RequesterIntegration.initScreen();
         }
+
+        AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
+            if (level.isClientSide()) {
+                if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
+                    return InteractionResult.PASS;
+                }
+
+                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
+                    NetworkHandler.instance().sendToServer(
+                            new PartLeftClickPacket(hitResult, InteractionUtil.isInAlternateUseMode(player)));
+                    Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
+                    return InteractionResult.FAIL;
+                }
+            }
+
+            return InteractionResult.PASS;
+        });
     }
 }
