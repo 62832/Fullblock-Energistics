@@ -32,7 +32,9 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
         if (be != null) {
             if (!level.isClientSide()) {
-                be.openMenu(p);
+                if (hit.getDirection().equals(be.getForward())) {
+                    be.openMenu(p);
+                }
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide());

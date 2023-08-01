@@ -19,7 +19,6 @@ import appeng.api.stacks.AmountFormat;
 import appeng.api.util.INetworkToolAware;
 import appeng.core.localization.PlayerMessages;
 import appeng.menu.me.interaction.StackInteractions;
-import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.FullBlockEntity;
 
@@ -31,7 +30,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     private String lastHumanReadableText;
     private boolean isLocked;
     private IStackWatcher stackWatcher;
-    private byte spin = 0;
 
     public MonitorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -41,9 +39,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     @Override
     protected boolean readFromStream(FriendlyByteBuf data) {
         var needRedraw = super.readFromStream(data);
-        var oldSpin = data.readByte();
-        spin = oldSpin;
-
         var wasLocked = data.readBoolean();
         isLocked = wasLocked;
 
@@ -55,13 +50,12 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
             amount = 0;
         }
 
-        return oldSpin != spin || wasLocked != isLocked || needRedraw;
+        return wasLocked != isLocked || needRedraw;
     }
 
     @Override
     protected void writeToStream(FriendlyByteBuf data) {
         super.writeToStream(data);
-        data.writeByte(spin);
         data.writeBoolean(isLocked);
         data.writeBoolean(configuredItem != null);
 
@@ -86,7 +80,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     @Override
     public void saveAdditional(CompoundTag data) {
         super.saveAdditional(data);
-        data.putByte("spin", spin);
         data.putBoolean("isLocked", isLocked);
 
         if (configuredItem != null) {
@@ -97,7 +90,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
     @Override
     public void loadTag(CompoundTag data) {
         super.loadTag(data);
-        spin = data.getByte("spin");
         isLocked = data.getBoolean("isLocked");
         configuredItem = AEKey.fromTagGeneric(data.getCompound("configuredItem"));
     }
@@ -117,12 +109,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
             }
 
             configureWatchers();
-        } else {
-            if (InteractionUtil.canWrenchRotate(player.getInventory().getSelected())) {
-                if (!isClientSide()) {
-                    spin = (byte) ((spin + 1) % 4);
-                }
-            }
         }
 
         markForUpdate();
@@ -194,10 +180,6 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
 
     public boolean isLocked() {
         return isLocked;
-    }
-
-    public byte getSpin() {
-        return spin;
     }
 
     @Override

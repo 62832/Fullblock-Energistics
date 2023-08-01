@@ -60,11 +60,13 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
 
         if (be != null) {
             if (!level.isClientSide()) {
-                if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
-                    if (InteractionUtil.isInAlternateUseMode(player)) {
-                        be.onShiftActivated(player, hand);
-                    } else {
-                        be.onActivated(player, hand);
+                if (hit.getDirection().equals(be.getForward())) {
+                    if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
+                        if (InteractionUtil.isInAlternateUseMode(player)) {
+                            be.onShiftActivated(player, hand);
+                        } else {
+                            be.onActivated(player, hand);
+                        }
                     }
                 }
             }
