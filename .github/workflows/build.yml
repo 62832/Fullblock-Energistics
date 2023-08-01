@@ -19,6 +19,6 @@ jobs:
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
       - name: Generate data
-        run: ./gradlew downloadAssets runData --max-workers 1
+        run: ./gradlew downloadAssets runData
       - name: Build
-        run: ./gradlew build --max-workers 1
+        run: ./gradlew build

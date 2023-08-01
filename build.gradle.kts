@@ -11,6 +11,7 @@ plugins {
 }
 
 val modId: String by project
+val modVersion = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)
 val minecraftVersion: String = libs.versions.minecraft.get()
 
 val platforms by extra {
@@ -18,15 +19,20 @@ val platforms by extra {
 }
 
 tasks {
-    val collectJars by registering(Copy::class) {
-        val tasks = subprojects.filter { it.path != ":common" }.map { it.tasks.named("remapJar") }
-        dependsOn(tasks)
-        from(tasks)
-        into(buildDir.resolve("libs"))
+    val releaseInfo by registering {
+        doLast {
+            val output = System.getenv("GITHUB_OUTPUT")
+
+            if (output != null) {
+                val outputFile = File(output)
+                outputFile.appendText("MOD_VERSION=$modVersion")
+                outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion")
+            }
+        }
     }
 
-    assemble {
-        dependsOn(collectJars)
+    build {
+        dependsOn(releaseInfo)
     }
 
     withType<Jar> {
@@ -41,7 +47,7 @@ subprojects {
     apply(plugin = rootProject.libs.plugins.spotless.get().pluginId)
 
     base.archivesName.set("$modId-${project.name}")
-    version = "${(System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)}-$minecraftVersion"
+    version = "$modVersion-$minecraftVersion"
     group = "${property("mavenGroup")}.$modId"
 
     val javaVersion: String by project
@@ -127,16 +133,6 @@ subprojects {
     }
 }
 
-fun capitalise(str: String): String {
-    return str.replaceFirstChar {
-        if (it.isLowerCase()) {
-            it.titlecase()
-        } else {
-            it.toString()
-        }
-    }
-}
-
 for (platform in platforms) {
     project(":$platform") {
         apply(plugin = rootProject.libs.plugins.shadow.get().pluginId)
@@ -149,6 +145,16 @@ for (platform in platforms) {
 
         val common: Configuration by configurations.creating
         val shadowCommon: Configuration by configurations.creating
+
+        fun capitalise(str: String): String {
+            return str.replaceFirstChar {
+                if (it.isLowerCase()) {
+                    it.titlecase()
+                } else {
+                    it.toString()
+                }
+            }
+        }
 
         configurations {
             compileClasspath.get().extendsFrom(common)
