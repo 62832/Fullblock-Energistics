@@ -6,12 +6,11 @@ plugins {
     alias(libs.plugins.architectury)
     alias(libs.plugins.archLoom) apply false
     alias(libs.plugins.shadow)
-    alias(libs.plugins.unifiedPublishing)
     alias(libs.plugins.spotless)
 }
 
 val modId: String by project
-val modVersion = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1)
+val modVersion = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1).substringBefore('-')
 val minecraftVersion: String = libs.versions.minecraft.get()
 
 val platforms by extra {
@@ -128,7 +127,6 @@ subprojects {
 for (platform in platforms) {
     project(":$platform") {
         apply(plugin = rootProject.libs.plugins.shadow.get().pluginId)
-        apply(plugin = rootProject.libs.plugins.unifiedPublishing.get().pluginId)
 
         architectury {
             platformSetupLoomIde()
@@ -197,56 +195,6 @@ for (platform in platforms) {
         val javaComponent = components["java"] as AdhocComponentWithVariants
         javaComponent.withVariantsFromConfiguration(configurations["shadowRuntimeElements"]) {
             skip()
-        }
-
-        if (project.version != "0.0") {
-            unifiedPublishing {
-                project {
-                    val modVersion = project.version.toString()
-
-                    gameVersions.set(listOf(minecraftVersion))
-                    gameLoaders.set(listOf(platform))
-                    version.set("$platform-$modVersion")
-
-                    val changes = System.getenv("CHANGELOG") ?: "No changelog provided?"
-
-                    releaseType.set("release")
-                    changelog.set(changes)
-                    displayName.set(String.format("%s (%s %s)",
-                            modVersion.substring(0, modVersion.lastIndexOf("-")),
-                            capitalise(platform),
-                            minecraftVersion))
-
-                    mainPublication(project.tasks.getByName("remapJar"))
-
-                    relations {
-                        depends {
-                            curseforge.set("applied-energistics-2")
-                            modrinth.set("ae2")
-                        }
-                        optional {
-                            curseforge.set("merequester")
-                            modrinth.set("merequester")
-                        }
-                    }
-
-                    val cfToken = System.getenv("CURSEFORGE_TOKEN")
-                    if (cfToken != null) {
-                        curseforge {
-                            token.set(cfToken)
-                            id.set("776293")
-                        }
-                    }
-
-                    val mrToken = System.getenv("MODRINTH_TOKEN")
-                    if (mrToken != null) {
-                        modrinth {
-                            token.set(mrToken)
-                            id.set("oRg5rweB")
-                        }
-                    }
-                }
-            }
         }
     }
 }

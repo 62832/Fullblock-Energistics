@@ -36,8 +36,8 @@ jobs:
           curseforge-id: 776293
           curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
 
-          # modrinth-id: 24BlI6Ao
-          # modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
+          modrinth-id: 24BlI6Ao
+          modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
 
           name: ${{ steps.build.outputs.MOD_VERSION }} (Fabric ${{ steps.build.outputs.MINECRAFT_VERSION }})
           version: fabric-${{ steps.build.outputs.MOD_VERSION }}-${{ steps.build.outputs.MINECRAFT_VERSION }}
@@ -55,8 +55,8 @@ jobs:
           curseforge-id: 776293
           curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
 
-          # modrinth-id: 24BlI6Ao
-          # modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
+          modrinth-id: 24BlI6Ao
+          modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
 
           name: ${{ steps.build.outputs.MOD_VERSION }} (Forge ${{ steps.build.outputs.MINECRAFT_VERSION }})
           version: forge-${{ steps.build.outputs.MOD_VERSION }}-${{ steps.build.outputs.MINECRAFT_VERSION }}
