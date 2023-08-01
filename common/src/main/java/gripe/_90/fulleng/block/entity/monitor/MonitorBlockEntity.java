@@ -111,6 +111,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
             configureWatchers();
         }
 
+        saveChanges();
         markForUpdate();
     }
 
@@ -118,6 +119,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
         if (player.getItemInHand(hand).isEmpty()) {
             isLocked = !isLocked;
             player.sendSystemMessage((isLocked ? PlayerMessages.isNowLocked : PlayerMessages.isNowUnlocked).text());
+            saveChanges();
             markForUpdate();
         }
     }
@@ -159,6 +161,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity
 
             if (!humanReadableText.equals(lastHumanReadableText)) {
                 lastHumanReadableText = humanReadableText;
+                saveChanges();
                 markForUpdate();
             }
         }
