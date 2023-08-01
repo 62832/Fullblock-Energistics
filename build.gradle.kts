@@ -21,18 +21,10 @@ val platforms by extra {
 tasks {
     val releaseInfo by registering {
         doLast {
-            val output = System.getenv("GITHUB_OUTPUT")
-
-            if (output != null) {
-                val outputFile = File(output)
-                outputFile.appendText("MOD_VERSION=$modVersion")
-                outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion")
-            }
+            val outputFile = File(System.getenv("GITHUB_OUTPUT"))
+            outputFile.appendText("MOD_VERSION=$modVersion")
+            outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion")
         }
-    }
-
-    build {
-        dependsOn(releaseInfo)
     }
 
     withType<Jar> {
