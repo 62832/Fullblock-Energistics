@@ -34,11 +34,11 @@ public class MonitorBlockEntityRenderer<E extends MonitorBlockEntity> implements
     }
 
     private byte getSpin(MonitorBlockEntity be) {
-        return switch (be.getUp()) {
-            case UP -> (byte) 0;
-            case WEST -> (byte) 1;
-            case DOWN, NORTH, SOUTH -> (byte) 2;
-            case EAST -> (byte) 3;
+        return (byte) switch (be.getUp()) {
+            case UP -> 0;
+            case WEST -> 1;
+            case DOWN, NORTH, SOUTH -> 2;
+            case EAST -> 3;
         };
     }
 
