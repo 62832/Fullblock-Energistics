@@ -19,9 +19,9 @@ import appeng.client.render.model.AutoRotatingBakedModel;
 import appeng.hooks.ModelsReloadCallback;
 import appeng.init.client.InitScreens;
 
-import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
-import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.integration.requester.RequesterIntegration;
+import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
 @SuppressWarnings("RedundantTypeArguments")
 @Environment(EnvType.CLIENT)
@@ -47,8 +47,8 @@ public class FullEngClient implements IAEAddonEntrypoint {
         BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
         BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
 
-        InitScreens.<PatternAccessTerminalBlockEntity.Menu, PatternAccessTermScreen<PatternAccessTerminalBlockEntity.Menu>>register(
-                PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
+        InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
+                PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
                 "/screens/pattern_access_terminal.json");
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {

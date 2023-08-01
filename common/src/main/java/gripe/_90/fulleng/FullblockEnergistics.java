@@ -35,9 +35,10 @@ import gripe._90.fulleng.block.entity.terminal.CraftingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.ItemTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
-import gripe._90.fulleng.block.entity.terminal.RequesterTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
-import gripe._90.fulleng.integration.RequesterTerminalBlock;
+import gripe._90.fulleng.integration.requester.RequesterTerminalBlock;
+import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
+import gripe._90.fulleng.integration.requester.RequesterTerminalBlockItem;
 import gripe._90.fulleng.platform.Platform;
 
 public final class FullblockEnergistics {
@@ -75,7 +76,7 @@ public final class FullblockEnergistics {
     public static final BlockEntityType<StorageMonitorBlockEntity> STORAGE_MONITOR = blockEntity("storage_monitor", StorageMonitorBlockEntity.class, StorageMonitorBlockEntity::new, STORAGE_MONITOR_BLOCK);
     public static final BlockEntityType<ConversionMonitorBlockEntity> CONVERSION_MONITOR = blockEntity("conversion_monitor", ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, CONVERSION_MONITOR_BLOCK);
     
-    public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BLOCK = block("ME Requester Terminal", "requester_terminal", RequesterTerminalBlock::new, RequesterTerminalBlock.BlockItem::new);
+    public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BLOCK = block("ME Requester Terminal", "requester_terminal", RequesterTerminalBlock::new, RequesterTerminalBlockItem::new);
     public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = blockEntity("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL_BLOCK);
     // spotless:on
 

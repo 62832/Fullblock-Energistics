@@ -41,9 +41,10 @@ public class MonitorBlockEntityRenderer<E extends MonitorBlockEntity> implements
     private byte getSpin(MonitorBlockEntity be) {
         return (byte) switch (be.getUp()) {
             case UP -> 0;
-            case WEST -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 3 : 1;
-            case DOWN, NORTH, SOUTH -> 2;
+            case DOWN -> 2;
+            case NORTH, SOUTH -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 0 : 2;
             case EAST -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 1 : 3;
+            case WEST -> FullblockEnergistics.PLATFORM.getLoader() == Loader.FORGE ? 3 : 1;
         };
     }
 

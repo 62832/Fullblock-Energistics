@@ -7,8 +7,8 @@ import net.minecraft.core.Registry;
 import appeng.api.IAEAddonEntrypoint;
 import appeng.core.AppEng;
 
-import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
-import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
+import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 import gripe._90.fulleng.platform.Loader;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -22,11 +22,11 @@ public class FullEngFabric implements IAEAddonEntrypoint {
         FullblockEnergistics.getBlockEntities().forEach((k, v) -> Registry.register(Registry.BLOCK_ENTITY_TYPE, k, v));
 
         Registry.register(Registry.MENU, AppEng.makeId("patternaccessterminal_f"),
-                PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK);
+                PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
             Registry.register(Registry.MENU, AppEng.makeId("requester_terminal_f"),
-                    RequesterIntegration.Menu.TYPE_FULLBLOCK);
+                    RequesterTerminalMenu.TYPE_FULLBLOCK);
         }
 
         ItemStorage.SIDED.registerForBlockEntity((be, context) -> be.getLogic().getBlankPatternInv().toStorage(),

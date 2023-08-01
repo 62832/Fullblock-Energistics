@@ -1,4 +1,4 @@
-package gripe._90.fulleng.block.entity.terminal;
+package gripe._90.fulleng.integration.requester;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import appeng.menu.me.common.MEStorageMenu;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 
 public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
@@ -17,7 +17,7 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType(Player player) {
-        return FullblockEnergistics.PLATFORM.isRequesterLoaded() ? RequesterIntegration.Menu.TYPE_FULLBLOCK
+        return FullblockEnergistics.PLATFORM.isRequesterLoaded() ? RequesterTerminalMenu.TYPE_FULLBLOCK
                 : MEStorageMenu.TYPE;
     }
 }

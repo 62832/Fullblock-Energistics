@@ -22,9 +22,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
-import gripe._90.fulleng.integration.RequesterIntegration;
+import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
+import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 import gripe._90.fulleng.platform.Loader;
 
 @Mod(FullblockEnergistics.MODID)
@@ -46,11 +46,11 @@ public class FullEngForge {
 
             if (event.getRegistryKey().equals(Registry.MENU_REGISTRY)) {
                 ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
-                        PatternAccessTerminalBlockEntity.Menu.TYPE_FULLBLOCK);
+                        PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
                 if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
                     ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
-                            RequesterIntegration.Menu.TYPE_FULLBLOCK);
+                            RequesterTerminalMenu.TYPE_FULLBLOCK);
                 }
             }
         });

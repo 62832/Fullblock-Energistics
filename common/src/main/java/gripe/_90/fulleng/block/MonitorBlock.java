@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.util.DimensionalBlockPos;
+import appeng.core.definitions.ItemDefinition;
 import appeng.util.InteractionUtil;
 import appeng.util.Platform;
 
@@ -22,7 +22,7 @@ import gripe._90.fulleng.block.entity.monitor.MonitorBlockEntity;
 public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
-    public MonitorBlock(ItemLike equivalentPart) {
+    public MonitorBlock(ItemDefinition<?> equivalentPart) {
         super(equivalentPart);
     }
 
