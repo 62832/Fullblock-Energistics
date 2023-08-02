@@ -11,7 +11,7 @@ import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.tags.BlockTags;
 
 class TagProvider extends FabricTagProvider.BlockTagProvider {
-    public TagProvider(FabricDataOutput output) {
+    TagProvider(FabricDataOutput output) {
         super(output, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()));
     }
 

@@ -12,5 +12,6 @@ public class FullEngData implements DataGeneratorEntrypoint {
         pack.addProvider(RecipeProvider::new);
         pack.addProvider(DropProvider::new);
         pack.addProvider(TagProvider::new);
+        pack.addProvider(LocalisationProvider::new);
     }
 }

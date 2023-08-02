@@ -34,6 +34,9 @@ dependencyResolutionManagement {
             library("requester-forge", "maven.modrinth", "merequester").version("$minecraftVersion-$requesterVersion+forge")
 
             library("midnightLib", "maven.modrinth", "midnightlib").version("1.4.1-fabric")
+
+            library("jade-fabric", "maven.modrinth", "jade").version("u3ts4cHu")
+            library("jade-forge", "maven.modrinth", "jade").version("2zfdBx1K")
         }
     }
 }

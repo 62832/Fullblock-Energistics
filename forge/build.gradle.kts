@@ -12,6 +12,8 @@ dependencies {
 
     modImplementation(libs.ae2.forge)
     modRuntimeOnly(libs.requester.forge)
+
+    modRuntimeOnly(libs.jade.forge)
 }
 
 tasks.processResources {

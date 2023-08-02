@@ -24,7 +24,9 @@ dependencies {
 
     modImplementation(libs.ae2.fabric)
     modRuntimeOnly(libs.requester.fabric)
+
     modRuntimeOnly(libs.midnightLib)
+    modRuntimeOnly(libs.jade.fabric)
 }
 
 tasks {

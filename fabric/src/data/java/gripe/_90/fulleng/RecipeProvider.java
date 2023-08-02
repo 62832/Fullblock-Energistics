@@ -13,7 +13,7 @@ import appeng.core.definitions.BlockDefinition;
 import gripe._90.fulleng.block.FullBlock;
 
 class RecipeProvider extends FabricRecipeProvider {
-    public RecipeProvider(FabricDataOutput output) {
+    RecipeProvider(FabricDataOutput output) {
         super(output);
     }
 
