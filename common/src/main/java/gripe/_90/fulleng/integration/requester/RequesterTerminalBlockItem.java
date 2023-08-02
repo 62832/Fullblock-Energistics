@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 
 import appeng.block.AEBaseBlockItem;
 import appeng.core.CreativeTab;
+import appeng.core.localization.Tooltips;
 
 import gripe._90.fulleng.FullblockEnergistics;
 
@@ -22,7 +23,7 @@ public class RequesterTerminalBlockItem extends AEBaseBlockItem {
     @Override
     public void addCheckedInformation(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         if (!FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-            tooltip.add(Component.literal("ME Requester not installed."));
+            tooltip.add(Tooltips.of(RequesterIntegration.NOT_INSTALLED));
         }
     }
 }

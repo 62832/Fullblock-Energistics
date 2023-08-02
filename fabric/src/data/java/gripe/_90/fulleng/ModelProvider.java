@@ -31,7 +31,7 @@ class ModelProvider extends FabricModelProvider {
             LIGHTS_MEDIUM, LIGHTS_DARK);
     private static final ResourceLocation TERMINAL_OFF = AppEng.makeId("block/terminal_off");
 
-    public ModelProvider(FabricDataGenerator gen) {
+    ModelProvider(FabricDataGenerator gen) {
         super(gen);
     }
 

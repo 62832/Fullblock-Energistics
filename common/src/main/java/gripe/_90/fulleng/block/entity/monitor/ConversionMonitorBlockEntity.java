@@ -69,7 +69,11 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
     }
 
     public void extractItem(Player player, boolean shift) {
-        if (!(this.getDisplayed() instanceof AEItemKey item)) {
+        if (!(getDisplayed() instanceof AEItemKey item)) {
+            return;
+        }
+
+        if (!(getMainNode().isActive())) {
             return;
         }
 

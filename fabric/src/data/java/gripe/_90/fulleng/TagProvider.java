@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.tags.BlockTags;
 
 class TagProvider extends FabricTagProvider.BlockTagProvider {
-    public TagProvider(FabricDataGenerator gen) {
+    TagProvider(FabricDataGenerator gen) {
         super(gen);
     }
 

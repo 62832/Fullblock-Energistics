@@ -24,7 +24,9 @@ public class PartLeftClickPacketMixin {
     @Inject(method = "serverPacketData", at = @At("TAIL"))
     private void handleConversionMonitorClick(ServerPlayer player, CallbackInfo ci) {
         if (player.level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor) {
-            monitor.extractItem(player, alternateUseMode);
+            if (hitResult.getDirection().equals(monitor.getForward())) {
+                monitor.extractItem(player, alternateUseMode);
+            }
         }
     }
 }

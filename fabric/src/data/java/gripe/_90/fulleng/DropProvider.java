@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 class DropProvider extends SimpleFabricLootTableProvider {
-    public DropProvider(FabricDataGenerator gen) {
+    DropProvider(FabricDataGenerator gen) {
         super(gen, LootContextParamSets.BLOCK);
     }
 
