@@ -1,2 +1,3 @@
 accessWidener   v2  named
+accessible  method  net/minecraft/world/entity/player/Player                closeContainer  ()V
 accessible  field   net/minecraft/client/multiplayer/MultiPlayerGameMode    destroyDelay    I

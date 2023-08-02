@@ -13,16 +13,16 @@ val modId: String by project
 val modVersion = (System.getenv("FULLENG_VERSION") ?: "v0.0").substring(1).substringBefore('-')
 val minecraftVersion: String = libs.versions.minecraft.get()
 
-val platforms by extra {
-    property("enabledPlatforms").toString().split(',')
-}
-
 tasks {
     register("releaseInfo") {
         doLast {
-            val outputFile = File(System.getenv("GITHUB_OUTPUT"))
-            outputFile.appendText("MOD_VERSION=$modVersion\n")
-            outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion\n")
+            val output = System.getenv("GITHUB_OUTPUT")
+
+            if (!output.isNullOrEmpty()) {
+                val outputFile = File(output)
+                outputFile.appendText("MOD_VERSION=$modVersion\n")
+                outputFile.appendText("MINECRAFT_VERSION=$minecraftVersion\n")
+            }
         }
     }
 
@@ -39,7 +39,7 @@ subprojects {
 
     base.archivesName.set("$modId-${project.name}")
     version = "$modVersion-$minecraftVersion"
-    group = "${property("mavenGroup")}.$modId"
+    group = property("mavenGroup").toString()
 
     val javaVersion: String by project
 
@@ -111,8 +111,10 @@ subprojects {
                 if (it.contains("*;\n")) {
                     throw Error("No wildcard imports allowed")
                 }
+
                 it
             }
+
             bumpThisNumberIfACustomStepChanges(1)
         }
 
@@ -124,7 +126,7 @@ subprojects {
     }
 }
 
-for (platform in platforms) {
+for (platform in property("enabledPlatforms").toString().split(',')) {
     project(":$platform") {
         apply(plugin = rootProject.libs.plugins.shadow.get().pluginId)
 
@@ -132,9 +134,6 @@ for (platform in platforms) {
             platformSetupLoomIde()
             loader(platform)
         }
-
-        val common: Configuration by configurations.creating
-        val shadowCommon: Configuration by configurations.creating
 
         fun capitalise(str: String): String {
             return str.replaceFirstChar {
@@ -145,6 +144,9 @@ for (platform in platforms) {
                 }
             }
         }
+
+        val common: Configuration by configurations.creating
+        val shadowCommon: Configuration by configurations.creating
 
         configurations {
             compileClasspath.get().extendsFrom(common)

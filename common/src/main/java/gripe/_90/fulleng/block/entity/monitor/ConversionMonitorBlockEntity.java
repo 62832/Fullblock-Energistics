@@ -3,18 +3,24 @@ package gripe._90.fulleng.block.entity.monitor;
 import java.util.Objects;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 import appeng.api.stacks.AEItemKey;
+import appeng.api.storage.ISubMenuHost;
 import appeng.api.storage.StorageHelper;
 import appeng.me.helpers.PlayerSource;
+import appeng.menu.ISubMenu;
+import appeng.menu.locator.MenuLocators;
+import appeng.menu.me.crafting.CraftAmountMenu;
 import appeng.util.inv.PlayerInternalInventory;
 
 import gripe._90.fulleng.FullblockEnergistics;
 
-public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
+public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements ISubMenuHost {
     public ConversionMonitorBlockEntity(BlockPos pos, BlockState blockState) {
         super(FullblockEnergistics.CONVERSION_MONITOR, pos, blockState);
     }
@@ -73,6 +79,12 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
             return;
         }
 
+        if (getAmount() == 0 && canCraft()) {
+            CraftAmountMenu.open((ServerPlayer) player, MenuLocators.forBlockEntity(this), item,
+                    item.getAmountPerUnit());
+            return;
+        }
+
         getMainNode().ifPresent(grid -> {
             var count = shift ? 1 : item.getItem().getMaxStackSize();
             var retrieved = StorageHelper.poweredExtraction(grid.getEnergyService(),
@@ -88,5 +100,15 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
                 player.containerMenu.broadcastChanges();
             }
         });
+    }
+
+    @Override
+    public void returnToMainMenu(Player player, ISubMenu subMenu) {
+        player.closeContainer();
+    }
+
+    @Override
+    public ItemStack getMainMenuIcon() {
+        return new ItemStack(FullblockEnergistics.CONVERSION_MONITOR_BLOCK);
     }
 }
