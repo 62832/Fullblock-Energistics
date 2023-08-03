@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import appeng.block.AEBaseBlockItem;
+import appeng.core.CreativeTab;
 import appeng.core.definitions.AEParts;
 import appeng.core.definitions.BlockDefinition;
 import appeng.core.definitions.ItemDefinition;
@@ -69,7 +70,8 @@ public class FullEngBlocks {
     }
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> supplier) {
-        return block(englishName, id, supplier, block -> new AEBaseBlockItem(block, new Item.Properties()));
+        return block(englishName, id, supplier,
+                block -> new AEBaseBlockItem(block, new Item.Properties().tab(CreativeTab.INSTANCE)));
     }
 
     static <T extends Block> BlockDefinition<T> block(
