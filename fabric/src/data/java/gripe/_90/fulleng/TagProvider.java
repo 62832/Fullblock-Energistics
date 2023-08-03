@@ -10,6 +10,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.tags.BlockTags;
 
+import gripe._90.fulleng.definition.FullEngBlocks;
+
 class TagProvider extends FabricTagProvider.BlockTagProvider {
     TagProvider(FabricDataOutput output) {
         super(output, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()));
@@ -17,7 +19,7 @@ class TagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        FullblockEnergistics.getBlocks().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        FullEngBlocks.getBlocks().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(BuiltInRegistries.BLOCK.getResourceKey(b.block()).orElseThrow()));
     }
 }

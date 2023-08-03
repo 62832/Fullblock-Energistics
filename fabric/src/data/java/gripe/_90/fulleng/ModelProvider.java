@@ -26,6 +26,7 @@ import appeng.core.definitions.BlockDefinition;
 
 import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
+import gripe._90.fulleng.definition.FullEngBlocks;
 
 class ModelProvider extends FabricModelProvider {
     private static final VariantProperty<VariantProperties.Rotation> Z_ROT =
@@ -45,21 +46,21 @@ class ModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators gen) {
-        terminal(gen, FullblockEnergistics.TERMINAL_BLOCK, "ae2:part/terminal");
-        terminal(gen, FullblockEnergistics.CRAFTING_TERMINAL_BLOCK, "ae2:part/crafting_terminal");
-        terminal(gen, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK, "ae2:part/pattern_encoding_terminal");
-        terminal(gen, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK, "ae2:part/pattern_access_terminal");
-        terminal(gen, FullblockEnergistics.REQUESTER_TERMINAL_BLOCK, "merequester:part/requester_terminal");
+        terminal(gen, FullEngBlocks.TERMINAL, "ae2:part/terminal");
+        terminal(gen, FullEngBlocks.CRAFTING_TERMINAL, "ae2:part/crafting_terminal");
+        terminal(gen, FullEngBlocks.PATTERN_ENCODING_TERMINAL, "ae2:part/pattern_encoding_terminal");
+        terminal(gen, FullEngBlocks.PATTERN_ACCESS_TERMINAL, "ae2:part/pattern_access_terminal");
+        terminal(gen, FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
 
-        monitor(gen, FullblockEnergistics.STORAGE_MONITOR_BLOCK, "ae2:part/storage_monitor");
-        monitor(gen, FullblockEnergistics.CONVERSION_MONITOR_BLOCK, "ae2:part/conversion_monitor");
+        monitor(gen, FullEngBlocks.STORAGE_MONITOR, "ae2:part/storage_monitor");
+        monitor(gen, FullEngBlocks.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
     }
 
     @Override
     public void generateItemModels(ItemModelGenerators gen) {}
 
     private void terminal(BlockModelGenerators gen, BlockDefinition<?> terminal, String texturePrefix) {
-        var onModel = terminal == FullblockEnergistics.TERMINAL_BLOCK
+        var onModel = terminal == FullEngBlocks.TERMINAL
                 ? AppEng.makeId("block/terminal")
                 : TERMINAL.create(
                         AppEng.makeId("block/" + terminal.id().getPath()),
@@ -85,7 +86,7 @@ class ModelProvider extends FabricModelProvider {
     }
 
     private void monitor(BlockModelGenerators gen, BlockDefinition<?> monitor, String texturePrefix) {
-        var storage = monitor == FullblockEnergistics.STORAGE_MONITOR_BLOCK;
+        var storage = monitor == FullEngBlocks.STORAGE_MONITOR;
         var unlockedModel = TERMINAL.create(
                 AppEng.makeId("block/" + monitor.id().getPath()),
                 new TextureMapping()

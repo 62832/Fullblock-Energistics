@@ -12,6 +12,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
+import gripe._90.fulleng.definition.FullEngBlocks;
+
 class DropProvider extends SimpleFabricLootTableProvider {
     DropProvider(FabricDataOutput output) {
         super(output, LootContextParamSets.BLOCK);
@@ -19,7 +21,7 @@ class DropProvider extends SimpleFabricLootTableProvider {
 
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-        FullblockEnergistics.getBlocks()
+        FullEngBlocks.getBlocks()
                 .forEach(b -> consumer.accept(
                         FullblockEnergistics.makeId("blocks/" + b.id().getPath()),
                         LootTable.lootTable()

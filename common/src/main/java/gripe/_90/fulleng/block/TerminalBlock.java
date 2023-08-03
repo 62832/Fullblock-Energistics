@@ -12,9 +12,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import appeng.core.definitions.ItemDefinition;
 import appeng.util.InteractionUtil;
 
-import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
+import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
     public TerminalBlock(ItemDefinition<?> equivalentPart) {
@@ -45,7 +45,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
-        return this == FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK.block();
+        return this == FullEngBlocks.PATTERN_ENCODING_TERMINAL.block();
     }
 
     @Override

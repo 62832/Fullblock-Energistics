@@ -18,11 +18,12 @@ import appeng.menu.locator.MenuLocators;
 import appeng.menu.me.crafting.CraftAmountMenu;
 import appeng.util.inv.PlayerInternalInventory;
 
-import gripe._90.fulleng.FullblockEnergistics;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements ISubMenuHost {
     public ConversionMonitorBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullblockEnergistics.CONVERSION_MONITOR, pos, blockState);
+        super(FullEngBlockEntities.CONVERSION_MONITOR, pos, blockState);
     }
 
     @Override
@@ -120,6 +121,6 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements 
 
     @Override
     public ItemStack getMainMenuIcon() {
-        return new ItemStack(FullblockEnergistics.CONVERSION_MONITOR_BLOCK);
+        return new ItemStack(FullEngBlocks.CONVERSION_MONITOR);
     }
 }

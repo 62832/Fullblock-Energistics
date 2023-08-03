@@ -1,6 +1,5 @@
 package gripe._90.fulleng.integration.tooltips;
 
-import appeng.api.integrations.igtooltip.BaseClassRegistration;
 import appeng.api.integrations.igtooltip.ClientRegistration;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -18,10 +17,5 @@ public class TooltipProvider implements appeng.api.integrations.igtooltip.Toolti
                 MonitorBlock.class,
                 FullblockEnergistics.makeId(MONITOR),
                 new MonitorDataProvider());
-    }
-
-    @Override
-    public void registerBlockEntityBaseClasses(BaseClassRegistration registration) {
-        registration.addBaseBlockEntity(MonitorBlockEntity.class, MonitorBlock.class);
     }
 }

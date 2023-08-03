@@ -25,6 +25,8 @@ import appeng.api.ids.AECreativeTabIds;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
@@ -42,14 +44,14 @@ public class FullEngForge {
 
     private void registerAll(RegisterEvent event) {
         if (event.getRegistryKey().equals(ForgeRegistries.BLOCKS.getRegistryKey())) {
-            FullblockEnergistics.getBlocks().forEach(b -> {
+            FullEngBlocks.getBlocks().forEach(b -> {
                 ForgeRegistries.BLOCKS.register(b.id(), b.block());
                 ForgeRegistries.ITEMS.register(b.id(), b.asItem());
             });
         }
 
         if (event.getRegistryKey().equals(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey())) {
-            FullblockEnergistics.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
+            FullEngBlockEntities.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
         }
 
         if (event.getRegistryKey().equals(ForgeRegistries.MENU_TYPES.getRegistryKey())) {
@@ -65,7 +67,7 @@ public class FullEngForge {
 
     private void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
-            FullblockEnergistics.getBlocks().forEach(event::accept);
+            FullEngBlocks.getBlocks().forEach(event::accept);
         }
     }
 

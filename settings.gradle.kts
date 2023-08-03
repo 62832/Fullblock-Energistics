@@ -37,6 +37,15 @@ dependencyResolutionManagement {
 
             library("jade-fabric", "maven.modrinth", "jade").version("u3ts4cHu")
             library("jade-forge", "maven.modrinth", "jade").version("2zfdBx1K")
+
+            val wthitVersion = "8.3.0"
+            val badPacketsVersion = "0.4.1"
+            library("wthit-fabric", "maven.modrinth", "wthit").version("fabric-$wthitVersion")
+            library("wthit-forge", "maven.modrinth", "wthit").version("forge-$wthitVersion")
+            library("badpackets-fabric", "maven.modrinth", "badpackets").version("fabric-$badPacketsVersion")
+            library("badpackets-forge", "maven.modrinth", "badpackets").version("forge-$badPacketsVersion")
+
+            library("theoneprobe", "maven.modrinth", "the-one-probe").version("$minecraftVersion-10.0.0")
         }
     }
 }

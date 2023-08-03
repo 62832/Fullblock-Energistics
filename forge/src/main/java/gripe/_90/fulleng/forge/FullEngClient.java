@@ -25,7 +25,9 @@ import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
-import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
+import gripe._90.fulleng.client.MonitorBlockEntityRenderer;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
@@ -55,12 +57,12 @@ public class FullEngClient {
     }
 
     private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders event) {
-        BlockEntityRenderers.register(FullblockEnergistics.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
-        BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
+        BlockEntityRenderers.register(FullEngBlockEntities.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
+        BlockEntityRenderers.register(FullEngBlockEntities.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
     }
 
     private void registerColourProviders(RegisterColorHandlersEvent event) {
-        for (var block : FullblockEnergistics.getBlocks()) {
+        for (var block : FullEngBlocks.getBlocks()) {
             if (event instanceof RegisterColorHandlersEvent.Block blockEvent) {
                 blockEvent.register(new ColorableBlockEntityBlockColor(), block.block());
             }
@@ -72,7 +74,7 @@ public class FullEngClient {
     }
 
     private void setRenderLayers(FMLClientSetupEvent event) {
-        for (var block : FullblockEnergistics.getBlocks()) {
+        for (var block : FullEngBlocks.getBlocks()) {
             ItemBlockRenderTypes.setRenderLayer(block.block(), RenderType.cutout());
         }
     }

@@ -13,7 +13,10 @@ dependencies {
     modImplementation(libs.ae2.forge)
     modRuntimeOnly(libs.requester.forge)
 
-    modRuntimeOnly(libs.jade.forge)
+    // modRuntimeOnly(libs.jade.forge)
+    modRuntimeOnly(libs.wthit.forge)
+    modRuntimeOnly(libs.badpackets.forge)
+    // modRuntimeOnly(libs.theoneprobe)
 }
 
 tasks.processResources {

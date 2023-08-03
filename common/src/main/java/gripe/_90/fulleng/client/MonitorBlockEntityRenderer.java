@@ -1,4 +1,4 @@
-package gripe._90.fulleng.client.renderer;
+package gripe._90.fulleng.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

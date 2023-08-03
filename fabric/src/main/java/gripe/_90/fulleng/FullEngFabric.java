@@ -13,6 +13,8 @@ import appeng.api.ids.AECreativeTabIds;
 import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
 
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
@@ -20,8 +22,8 @@ import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 public class FullEngFabric implements IAEAddonEntrypoint {
     @Override
     public void onAe2Initialized() {
-        FullblockEnergistics.getBlocks().forEach(this::registerBlock);
-        FullblockEnergistics.getBlockEntities().forEach(this::registerBlockEntity);
+        FullEngBlocks.getBlocks().forEach(this::registerBlock);
+        FullEngBlockEntities.getBlockEntities().forEach(this::registerBlockEntity);
 
         registerMenus();
         registerPatternStorage();
@@ -55,7 +57,7 @@ public class FullEngFabric implements IAEAddonEntrypoint {
     private void registerPatternStorage() {
         ItemStorage.SIDED.registerForBlockEntity(
                 (be, context) -> be.getLogic().getBlankPatternInv().toStorage(),
-                FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
+                FullEngBlockEntities.PATTERN_ENCODING_TERMINAL);
     }
 
     public static class Platform implements FullblockEnergistics.Platform {
