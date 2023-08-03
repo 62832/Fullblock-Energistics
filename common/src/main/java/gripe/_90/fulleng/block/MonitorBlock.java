@@ -38,8 +38,8 @@ public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
     }
 
     @Override
-    public InteractionResult onActivated(Level level, BlockPos pos, Player player, InteractionHand hand,
-            ItemStack heldItem, BlockHitResult hit) {
+    public InteractionResult onActivated(
+            Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack heldItem, BlockHitResult hit) {
         var be = getBlockEntity(level, pos);
 
         if (be != null) {

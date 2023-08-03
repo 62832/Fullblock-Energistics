@@ -13,8 +13,11 @@ public class TooltipProvider implements appeng.api.integrations.igtooltip.Toolti
 
     @Override
     public void registerClient(ClientRegistration registration) {
-        registration.addBlockEntityBody(MonitorBlockEntity.class, MonitorBlock.class,
-                FullblockEnergistics.makeId(MONITOR), new MonitorDataProvider());
+        registration.addBlockEntityBody(
+                MonitorBlockEntity.class,
+                MonitorBlock.class,
+                FullblockEnergistics.makeId(MONITOR),
+                new MonitorDataProvider());
     }
 
     @Override

@@ -39,17 +39,22 @@ public class FullEngFabric implements IAEAddonEntrypoint {
     }
 
     private void registerMenus() {
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId("patternaccessterminal_f"),
+        Registry.register(
+                BuiltInRegistries.MENU,
+                AppEng.makeId("patternaccessterminal_f"),
                 PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-            Registry.register(BuiltInRegistries.MENU, AppEng.makeId("requester_terminal_f"),
+            Registry.register(
+                    BuiltInRegistries.MENU,
+                    AppEng.makeId("requester_terminal_f"),
                     RequesterTerminalMenu.TYPE_FULLBLOCK);
         }
     }
 
     private void registerPatternStorage() {
-        ItemStorage.SIDED.registerForBlockEntity((be, context) -> be.getLogic().getBlankPatternInv().toStorage(),
+        ItemStorage.SIDED.registerForBlockEntity(
+                (be, context) -> be.getLogic().getBlankPatternInv().toStorage(),
                 FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
     }
 

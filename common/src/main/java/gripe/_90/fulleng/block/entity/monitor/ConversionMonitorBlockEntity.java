@@ -54,8 +54,8 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements 
                             var canExtract = inv.extractItem(x, targetStack.getCount(), true);
 
                             if (!canExtract.isEmpty()) {
-                                var inserted = StorageHelper.poweredInsert(energy, cell, itemKey, canExtract.getCount(),
-                                        new PlayerSource(player, this));
+                                var inserted = StorageHelper.poweredInsert(
+                                        energy, cell, itemKey, canExtract.getCount(), new PlayerSource(player, this));
                                 inv.extractItem(x, (int) inserted, false);
                             }
                         }
@@ -65,9 +65,12 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements 
                 var input = player.getItemInHand(hand);
 
                 if (!input.isEmpty()) {
-                    var inserted = StorageHelper.poweredInsert(energy, cell,
+                    var inserted = StorageHelper.poweredInsert(
+                            energy,
+                            cell,
                             Objects.requireNonNull(AEItemKey.of(input)),
-                            input.getCount(), new PlayerSource(player, this));
+                            input.getCount(),
+                            new PlayerSource(player, this));
                     input.shrink((int) inserted);
                 }
             }
@@ -84,15 +87,19 @@ public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements 
         }
 
         if (getAmount() == 0 && canCraft()) {
-            CraftAmountMenu.open((ServerPlayer) player, MenuLocators.forBlockEntity(this), item,
-                    item.getAmountPerUnit());
+            CraftAmountMenu.open(
+                    (ServerPlayer) player, MenuLocators.forBlockEntity(this), item, item.getAmountPerUnit());
             return;
         }
 
         getMainNode().ifPresent(grid -> {
             var count = shift ? 1 : item.getItem().getMaxStackSize();
-            var retrieved = StorageHelper.poweredExtraction(grid.getEnergyService(),
-                    grid.getStorageService().getInventory(), item, count, new PlayerSource(player, this));
+            var retrieved = StorageHelper.poweredExtraction(
+                    grid.getEnergyService(),
+                    grid.getStorageService().getInventory(),
+                    item,
+                    count,
+                    new PlayerSource(player, this));
 
             if (retrieved != 0) {
                 var newItems = item.toStack((int) retrieved);

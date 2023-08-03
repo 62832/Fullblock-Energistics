@@ -50,7 +50,8 @@ public class FullEngClient implements IAEAddonEntrypoint {
 
     private void initScreens() {
         InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
-                PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
+                PatternAccessTerminalMenu.TYPE_FULLBLOCK,
+                PatternAccessTermScreen::new,
                 "/screens/pattern_access_terminal.json");
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
@@ -72,16 +73,16 @@ public class FullEngClient implements IAEAddonEntrypoint {
         ColorProviderRegistry.ITEM.register(new StaticItemColor(AEColor.TRANSPARENT), block.block());
     }
 
-    private InteractionResult registerConversionMonitorHook(Player player, Level level, InteractionHand hand,
-            BlockPos pos, Direction direction) {
+    private InteractionResult registerConversionMonitorHook(
+            Player player, Level level, InteractionHand hand, BlockPos pos, Direction direction) {
         if (level.isClientSide()) {
             if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
                 return InteractionResult.PASS;
             }
 
             if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                NetworkHandler.instance().sendToServer(
-                        new PartLeftClickPacket(hitResult, InteractionUtil.isInAlternateUseMode(player)));
+                NetworkHandler.instance()
+                        .sendToServer(new PartLeftClickPacket(hitResult, InteractionUtil.isInAlternateUseMode(player)));
                 Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
                 return InteractionResult.FAIL;
             }

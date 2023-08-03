@@ -32,10 +32,12 @@ class RecipeProvider extends FabricRecipeProvider {
         var part = block.block().getEquivalentPart();
         var partId = part.id().getPath();
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block).requires(part)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block)
+                .requires(part)
                 .unlockedBy("has_" + partId, has(part))
                 .save(consumer, FullblockEnergistics.makeId("terminals/block_" + partId + "_from_part"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, part).requires(block)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, part)
+                .requires(block)
                 .unlockedBy("has_" + partId, has(part))
                 .save(consumer, FullblockEnergistics.makeId("terminals/part_" + partId + "_from_block"));
     }

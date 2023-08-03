@@ -29,7 +29,7 @@ import gripe._90.fulleng.client.renderer.MonitorBlockEntityRenderer;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
-@SuppressWarnings({ "RedundantTypeArguments", "deprecation" })
+@SuppressWarnings({"RedundantTypeArguments", "deprecation"})
 public class FullEngClient {
     public FullEngClient() {
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -45,7 +45,8 @@ public class FullEngClient {
 
     private void initScreens(FMLClientSetupEvent event) {
         InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
-                PatternAccessTerminalMenu.TYPE_FULLBLOCK, PatternAccessTermScreen::new,
+                PatternAccessTerminalMenu.TYPE_FULLBLOCK,
+                PatternAccessTermScreen::new,
                 "/screens/pattern_access_terminal.json");
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
@@ -85,8 +86,9 @@ public class FullEngClient {
             }
 
             if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                NetworkHandler.instance().sendToServer(new PartLeftClickPacket(hitResult,
-                        InteractionUtil.isInAlternateUseMode(event.getEntity())));
+                NetworkHandler.instance()
+                        .sendToServer(new PartLeftClickPacket(
+                                hitResult, InteractionUtil.isInAlternateUseMode(event.getEntity())));
                 Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
                 event.setCanceled(true);
             }

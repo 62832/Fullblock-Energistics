@@ -53,12 +53,12 @@ public class FullEngForge {
         }
 
         if (event.getRegistryKey().equals(ForgeRegistries.MENU_TYPES.getRegistryKey())) {
-            ForgeRegistries.MENU_TYPES.register("appeng:patternaccessterminal_f",
-                    PatternAccessTerminalMenu.TYPE_FULLBLOCK);
+            ForgeRegistries.MENU_TYPES.register(
+                    "appeng:patternaccessterminal_f", PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
             if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
-                ForgeRegistries.MENU_TYPES.register("appeng:requester_terminal_f",
-                        RequesterTerminalMenu.TYPE_FULLBLOCK);
+                ForgeRegistries.MENU_TYPES.register(
+                        "appeng:requester_terminal_f", RequesterTerminalMenu.TYPE_FULLBLOCK);
             }
         }
     }
@@ -73,8 +73,8 @@ public class FullEngForge {
         if (event.getObject() instanceof PatternEncodingTerminalBlockEntity patternTerm) {
             // https://www.youtube.com/watch?v=GQPM4_fMIEg&t=44s
             var capabilityProvider = new ICapabilityProvider() {
-                private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional
-                        .of(() -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
+                private final LazyOptional<IItemHandler> patternSlotHandler = LazyOptional.of(
+                        () -> patternTerm.getLogic().getBlankPatternInv().toItemHandler());
 
                 @NotNull
                 @Override

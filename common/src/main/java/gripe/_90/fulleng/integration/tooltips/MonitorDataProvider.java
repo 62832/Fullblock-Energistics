@@ -15,8 +15,7 @@ public final class MonitorDataProvider implements BodyProvider<MonitorBlockEntit
         var isLocked = monitor.isLocked();
 
         if (displayed != null) {
-            tooltip.addLine(InGameTooltip.Showing.text().append(": ")
-                    .append(displayed.getDisplayName()));
+            tooltip.addLine(InGameTooltip.Showing.text().append(": ").append(displayed.getDisplayName()));
         }
 
         tooltip.addLine(isLocked ? InGameTooltip.Locked.text() : InGameTooltip.Unlocked.text());

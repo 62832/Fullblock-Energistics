@@ -22,8 +22,8 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
     }
 
     @Override
-    public InteractionResult onActivated(Level level, BlockPos pos, Player p, InteractionHand hand, ItemStack heldItem,
-            BlockHitResult hit) {
+    public InteractionResult onActivated(
+            Level level, BlockPos pos, Player p, InteractionHand hand, ItemStack heldItem, BlockHitResult hit) {
         if (InteractionUtil.isInAlternateUseMode(p)) {
             return InteractionResult.PASS;
         }

@@ -23,7 +23,10 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
     private final ItemDefinition<?> equivalentPart;
 
     public FullBlock(ItemDefinition<?> equivalentPart) {
-        super(BlockBehaviour.Properties.of().strength(2.2f, 11.0f).mapColor(MapColor.METAL).sound(SoundType.METAL)
+        super(BlockBehaviour.Properties.of()
+                .strength(2.2f, 11.0f)
+                .mapColor(MapColor.METAL)
+                .sound(SoundType.METAL)
                 .lightLevel(state -> state.getValue(POWERED) ? 9 : 0));
         this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
         this.equivalentPart = equivalentPart;

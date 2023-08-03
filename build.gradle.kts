@@ -97,12 +97,12 @@ subprojects {
     spotless {
         java {
             target("src/**/java/**/*.java")
+            palantirJavaFormat()
             endWithNewline()
-            indentWithSpaces()
+            indentWithSpaces(4)
             removeUnusedImports()
             toggleOffOn()
             trimTrailingWhitespace()
-            eclipse().configFile(rootProject.file("codeformat/codeformat.xml"))
             importOrderFile(rootProject.file("codeformat/mega.importorder"))
 
             // courtesy of diffplug/spotless#240

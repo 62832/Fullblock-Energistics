@@ -41,7 +41,8 @@ import gripe._90.fulleng.integration.requester.RequesterTerminalBlockItem;
 
 public final class FullblockEnergistics {
     public static final String MODID = "fulleng";
-    public static final Platform PLATFORM = ServiceLoader.load(Platform.class).findFirst().orElseThrow();
+    public static final Platform PLATFORM =
+            ServiceLoader.load(Platform.class).findFirst().orElseThrow();
 
     public static ResourceLocation makeId(String path) {
         return new ResourceLocation(MODID, path);
@@ -80,22 +81,28 @@ public final class FullblockEnergistics {
 
     static <P extends AbstractMonitorPart, E extends MonitorBlockEntity> BlockDefinition<MonitorBlock<E>> monitor(
             ItemDefinition<PartItem<P>> equivalentPart) {
-        return block(equivalentPart.getEnglishName(), equivalentPart.id().getPath(),
+        return block(
+                equivalentPart.getEnglishName(),
+                equivalentPart.id().getPath(),
                 () -> new MonitorBlock<>(equivalentPart));
     }
 
     static <P extends AbstractDisplayPart, E extends TerminalBlockEntity> BlockDefinition<TerminalBlock<E>> terminal(
             ItemDefinition<PartItem<P>> equivalentPart) {
-        return block(equivalentPart.getEnglishName(), equivalentPart.id().getPath(),
+        return block(
+                equivalentPart.getEnglishName(),
+                equivalentPart.id().getPath(),
                 () -> new TerminalBlock<>(equivalentPart));
     }
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> supplier) {
-        return block(englishName, id, supplier,
-                block -> new AEBaseBlockItem(block, new Item.Properties()));
+        return block(englishName, id, supplier, block -> new AEBaseBlockItem(block, new Item.Properties()));
     }
 
-    static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> blockSupplier,
+    static <T extends Block> BlockDefinition<T> block(
+            String englishName,
+            String id,
+            Supplier<T> blockSupplier,
             Function<T, ? extends AEBaseBlockItem> itemFunction) {
         var block = blockSupplier.get();
         var item = itemFunction.apply(block);
@@ -104,7 +111,9 @@ public final class FullblockEnergistics {
         return definition;
     }
 
-    static <T extends AEBaseBlockEntity> BlockEntityType<T> blockEntity(String id, Class<T> entityClass,
+    static <T extends AEBaseBlockEntity> BlockEntityType<T> blockEntity(
+            String id,
+            Class<T> entityClass,
             BlockEntityType.BlockEntitySupplier<T> supplier,
             BlockDefinition<? extends AEBaseEntityBlock<T>> block) {
         var type = BlockEntityType.Builder.of(supplier, block.block()).build(null);

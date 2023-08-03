@@ -28,6 +28,7 @@ import gripe._90.fulleng.block.entity.FullBlockEntity;
 public abstract class MonitorBlockEntity extends FullBlockEntity implements INetworkToolAware {
     @Nullable
     private AEKey configuredItem;
+
     private long amount;
     private boolean canCraft;
     private String lastHumanReadableText;
@@ -49,8 +50,8 @@ public abstract class MonitorBlockEntity extends FullBlockEntity implements INet
                 if (what.equals(configuredItem)) {
                     MonitorBlockEntity.this.amount = amount;
 
-                    var humanReadableText = amount == 0 && canCraft ? "Craft"
-                            : what.formatAmount(amount, AmountFormat.SLOT);
+                    var humanReadableText =
+                            amount == 0 && canCraft ? "Craft" : what.formatAmount(amount, AmountFormat.SLOT);
 
                     if (!humanReadableText.equals(lastHumanReadableText)) {
                         lastHumanReadableText = humanReadableText;
@@ -68,8 +69,7 @@ public abstract class MonitorBlockEntity extends FullBlockEntity implements INet
             }
 
             @Override
-            public void onRequestChange(AEKey what) {
-            }
+            public void onRequestChange(AEKey what) {}
 
             @Override
             public void onCraftableChange(AEKey what) {

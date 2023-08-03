@@ -28,16 +28,15 @@ import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
 
 class ModelProvider extends FabricModelProvider {
-    private static final VariantProperty<VariantProperties.Rotation> Z_ROT = new VariantProperty<>("ae2:z",
-            r -> new JsonPrimitive(r.ordinal() * 90));
+    private static final VariantProperty<VariantProperties.Rotation> Z_ROT =
+            new VariantProperty<>("ae2:z", r -> new JsonPrimitive(r.ordinal() * 90));
 
     private static final TextureSlot LIGHTS_BRIGHT = TextureSlot.create("lightsBright");
     private static final TextureSlot LIGHTS_MEDIUM = TextureSlot.create("lightsMedium");
     private static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
 
     private static final ModelTemplate TERMINAL = new ModelTemplate(
-            Optional.of(AppEng.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT,
-            LIGHTS_MEDIUM, LIGHTS_DARK);
+            Optional.of(AppEng.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT, LIGHTS_MEDIUM, LIGHTS_DARK);
     private static final ResourceLocation TERMINAL_OFF = AppEng.makeId("block/terminal_off");
 
     ModelProvider(FabricDataOutput output) {
@@ -57,30 +56,29 @@ class ModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerators gen) {
-    }
+    public void generateItemModels(ItemModelGenerators gen) {}
 
     private void terminal(BlockModelGenerators gen, BlockDefinition<?> terminal, String texturePrefix) {
         var onModel = terminal == FullblockEnergistics.TERMINAL_BLOCK
                 ? AppEng.makeId("block/terminal")
-                : TERMINAL.create(AppEng.makeId("block/" + terminal.id().getPath()), new TextureMapping()
-                        .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
-                        .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
-                        .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
+                : TERMINAL.create(
+                        AppEng.makeId("block/" + terminal.id().getPath()),
+                        new TextureMapping()
+                                .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
+                                .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
+                                .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                         gen.modelOutput);
 
         gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(terminal.block())
-                .with(PropertyDispatch
-                        .properties(BlockStateProperties.FACING, IOrientationStrategy.SPIN, FullBlock.POWERED)
+                .with(PropertyDispatch.properties(
+                                BlockStateProperties.FACING, IOrientationStrategy.SPIN, FullBlock.POWERED)
                         .generate((facing, spin, powered) -> {
                             var orientation = BlockOrientation.get(facing, spin);
-                            var variant = Variant.variant().with(VariantProperties.MODEL,
-                                    powered ? onModel : TERMINAL_OFF);
+                            var variant =
+                                    Variant.variant().with(VariantProperties.MODEL, powered ? onModel : TERMINAL_OFF);
 
-                            return applyRotation(variant,
-                                    orientation.getAngleX(),
-                                    orientation.getAngleY(),
-                                    orientation.getAngleZ());
+                            return applyRotation(
+                                    variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
                         })));
 
         gen.delegateItemModel(terminal.block(), onModel);
@@ -88,31 +86,38 @@ class ModelProvider extends FabricModelProvider {
 
     private void monitor(BlockModelGenerators gen, BlockDefinition<?> monitor, String texturePrefix) {
         var storage = monitor == FullblockEnergistics.STORAGE_MONITOR_BLOCK;
-        var unlockedModel = TERMINAL.create(AppEng.makeId("block/" + monitor.id().getPath()), new TextureMapping()
-                .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
-                .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
-                .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
+        var unlockedModel = TERMINAL.create(
+                AppEng.makeId("block/" + monitor.id().getPath()),
+                new TextureMapping()
+                        .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
+                        .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
+                        .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                 gen.modelOutput);
         var lockedModel = TERMINAL.create(
-                AppEng.makeId("block/" + monitor.id().getPath() + "_locked"), new TextureMapping()
+                AppEng.makeId("block/" + monitor.id().getPath() + "_locked"),
+                new TextureMapping()
                         .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
-                        .put(LIGHTS_MEDIUM,
+                        .put(
+                                LIGHTS_MEDIUM,
                                 new ResourceLocation(texturePrefix + "_medium" + (storage ? "" : "_locked")))
-                        .put(LIGHTS_DARK,
-                                new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
+                        .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark" + (storage ? "_locked" : ""))),
                 gen.modelOutput);
 
         gen.blockStateOutput.accept(MultiVariantGenerator.multiVariant(monitor.block())
-                .with(PropertyDispatch.properties(BlockStateProperties.FACING, IOrientationStrategy.SPIN,
-                        FullBlock.POWERED, MonitorBlock.LOCKED).generate((facing, spin, powered, locked) -> {
+                .with(PropertyDispatch.properties(
+                                BlockStateProperties.FACING,
+                                IOrientationStrategy.SPIN,
+                                FullBlock.POWERED,
+                                MonitorBlock.LOCKED)
+                        .generate((facing, spin, powered, locked) -> {
                             var orientation = BlockOrientation.get(facing, spin);
-                            var variant = Variant.variant().with(VariantProperties.MODEL,
-                                    !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel);
+                            var variant = Variant.variant()
+                                    .with(
+                                            VariantProperties.MODEL,
+                                            !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel);
 
-                            return applyRotation(variant,
-                                    orientation.getAngleX(),
-                                    orientation.getAngleY(),
-                                    orientation.getAngleZ());
+                            return applyRotation(
+                                    variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
                         })));
 
         gen.delegateItemModel(monitor.block(), unlockedModel);

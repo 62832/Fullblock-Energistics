@@ -20,8 +20,12 @@ class DropProvider extends SimpleFabricLootTableProvider {
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
         FullblockEnergistics.getBlocks()
-                .forEach(b -> consumer.accept(FullblockEnergistics.makeId("blocks/" + b.id().getPath()),
-                        LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(b)).when(ExplosionCondition.survivesExplosion()))));
+                .forEach(b -> consumer.accept(
+                        FullblockEnergistics.makeId("blocks/" + b.id().getPath()),
+                        LootTable.lootTable()
+                                .withPool(LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1))
+                                        .add(LootItem.lootTableItem(b))
+                                        .when(ExplosionCondition.survivesExplosion()))));
     }
 }

@@ -17,7 +17,8 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType(Player player) {
-        return FullblockEnergistics.PLATFORM.isRequesterLoaded() ? RequesterTerminalMenu.TYPE_FULLBLOCK
+        return FullblockEnergistics.PLATFORM.isRequesterLoaded()
+                ? RequesterTerminalMenu.TYPE_FULLBLOCK
                 : MEStorageMenu.TYPE;
     }
 }

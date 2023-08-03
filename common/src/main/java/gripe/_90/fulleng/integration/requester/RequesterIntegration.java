@@ -10,12 +10,11 @@ import gripe._90.fulleng.FullblockEnergistics;
 
 @SuppressWarnings("RedundantTypeArguments")
 public final class RequesterIntegration {
-    public static Component NOT_INSTALLED = Component
-            .translatable("gui." + FullblockEnergistics.MODID + ".RequesterNotInstalled");
+    public static Component NOT_INSTALLED =
+            Component.translatable("gui." + FullblockEnergistics.MODID + ".RequesterNotInstalled");
 
     public static void initScreen() {
         InitScreens.<RequesterTerminalMenu, RequesterTerminalScreen<RequesterTerminalMenu>>register(
-                RequesterTerminalMenu.TYPE_FULLBLOCK, RequesterTerminalScreen::new,
-                "/screens/requester_terminal.json");
+                RequesterTerminalMenu.TYPE_FULLBLOCK, RequesterTerminalScreen::new, "/screens/requester_terminal.json");
     }
 }
