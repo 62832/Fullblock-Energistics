@@ -23,6 +23,8 @@ import net.minecraftforge.registries.RegisterEvent;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 import gripe._90.fulleng.platform.Loader;
@@ -38,14 +40,14 @@ public class FullEngForge {
 
     private void registerAll(RegisterEvent event) {
         if (event.getRegistryKey().equals(Registry.BLOCK_REGISTRY)) {
-            FullblockEnergistics.getBlocks().forEach(b -> {
+            FullEngBlocks.getBlocks().forEach(b -> {
                 ForgeRegistries.BLOCKS.register(b.id(), b.block());
                 ForgeRegistries.ITEMS.register(b.id(), b.asItem());
             });
         }
 
         if (event.getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
-            FullblockEnergistics.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
+            FullEngBlockEntities.getBlockEntities().forEach(ForgeRegistries.BLOCK_ENTITY_TYPES::register);
         }
 
         if (event.getRegistryKey().equals(Registry.MENU_REGISTRY)) {

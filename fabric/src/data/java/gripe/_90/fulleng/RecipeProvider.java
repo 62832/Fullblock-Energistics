@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import appeng.core.definitions.BlockDefinition;
 
 import gripe._90.fulleng.block.FullBlock;
+import gripe._90.fulleng.definition.FullEngBlocks;
 
 class RecipeProvider extends FabricRecipeProvider {
     RecipeProvider(FabricDataGenerator gen) {
@@ -18,13 +19,13 @@ class RecipeProvider extends FabricRecipeProvider {
 
     @Override
     protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
-        block(consumer, FullblockEnergistics.TERMINAL_BLOCK);
-        block(consumer, FullblockEnergistics.CRAFTING_TERMINAL_BLOCK);
-        block(consumer, FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BLOCK);
-        block(consumer, FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BLOCK);
+        block(consumer, FullEngBlocks.TERMINAL);
+        block(consumer, FullEngBlocks.CRAFTING_TERMINAL);
+        block(consumer, FullEngBlocks.PATTERN_ENCODING_TERMINAL);
+        block(consumer, FullEngBlocks.PATTERN_ACCESS_TERMINAL);
 
-        block(consumer, FullblockEnergistics.STORAGE_MONITOR_BLOCK);
-        block(consumer, FullblockEnergistics.CONVERSION_MONITOR_BLOCK);
+        block(consumer, FullEngBlocks.STORAGE_MONITOR);
+        block(consumer, FullEngBlocks.CONVERSION_MONITOR);
     }
 
     private void block(Consumer<FinishedRecipe> consumer, BlockDefinition<? extends FullBlock<?>> block) {

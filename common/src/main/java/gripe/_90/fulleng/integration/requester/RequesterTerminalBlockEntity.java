@@ -9,10 +9,11 @@ import appeng.menu.me.common.MEStorageMenu;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
 
 public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullblockEnergistics.REQUESTER_TERMINAL, pos, blockState);
+        super(FullEngBlockEntities.REQUESTER_TERMINAL, pos, blockState);
     }
 
     @Override

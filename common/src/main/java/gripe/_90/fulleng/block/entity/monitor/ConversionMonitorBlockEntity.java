@@ -12,11 +12,11 @@ import appeng.api.storage.StorageHelper;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.inv.PlayerInternalInventory;
 
-import gripe._90.fulleng.FullblockEnergistics;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
 
 public class ConversionMonitorBlockEntity extends MonitorBlockEntity {
     public ConversionMonitorBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullblockEnergistics.CONVERSION_MONITOR, pos, blockState);
+        super(FullEngBlockEntities.CONVERSION_MONITOR, pos, blockState);
     }
 
     @Override

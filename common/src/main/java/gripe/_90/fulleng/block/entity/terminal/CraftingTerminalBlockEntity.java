@@ -19,13 +19,13 @@ import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
-import gripe._90.fulleng.FullblockEnergistics;
+import gripe._90.fulleng.definition.FullEngBlockEntities;
 
 public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
 
     public CraftingTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullblockEnergistics.CRAFTING_TERMINAL, pos, blockState);
+        super(FullEngBlockEntities.CRAFTING_TERMINAL, pos, blockState);
     }
 
     @Override
