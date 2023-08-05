@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import appeng.api.orientation.BlockOrientation;
 import appeng.api.orientation.IOrientationStrategy;
-import appeng.core.AppEng;
 import appeng.core.definitions.BlockDefinition;
 
 import gripe._90.fulleng.block.FullBlock;
@@ -37,8 +36,12 @@ class ModelProvider extends FabricModelProvider {
     private static final TextureSlot LIGHTS_DARK = TextureSlot.create("lightsDark");
 
     private static final ModelTemplate TERMINAL = new ModelTemplate(
-            Optional.of(AppEng.makeId("block/terminal")), Optional.empty(), LIGHTS_BRIGHT, LIGHTS_MEDIUM, LIGHTS_DARK);
-    private static final ResourceLocation TERMINAL_OFF = AppEng.makeId("block/terminal_off");
+            Optional.of(FullblockEnergistics.makeId("block/terminal")),
+            Optional.empty(),
+            LIGHTS_BRIGHT,
+            LIGHTS_MEDIUM,
+            LIGHTS_DARK);
+    private static final ResourceLocation TERMINAL_OFF = FullblockEnergistics.makeId("block/terminal_off");
 
     ModelProvider(FabricDataOutput output) {
         super(output);
@@ -61,9 +64,9 @@ class ModelProvider extends FabricModelProvider {
 
     private void terminal(BlockModelGenerators gen, BlockDefinition<?> terminal, String texturePrefix) {
         var onModel = terminal == FullEngBlocks.TERMINAL
-                ? AppEng.makeId("block/terminal")
+                ? FullblockEnergistics.makeId("block/terminal")
                 : TERMINAL.create(
-                        AppEng.makeId("block/" + terminal.id().getPath()),
+                        FullblockEnergistics.makeId("block/" + terminal.id().getPath()),
                         new TextureMapping()
                                 .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
                                 .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
@@ -81,21 +84,19 @@ class ModelProvider extends FabricModelProvider {
                             return applyRotation(
                                     variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
                         })));
-
-        gen.delegateItemModel(terminal.block(), onModel);
     }
 
     private void monitor(BlockModelGenerators gen, BlockDefinition<?> monitor, String texturePrefix) {
         var storage = monitor == FullEngBlocks.STORAGE_MONITOR;
         var unlockedModel = TERMINAL.create(
-                AppEng.makeId("block/" + monitor.id().getPath()),
+                FullblockEnergistics.makeId("block/" + monitor.id().getPath()),
                 new TextureMapping()
                         .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
                         .put(LIGHTS_MEDIUM, new ResourceLocation(texturePrefix + "_medium"))
                         .put(LIGHTS_DARK, new ResourceLocation(texturePrefix + "_dark")),
                 gen.modelOutput);
         var lockedModel = TERMINAL.create(
-                AppEng.makeId("block/" + monitor.id().getPath() + "_locked"),
+                FullblockEnergistics.makeId("block/" + monitor.id().getPath() + "_locked"),
                 new TextureMapping()
                         .put(LIGHTS_BRIGHT, new ResourceLocation(texturePrefix + "_bright"))
                         .put(
@@ -120,8 +121,6 @@ class ModelProvider extends FabricModelProvider {
                             return applyRotation(
                                     variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
                         })));
-
-        gen.delegateItemModel(monitor.block(), unlockedModel);
     }
 
     private Variant applyRotation(Variant variant, int angleX, int angleY, int angleZ) {
