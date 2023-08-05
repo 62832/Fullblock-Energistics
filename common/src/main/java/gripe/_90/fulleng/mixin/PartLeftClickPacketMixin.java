@@ -15,13 +15,13 @@ import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 
 @Mixin(PartLeftClickPacket.class)
 public class PartLeftClickPacketMixin {
-    @Shadow
+    @Shadow(remap = false)
     private BlockHitResult hitResult;
 
-    @Shadow
+    @Shadow(remap = false)
     private boolean alternateUseMode;
 
-    @Inject(method = "serverPacketData", at = @At("TAIL"))
+    @Inject(method = "serverPacketData", at = @At("TAIL"), remap = false)
     private void handleConversionMonitorClick(ServerPlayer player, CallbackInfo ci) {
         if (player.level().getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor) {
             if (hitResult.getDirection().equals(monitor.getFront())) {

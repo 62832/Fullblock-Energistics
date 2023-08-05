@@ -28,7 +28,7 @@ dependencies {
 
     // modRuntimeOnly(libs.jade.fabric)
     modRuntimeOnly(libs.wthit.fabric)
-    modRuntimeOnly(libs.badpackets.fabric)
+    modRuntimeOnly(libs.badPackets.fabric)
 }
 
 tasks {

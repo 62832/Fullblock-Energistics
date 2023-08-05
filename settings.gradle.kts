@@ -42,10 +42,10 @@ dependencyResolutionManagement {
             val badPacketsVersion = "0.4.1"
             library("wthit-fabric", "maven.modrinth", "wthit").version("fabric-$wthitVersion")
             library("wthit-forge", "maven.modrinth", "wthit").version("forge-$wthitVersion")
-            library("badpackets-fabric", "maven.modrinth", "badpackets").version("fabric-$badPacketsVersion")
-            library("badpackets-forge", "maven.modrinth", "badpackets").version("forge-$badPacketsVersion")
+            library("badPackets-fabric", "maven.modrinth", "badpackets").version("fabric-$badPacketsVersion")
+            library("badPackets-forge", "maven.modrinth", "badpackets").version("forge-$badPacketsVersion")
 
-            library("theoneprobe", "maven.modrinth", "the-one-probe").version("$minecraftVersion-10.0.0")
+            library("theOneProbe", "maven.modrinth", "the-one-probe").version("$minecraftVersion-10.0.0")
         }
     }
 }

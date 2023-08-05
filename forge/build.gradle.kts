@@ -15,8 +15,8 @@ dependencies {
 
     // modRuntimeOnly(libs.jade.forge)
     modRuntimeOnly(libs.wthit.forge)
-    modRuntimeOnly(libs.badpackets.forge)
-    // modRuntimeOnly(libs.theoneprobe)
+    modRuntimeOnly(libs.badPackets.forge)
+    // modRuntimeOnly(libs.theOneProbe)
 }
 
 tasks.processResources {
