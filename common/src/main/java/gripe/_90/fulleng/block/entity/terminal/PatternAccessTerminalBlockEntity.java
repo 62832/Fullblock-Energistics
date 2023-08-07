@@ -1,7 +1,6 @@
 package gripe._90.fulleng.block.entity.terminal;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -18,7 +17,7 @@ public class PatternAccessTerminalBlockEntity extends TerminalBlockEntity {
     }
 
     @Override
-    public MenuType<?> getMenuType(Player player) {
+    public MenuType<?> getMenuType() {
         return PatternAccessTerminalMenu.TYPE_FULLBLOCK;
     }
 }

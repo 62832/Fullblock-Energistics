@@ -76,7 +76,7 @@ public class FullEngClient implements IAEAddonEntrypoint {
     }
 
     private InteractionResult registerConversionMonitorHook(
-            Player player, Level level, InteractionHand hand, BlockPos pos, Direction direction) {
+            Player player, Level level, InteractionHand ignoredHand, BlockPos ignoredPos, Direction ignoredDirection) {
         if (level.isClientSide()) {
             if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
                 return InteractionResult.PASS;

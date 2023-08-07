@@ -21,9 +21,9 @@ import appeng.util.inv.PlayerInternalInventory;
 import gripe._90.fulleng.definition.FullEngBlockEntities;
 import gripe._90.fulleng.definition.FullEngBlocks;
 
-public class ConversionMonitorBlockEntity extends MonitorBlockEntity implements ISubMenuHost {
-    public ConversionMonitorBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullEngBlockEntities.CONVERSION_MONITOR, pos, blockState);
+public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity implements ISubMenuHost {
+    public ConversionMonitorBlockEntity(BlockPos pos, BlockState state) {
+        super(FullEngBlockEntities.CONVERSION_MONITOR, pos, state);
     }
 
     @Override

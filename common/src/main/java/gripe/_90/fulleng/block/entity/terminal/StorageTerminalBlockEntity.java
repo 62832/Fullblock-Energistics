@@ -26,9 +26,15 @@ import appeng.menu.me.common.MEStorageMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-public abstract class StorageTerminalBlockEntity extends TerminalBlockEntity
+import gripe._90.fulleng.definition.FullEngBlockEntities;
+
+public class StorageTerminalBlockEntity extends TerminalBlockEntity
         implements ITerminalHost, IViewCellStorage, InternalInventoryHost {
     private final AppEngInternalInventory viewCell = new AppEngInternalInventory(this, 5);
+
+    public StorageTerminalBlockEntity(BlockPos pos, BlockState state) {
+        this(FullEngBlockEntities.TERMINAL, pos, state);
+    }
 
     public StorageTerminalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -57,6 +63,8 @@ public abstract class StorageTerminalBlockEntity extends TerminalBlockEntity
 
     @Override
     public void addAdditionalDrops(Level level, BlockPos pos, List<ItemStack> drops) {
+        super.addAdditionalDrops(level, pos, drops);
+
         for (var is : viewCell) {
             if (!is.isEmpty()) {
                 drops.add(is);
@@ -81,12 +89,12 @@ public abstract class StorageTerminalBlockEntity extends TerminalBlockEntity
     }
 
     @Override
-    public MenuType<?> getMenuType(Player player) {
+    public MenuType<?> getMenuType() {
         return MEStorageMenu.TYPE;
     }
 
     @Override
     public void returnToMainMenu(Player player, ISubMenu subMenu) {
-        MenuOpener.open(getMenuType(player), player, subMenu.getLocator(), true);
+        MenuOpener.open(getMenuType(), player, subMenu.getLocator(), true);
     }
 }

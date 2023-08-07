@@ -22,12 +22,11 @@ import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
 import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
-import gripe._90.fulleng.block.entity.monitor.MonitorBlockEntity;
 import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.CraftingTerminalBlockEntity;
-import gripe._90.fulleng.block.entity.terminal.ItemTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlock;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
@@ -41,7 +40,7 @@ public class FullEngBlocks {
     }
 
     // spotless:off
-    public static final BlockDefinition<TerminalBlock<ItemTerminalBlockEntity>> TERMINAL = terminal(AEParts.TERMINAL);
+    public static final BlockDefinition<TerminalBlock<StorageTerminalBlockEntity>> TERMINAL = terminal(AEParts.TERMINAL);
     public static final BlockDefinition<TerminalBlock<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL = terminal(AEParts.CRAFTING_TERMINAL);
     public static final BlockDefinition<TerminalBlock<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL = terminal(AEParts.PATTERN_ENCODING_TERMINAL);
     public static final BlockDefinition<TerminalBlock<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL = terminal(AEParts.PATTERN_ACCESS_TERMINAL);
@@ -52,8 +51,8 @@ public class FullEngBlocks {
     public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block("ME Requester Terminal", "requester_terminal", RequesterTerminalBlock::new, RequesterTerminalBlockItem::new);
     // spotless:on
 
-    static <P extends AbstractMonitorPart, E extends MonitorBlockEntity> BlockDefinition<MonitorBlock<E>> monitor(
-            ItemDefinition<PartItem<P>> equivalentPart) {
+    static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
+            BlockDefinition<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
         return block(
                 equivalentPart.getEnglishName(),
                 equivalentPart.id().getPath(),

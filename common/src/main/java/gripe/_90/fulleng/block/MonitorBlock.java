@@ -17,9 +17,9 @@ import appeng.core.definitions.ItemDefinition;
 import appeng.util.InteractionUtil;
 import appeng.util.Platform;
 
-import gripe._90.fulleng.block.entity.monitor.MonitorBlockEntity;
+import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 
-public class MonitorBlock<M extends MonitorBlockEntity> extends FullBlock<M> {
+public class MonitorBlock<M extends StorageMonitorBlockEntity> extends FullBlock<M> {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
     public MonitorBlock(ItemDefinition<?> equivalentPart) {

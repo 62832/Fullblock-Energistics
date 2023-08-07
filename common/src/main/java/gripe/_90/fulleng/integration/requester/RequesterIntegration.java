@@ -10,7 +10,7 @@ import gripe._90.fulleng.FullblockEnergistics;
 
 @SuppressWarnings("RedundantTypeArguments")
 public final class RequesterIntegration {
-    public static Component NOT_INSTALLED =
+    public static final Component NOT_INSTALLED =
             Component.translatable("gui." + FullblockEnergistics.MODID + ".RequesterNotInstalled");
 
     public static void initScreen() {

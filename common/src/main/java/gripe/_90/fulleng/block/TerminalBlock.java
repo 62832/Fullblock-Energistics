@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.core.definitions.ItemDefinition;
+import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocators;
 import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
@@ -23,8 +25,8 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
     @Override
     public InteractionResult onActivated(
-            Level level, BlockPos pos, Player p, InteractionHand hand, ItemStack heldItem, BlockHitResult hit) {
-        if (InteractionUtil.isInAlternateUseMode(p)) {
+            Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack heldItem, BlockHitResult hit) {
+        if (InteractionUtil.isInAlternateUseMode(player)) {
             return InteractionResult.PASS;
         }
 
@@ -33,7 +35,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
         if (be != null) {
             if (!level.isClientSide()) {
                 if (hit.getDirection().equals(be.getFront())) {
-                    be.openMenu(p);
+                    MenuOpener.open(be.getMenuType(), player, MenuLocators.forBlockEntity(be));
                 }
             }
 

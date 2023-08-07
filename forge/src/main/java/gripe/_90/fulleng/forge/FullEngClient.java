@@ -45,7 +45,7 @@ public class FullEngClient {
         MinecraftForge.EVENT_BUS.addListener(this::addConversionMonitorHook);
     }
 
-    private void initScreens(FMLClientSetupEvent event) {
+    private void initScreens(FMLClientSetupEvent ignoredEvent) {
         InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
                 PatternAccessTerminalMenu.TYPE_FULLBLOCK,
                 PatternAccessTermScreen::new,
@@ -56,7 +56,7 @@ public class FullEngClient {
         }
     }
 
-    private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders event) {
+    private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders ignoredEvent) {
         BlockEntityRenderers.register(FullEngBlockEntities.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
         BlockEntityRenderers.register(FullEngBlockEntities.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
     }
@@ -73,7 +73,7 @@ public class FullEngClient {
         }
     }
 
-    private void setRenderLayers(FMLClientSetupEvent event) {
+    private void setRenderLayers(FMLClientSetupEvent ignoredEvent) {
         for (var block : FullEngBlocks.getBlocks()) {
             ItemBlockRenderTypes.setRenderLayer(block.block(), RenderType.cutout());
         }

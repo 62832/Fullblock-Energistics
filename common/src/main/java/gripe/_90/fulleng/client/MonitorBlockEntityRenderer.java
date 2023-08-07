@@ -10,15 +10,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 import appeng.client.render.BlockEntityRenderHelper;
 
-import gripe._90.fulleng.block.entity.monitor.MonitorBlockEntity;
+import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 
 @Environment(EnvType.CLIENT)
-public class MonitorBlockEntityRenderer<E extends MonitorBlockEntity> implements BlockEntityRenderer<E> {
+public class MonitorBlockEntityRenderer<E extends StorageMonitorBlockEntity> implements BlockEntityRenderer<E> {
     public MonitorBlockEntityRenderer(BlockEntityRendererProvider.Context ignoredContext) {}
 
     @Override
     public void render(
-            MonitorBlockEntity be,
+            StorageMonitorBlockEntity be,
             float partialTicks,
             PoseStack poseStack,
             MultiBufferSource buffers,

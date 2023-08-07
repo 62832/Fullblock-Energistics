@@ -1,7 +1,6 @@
 package gripe._90.fulleng.integration.requester;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -17,7 +16,7 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     }
 
     @Override
-    public MenuType<?> getMenuType(Player player) {
+    public MenuType<?> getMenuType() {
         return FullblockEnergistics.PLATFORM.isRequesterLoaded()
                 ? RequesterTerminalMenu.TYPE_FULLBLOCK
                 : MEStorageMenu.TYPE;

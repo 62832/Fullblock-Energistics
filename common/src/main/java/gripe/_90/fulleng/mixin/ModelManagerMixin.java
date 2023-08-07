@@ -23,7 +23,7 @@ public abstract class ModelManagerMixin {
             Map.Entry<ResourceLocation, Resource> entry,
             CallbackInfoReturnable<Pair<ResourceLocation, BlockModel>> cir) {
         if (entry.getKey().getNamespace().equals(FullblockEnergistics.MODID)) {
-            UnlitQuadHooksAccessor.unlitExtensions().set(true);
+            UnlitQuadHooksAccessor.enableUnlitExtensions().set(true);
         }
     }
 }

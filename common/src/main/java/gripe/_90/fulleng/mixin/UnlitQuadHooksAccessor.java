@@ -8,7 +8,7 @@ import appeng.hooks.UnlitQuadHooks;
 @Mixin(UnlitQuadHooks.class)
 public interface UnlitQuadHooksAccessor {
     @Accessor(value = "ENABLE_UNLIT_EXTENSIONS", remap = false)
-    static ThreadLocal<Boolean> unlitExtensions() {
+    static ThreadLocal<Boolean> enableUnlitExtensions() {
         throw new AssertionError();
     }
 }

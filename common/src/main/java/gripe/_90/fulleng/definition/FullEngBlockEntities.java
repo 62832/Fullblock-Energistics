@@ -15,9 +15,9 @@ import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.CraftingTerminalBlockEntity;
-import gripe._90.fulleng.block.entity.terminal.ItemTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
 
 public class FullEngBlockEntities {
@@ -28,7 +28,7 @@ public class FullEngBlockEntities {
     }
 
     // spotless:off
-    public static final BlockEntityType<ItemTerminalBlockEntity> TERMINAL = blockEntity("terminal", ItemTerminalBlockEntity.class, ItemTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
+    public static final BlockEntityType<StorageTerminalBlockEntity> TERMINAL = blockEntity("terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
     public static final BlockEntityType<CraftingTerminalBlockEntity> CRAFTING_TERMINAL = blockEntity("crafting_terminal", CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, FullEngBlocks.CRAFTING_TERMINAL);
     public static final BlockEntityType<PatternEncodingTerminalBlockEntity> PATTERN_ENCODING_TERMINAL = blockEntity("pattern_encoding_terminal", PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, FullEngBlocks.PATTERN_ENCODING_TERMINAL);
     public static final BlockEntityType<PatternAccessTerminalBlockEntity> PATTERN_ACCESS_TERMINAL = blockEntity("pattern_access_terminal", PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, FullEngBlocks.PATTERN_ACCESS_TERMINAL);
