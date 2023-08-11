@@ -18,7 +18,7 @@ import gripe._90.fulleng.FullblockEnergistics;
 
 @Mixin(ModelManager.class)
 public abstract class ModelManagerMixin {
-    @Inject(method = "method_45898", at = @At("HEAD"), allow = 1, remap = false)
+    @Inject(method = "method_45898", at = @At("HEAD"), allow = 1)
     private static void onBeginLoadModel(
             Map.Entry<ResourceLocation, Resource> entry,
             CallbackInfoReturnable<Pair<ResourceLocation, BlockModel>> cir) {
