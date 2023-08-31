@@ -47,9 +47,13 @@ public class FullEngBlocks {
 
     public static final BlockDefinition<MonitorBlock<StorageMonitorBlockEntity>> STORAGE_MONITOR = monitor(AEParts.STORAGE_MONITOR);
     public static final BlockDefinition<MonitorBlock<ConversionMonitorBlockEntity>> CONVERSION_MONITOR = monitor(AEParts.CONVERSION_MONITOR);
-
-    public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block("ME Requester Terminal", "requester_terminal", RequesterTerminalBlock::new, RequesterTerminalBlockItem::new);
     // spotless:on
+
+    public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block(
+            "ME Requester Terminal",
+            "requester_terminal",
+            RequesterTerminalBlock::new,
+            RequesterTerminalBlockItem::new);
 
     static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
             BlockDefinition<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {

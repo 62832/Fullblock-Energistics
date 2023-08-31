@@ -13,16 +13,16 @@ import appeng.core.sync.packets.PartLeftClickPacket;
 
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 
-@Mixin(PartLeftClickPacket.class)
+@Mixin(value = PartLeftClickPacket.class, remap = false)
 public abstract class PartLeftClickPacketMixin {
-    @Shadow(remap = false)
+    @Shadow
     private BlockHitResult hitResult;
 
-    @Shadow(remap = false)
+    @Shadow
     private boolean alternateUseMode;
 
     @SuppressWarnings("resource")
-    @Inject(method = "serverPacketData", at = @At("TAIL"), remap = false)
+    @Inject(method = "serverPacketData", at = @At("TAIL"))
     private void handleConversionMonitorClick(ServerPlayer player, CallbackInfo ci) {
         if (player.level().getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor) {
             if (hitResult.getDirection().equals(monitor.getFront())) {

@@ -27,17 +27,40 @@ public class FullEngBlockEntities {
         return Collections.unmodifiableMap(BLOCK_ENTITIES);
     }
 
-    // spotless:off
-    public static final BlockEntityType<StorageTerminalBlockEntity> TERMINAL = blockEntity("terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
-    public static final BlockEntityType<CraftingTerminalBlockEntity> CRAFTING_TERMINAL = blockEntity("crafting_terminal", CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, FullEngBlocks.CRAFTING_TERMINAL);
-    public static final BlockEntityType<PatternEncodingTerminalBlockEntity> PATTERN_ENCODING_TERMINAL = blockEntity("pattern_encoding_terminal", PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, FullEngBlocks.PATTERN_ENCODING_TERMINAL);
-    public static final BlockEntityType<PatternAccessTerminalBlockEntity> PATTERN_ACCESS_TERMINAL = blockEntity("pattern_access_terminal", PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, FullEngBlocks.PATTERN_ACCESS_TERMINAL);
+    public static final BlockEntityType<StorageTerminalBlockEntity> TERMINAL = blockEntity(
+            "terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
+    public static final BlockEntityType<CraftingTerminalBlockEntity> CRAFTING_TERMINAL = blockEntity(
+            "crafting_terminal",
+            CraftingTerminalBlockEntity.class,
+            CraftingTerminalBlockEntity::new,
+            FullEngBlocks.CRAFTING_TERMINAL);
+    public static final BlockEntityType<PatternEncodingTerminalBlockEntity> PATTERN_ENCODING_TERMINAL = blockEntity(
+            "pattern_encoding_terminal",
+            PatternEncodingTerminalBlockEntity.class,
+            PatternEncodingTerminalBlockEntity::new,
+            FullEngBlocks.PATTERN_ENCODING_TERMINAL);
+    public static final BlockEntityType<PatternAccessTerminalBlockEntity> PATTERN_ACCESS_TERMINAL = blockEntity(
+            "pattern_access_terminal",
+            PatternAccessTerminalBlockEntity.class,
+            PatternAccessTerminalBlockEntity::new,
+            FullEngBlocks.PATTERN_ACCESS_TERMINAL);
 
-    public static final BlockEntityType<StorageMonitorBlockEntity> STORAGE_MONITOR = blockEntity("storage_monitor", StorageMonitorBlockEntity.class, StorageMonitorBlockEntity::new, FullEngBlocks.STORAGE_MONITOR);
-    public static final BlockEntityType<ConversionMonitorBlockEntity> CONVERSION_MONITOR = blockEntity("conversion_monitor", ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, FullEngBlocks.CONVERSION_MONITOR);
+    public static final BlockEntityType<StorageMonitorBlockEntity> STORAGE_MONITOR = blockEntity(
+            "storage_monitor",
+            StorageMonitorBlockEntity.class,
+            StorageMonitorBlockEntity::new,
+            FullEngBlocks.STORAGE_MONITOR);
+    public static final BlockEntityType<ConversionMonitorBlockEntity> CONVERSION_MONITOR = blockEntity(
+            "conversion_monitor",
+            ConversionMonitorBlockEntity.class,
+            ConversionMonitorBlockEntity::new,
+            FullEngBlocks.CONVERSION_MONITOR);
 
-    public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = blockEntity("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, FullEngBlocks.REQUESTER_TERMINAL);
-    // spotless:on
+    public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = blockEntity(
+            "requester_terminal",
+            RequesterTerminalBlockEntity.class,
+            RequesterTerminalBlockEntity::new,
+            FullEngBlocks.REQUESTER_TERMINAL);
 
     static <T extends AEBaseBlockEntity> BlockEntityType<T> blockEntity(
             String id,
