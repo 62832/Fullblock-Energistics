@@ -2,6 +2,8 @@ package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -56,6 +58,12 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
     @Override
     public PatternEncodingLogic getLogic() {
         return logic;
+    }
+
+    @Nullable
+    @Override
+    public Level getLevel() {
+        return super.getLevel();
     }
 
     @Override
