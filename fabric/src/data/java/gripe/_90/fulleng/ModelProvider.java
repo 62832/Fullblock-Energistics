@@ -53,10 +53,13 @@ class ModelProvider extends FabricModelProvider {
         terminal(gen, FullEngBlocks.CRAFTING_TERMINAL, "ae2:part/crafting_terminal");
         terminal(gen, FullEngBlocks.PATTERN_ENCODING_TERMINAL, "ae2:part/pattern_encoding_terminal");
         terminal(gen, FullEngBlocks.PATTERN_ACCESS_TERMINAL, "ae2:part/pattern_access_terminal");
-        terminal(gen, FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
 
         monitor(gen, FullEngBlocks.STORAGE_MONITOR, "ae2:part/storage_monitor");
         monitor(gen, FullEngBlocks.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
+
+        if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
+            terminal(gen, FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
+        }
     }
 
     @Override
@@ -77,12 +80,9 @@ class ModelProvider extends FabricModelProvider {
                 .with(PropertyDispatch.properties(
                                 BlockStateProperties.FACING, IOrientationStrategy.SPIN, FullBlock.POWERED)
                         .generate((facing, spin, powered) -> {
-                            var orientation = BlockOrientation.get(facing, spin);
                             var variant =
                                     Variant.variant().with(VariantProperties.MODEL, powered ? onModel : TERMINAL_OFF);
-
-                            return applyRotation(
-                                    variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
+                            return applyRotation(variant, BlockOrientation.get(facing, spin));
                         })));
     }
 
@@ -112,31 +112,31 @@ class ModelProvider extends FabricModelProvider {
                                 FullBlock.POWERED,
                                 MonitorBlock.LOCKED)
                         .generate((facing, spin, powered, locked) -> {
-                            var orientation = BlockOrientation.get(facing, spin);
                             var variant = Variant.variant()
                                     .with(
                                             VariantProperties.MODEL,
                                             !powered ? TERMINAL_OFF : locked ? lockedModel : unlockedModel);
-
-                            return applyRotation(
-                                    variant, orientation.getAngleX(), orientation.getAngleY(), orientation.getAngleZ());
+                            return applyRotation(variant, BlockOrientation.get(facing, spin));
                         })));
     }
 
-    private Variant applyRotation(Variant variant, int angleX, int angleY, int angleZ) {
-        angleX = normalizeAngle(angleX);
-        angleY = normalizeAngle(angleY);
-        angleZ = normalizeAngle(angleZ);
+    private Variant applyRotation(Variant variant, BlockOrientation orientation) {
+        var angleX = normalizeAngle(orientation.getAngleX());
+        var angleY = normalizeAngle(orientation.getAngleY());
+        var angleZ = normalizeAngle(orientation.getAngleZ());
 
         if (angleX != 0) {
             variant = variant.with(VariantProperties.X_ROT, rotationByAngle(angleX));
         }
+
         if (angleY != 0) {
             variant = variant.with(VariantProperties.Y_ROT, rotationByAngle(angleY));
         }
+
         if (angleZ != 0) {
             variant = variant.with(Z_ROT, rotationByAngle(angleZ));
         }
+
         return variant;
     }
 

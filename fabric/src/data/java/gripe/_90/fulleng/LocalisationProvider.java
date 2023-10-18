@@ -13,7 +13,10 @@ class LocalisationProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(TranslationBuilder builder) {
-        builder.add(RequesterIntegration.NOT_INSTALLED.getString(), "ME Requester not installed.");
         builder.add("config.jade.plugin_fulleng." + TooltipProvider.STORAGE_MONITOR, "Fullblock Storage Monitor");
+
+        if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
+            builder.add(RequesterIntegration.NOT_INSTALLED.getString(), "ME Requester not installed.");
+        }
     }
 }
