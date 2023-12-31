@@ -57,7 +57,7 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
     @Nullable
     @Override
     public Level getLevel() {
-        return super.getLevel();
+        return level;
     }
 
     @Override
