@@ -61,6 +61,9 @@ jobs:
           name: ${{ steps.build.outputs.MOD_VERSION }} (Forge ${{ steps.build.outputs.MINECRAFT_VERSION }})
           version: forge-${{ steps.build.outputs.MOD_VERSION }}-${{ steps.build.outputs.MINECRAFT_VERSION }}
           game-versions: ${{ steps.build.outputs.MINECRAFT_VERSION }}
+          loaders: |
+            forge
+            neoforge
           dependencies: |
             ae2(required){curseforge:223794}{modrinth:XxWD5pD3}
             merequester(optional){curseforge:688367}{modrinth:E6BFl96N}
