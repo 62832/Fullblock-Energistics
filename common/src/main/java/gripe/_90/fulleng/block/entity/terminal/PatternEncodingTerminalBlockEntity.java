@@ -2,8 +2,6 @@ package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -22,9 +20,9 @@ import appeng.util.Platform;
 
 import gripe._90.fulleng.definition.FullEngBlockEntities;
 
-public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEntity
-        implements IPatternTerminalLogicHost, IPatternTerminalMenuHost {
-    private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
+public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEntity implements IPatternTerminalMenuHost {
+    private final IPatternTerminalLogicHost hostProxy = new LogicHostProxy();
+    private final PatternEncodingLogic logic = new PatternEncodingLogic(hostProxy);
 
     public PatternEncodingTerminalBlockEntity(BlockPos pos, BlockState blockState) {
         super(FullEngBlockEntities.PATTERN_ENCODING_TERMINAL, pos, blockState);
@@ -60,15 +58,26 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
         return logic;
     }
 
-    @Nullable
-    @Override
-    public Level getLevel() {
-        return level;
-    }
+    /**
+     * Because otherwise implementing {@link IPatternTerminalLogicHost} directly means the {@code getLevel()} method
+     * gets remapped to whatever {@link net.minecraft.world.level.block.entity.BlockEntity}'s own method with the same
+     * mapping name is actually named.
+     */
+    private class LogicHostProxy implements IPatternTerminalLogicHost {
+        @Override
+        public PatternEncodingLogic getLogic() {
+            return logic;
+        }
 
-    @Override
-    public void markForSave() {
-        saveChanges();
-        markForUpdate();
+        @Override
+        public Level getLevel() {
+            return level;
+        }
+
+        @Override
+        public void markForSave() {
+            saveChanges();
+            markForUpdate();
+        }
     }
 }
