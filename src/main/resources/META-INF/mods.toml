@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+
+issueTrackerURL = "https://github.com/62832/Fullblock-Energistics/issues"
+displayURL = "https://github.com/62832/Fullblock-Energistics"
+logoFile = "thanks_doc.png"
+authors = "90"
+license = "LGPLv3.0"
+
+[[mods]]
+modId = "fulleng"
+version = "$version"
+displayName = "Fullblock Energistics"
+description = "A more retrospective feel for AE2."
+
+[[mixins]]
+config = "fulleng.mixins.json"
+
+[[dependencies]]
+modId = "ae2"
+type = "required"
+versionRange = "[$ae2Version,$ae2VersionEnd)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies]]
+modId = "merequester"
+type = "optional"
+versionRange = "[$requesterVersion,)"
+ordering = "AFTER"
+side = "BOTH"
