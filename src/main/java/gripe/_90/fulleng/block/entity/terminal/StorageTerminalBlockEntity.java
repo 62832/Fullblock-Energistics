@@ -2,7 +2,6 @@ package gripe._90.fulleng.block.entity.terminal;
 
 import java.util.List;
 
-import appeng.api.storage.SupplierStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +20,7 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.MEStorage;
+import appeng.api.storage.SupplierStorage;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.me.common.MEStorageMenu;
