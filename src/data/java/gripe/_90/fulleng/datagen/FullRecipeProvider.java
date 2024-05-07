@@ -2,6 +2,7 @@ package gripe._90.fulleng.datagen;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -13,6 +14,7 @@ import appeng.core.definitions.BlockDefinition;
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.definition.FullEngBlocks;
+import gripe._90.fulleng.integration.Addons;
 
 public class FullRecipeProvider extends RecipeProvider {
     public FullRecipeProvider(PackOutput output) {
@@ -28,11 +30,15 @@ public class FullRecipeProvider extends RecipeProvider {
 
         block(output, FullEngBlocks.STORAGE_MONITOR);
         block(output, FullEngBlocks.CONVERSION_MONITOR);
+
+        if (Addons.REQUESTER.isLoaded()) {
+            block(Addons.REQUESTER.conditionalOutput(output), FullEngBlocks.REQUESTER_TERMINAL);
+        }
     }
 
     private void block(@NotNull RecipeOutput output, BlockDefinition<? extends FullBlock<?>> block) {
         var part = block.block().getEquivalentPart();
-        var partId = part.id().getPath();
+        var partId = BuiltInRegistries.ITEM.getKey(part.asItem()).getPath();
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block)
                 .requires(part)

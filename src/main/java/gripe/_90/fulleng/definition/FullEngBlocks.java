@@ -28,9 +28,10 @@ import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
+import gripe._90.fulleng.integration.Addons;
+import gripe._90.fulleng.integration.IntegrationBlockItem;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlock;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
-import gripe._90.fulleng.integration.requester.RequesterTerminalBlockItem;
 
 public class FullEngBlocks {
     private static final List<BlockDefinition<?>> BLOCKS = new ArrayList<>();
@@ -53,7 +54,7 @@ public class FullEngBlocks {
             "ME Requester Terminal",
             "requester_terminal",
             RequesterTerminalBlock::new,
-            RequesterTerminalBlockItem::new);
+            block -> new IntegrationBlockItem(block, Addons.REQUESTER));
 
     static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
             BlockDefinition<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
