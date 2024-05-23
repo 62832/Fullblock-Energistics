@@ -1,72 +1,50 @@
 {
-  "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "fulleng:block/terminal_side",
-    "front": "fulleng:block/terminal_front",
-    "side": "fulleng:block/terminal_side",
-    "bottom": "fulleng:block/terminal_bottom",
-    "top": "fulleng:block/terminal_top",
-    "lightsBright": "ae2:part/terminal_bright",
-    "lightsMedium": "ae2:part/terminal_medium",
-    "lightsDark": "ae2:part/terminal_dark"
-  },
-  "elements": [
-    {
-      "from": [0, 0, 0],
-      "to": [16, 16, 16],
-      "faces": {
-        "down": {
-          "texture": "#bottom"
-        },
-        "up": {
-          "texture": "#top"
-        },
-        "north": {
-          "texture": "#front"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        }
-      }
-    },
-    {
-      "from": [2, 2, 0],
-      "to": [14, 14, 2],
-      "faces": {
-        "north": {
-          "texture": "#lightsBright",
-          "tintindex": 3,
-          "unlit": true
-        }
-      }
-    },
-    {
-      "from": [2, 2, 0],
-      "to": [14, 14, 2],
-      "faces": {
-        "north": {
-          "texture": "#lightsMedium",
-          "tintindex": 2,
-          "unlit": true
-        }
-      }
-    },
-    {
-      "from": [2, 2, 0],
-      "to": [14, 14, 2],
-      "faces": {
-        "north": {
-          "texture": "#lightsDark",
-          "tintindex": 1,
-          "unlit": true
-        }
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"front": "fulleng:block/terminal_front",
+		"particle": "fulleng:block/terminal_side",
+		"side": "fulleng:block/terminal_side",
+		"bottom": "fulleng:block/terminal_bottom",
+		"top": "fulleng:block/terminal_top",
+		"lightsBright": "ae2:part/terminal_bright",
+		"lightsMedium": "ae2:part/terminal_medium",
+		"lightsDark": "ae2:part/terminal_dark",
+		"back": "fulleng:block/terminal_back"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#front"},
+				"east": {"uv": [16, 0, 0, 16], "texture": "#side"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#back"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [2, 2, 0],
+			"to": [14, 14, 2],
+			"faces": {
+				"north": {"uv": [2, 2, 14, 14], "texture": "#lightsBright", "tintindex": 3}
+			}
+		},
+		{
+			"from": [2, 2, 0],
+			"to": [14, 14, 2],
+			"faces": {
+				"north": {"uv": [2, 2, 14, 14], "texture": "#lightsMedium", "tintindex": 2}
+			}
+		},
+		{
+			"from": [2, 2, 0],
+			"to": [14, 14, 2],
+			"faces": {
+				"north": {"uv": [2, 2, 14, 14], "texture": "#lightsDark", "tintindex": 1}
+			}
+		}
+	]
 }
