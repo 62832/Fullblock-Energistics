@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
@@ -91,7 +92,9 @@ public class FullblockEnergistics {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 FullEngBlockEntities.PATTERN_ENCODING_TERMINAL,
-                (be, context) -> be.getLogic().getBlankPatternInv().toItemHandler());
+                (be, context) -> context != Direction.NORTH
+                        ? be.getLogic().getBlankPatternInv().toItemHandler()
+                        : null);
     }
 
     private void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
