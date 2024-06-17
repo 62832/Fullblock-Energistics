@@ -3,8 +3,6 @@ package gripe._90.fulleng;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -12,15 +10,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import appeng.api.AECapabilities;
@@ -31,7 +30,6 @@ import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.core.AppEng;
-import appeng.core.network.NetworkHandler;
 import appeng.core.network.serverbound.PartLeftClickPacket;
 import appeng.init.client.InitScreens;
 import appeng.util.InteractionUtil;
@@ -50,7 +48,7 @@ public class FullblockEnergistics {
     public static final String MODID = "fulleng";
 
     public static ResourceLocation makeId(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     public FullblockEnergistics(IEventBus modEventBus) {
@@ -109,18 +107,18 @@ public class FullblockEnergistics {
             modEventBus.addListener(this::initBlockEntityRenders);
             modEventBus.addListener(this::registerBlockColourProviders);
             modEventBus.addListener(this::registerItemColourProviders);
-            modEventBus.addListener(this::setRenderLayers);
             NeoForge.EVENT_BUS.addListener(this::addConversionMonitorHook);
         }
 
-        private void initScreens(FMLClientSetupEvent ignoredEvent) {
+        private void initScreens(RegisterMenuScreensEvent event) {
             InitScreens.register(
+                    event,
                     PatternAccessTerminalMenu.TYPE_FULLBLOCK,
                     PatternAccessTermScreen<PatternAccessTerminalMenu>::new,
                     "/screens/terminals/pattern_access_terminal.json");
 
             if (Addons.REQUESTER.isLoaded()) {
-                RequesterIntegration.initScreen();
+                RequesterIntegration.initScreen(event);
             }
         }
 
@@ -141,13 +139,6 @@ public class FullblockEnergistics {
             }
         }
 
-        @SuppressWarnings("deprecation")
-        private void setRenderLayers(FMLClientSetupEvent ignoredEvent) {
-            for (var block : FullEngBlocks.getBlocks()) {
-                ItemBlockRenderTypes.setRenderLayer(block.block(), RenderType.cutout());
-            }
-        }
-
         private void addConversionMonitorHook(PlayerInteractEvent.LeftClickBlock event) {
             var level = event.getLevel();
 
@@ -157,9 +148,8 @@ public class FullblockEnergistics {
                 }
 
                 if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                    NetworkHandler.instance()
-                            .sendToServer(new PartLeftClickPacket(
-                                    hitResult, InteractionUtil.isInAlternateUseMode(event.getEntity())));
+                    PacketDistributor.sendToServer(new PartLeftClickPacket(
+                            hitResult, InteractionUtil.isInAlternateUseMode(event.getEntity())));
                     Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
                     event.setCanceled(true);
                 }

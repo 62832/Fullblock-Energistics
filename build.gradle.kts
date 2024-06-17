@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.neogradle)
+    alias(libs.plugins.moddev)
     alias(libs.plugins.spotless)
 }
 
@@ -9,7 +9,7 @@ base.archivesName = modId
 version = System.getenv("FULLENG_VERSION") ?: "0.0.0"
 group = "gripe.90"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
     mavenLocal()
@@ -33,16 +33,9 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.neoforge)
     implementation(libs.ae2)
     implementation(libs.requester)
     runtimeOnly(libs.jade)
-}
-
-minecraft {
-    accessTransformers {
-        file("src/main/resources/META-INF/accesstransformer.cfg")
-    }
 }
 
 sourceSets {
@@ -57,26 +50,40 @@ sourceSets {
     }
 }
 
-runs {
-    configureEach {
-        workingDirectory(file("run"))
-        systemProperty("forge.logging.console.level", "info")
+neoForge {
+    version = libs.versions.neoforge.get()
 
-        modSource(sourceSets.main.get())
+    mods {
+        create(modId) {
+            sourceSet(sourceSets.main.get())
+            sourceSet(sourceSets.getByName("data"))
+        }
     }
 
-    create("client")
-    create("server") { workingDirectory(file("run/server")) }
+    runs {
+        configureEach {
+            gameDirectory = file("run")
+        }
 
-    create("data") {
-        programArguments.addAll(
-            "--mod", modId,
-            "--all",
-            "--output", file("src/generated/resources/").absolutePath,
-            "--existing", file("src/main/resources/").absolutePath
-        )
+        create("client") {
+            client()
+        }
 
-        modSource(sourceSets.getByName("data"))
+        create("server") {
+            server()
+            gameDirectory = file("run/server")
+        }
+
+        create("data") {
+            data()
+            programArguments.addAll(
+                "--mod", modId,
+                "--all",
+                "--output", file("src/generated/resources/").absolutePath,
+                "--existing", file("src/main/resources/").absolutePath
+            )
+            sourceSet = sourceSets.getByName("data")
+        }
     }
 }
 
@@ -102,7 +109,7 @@ tasks {
         )
 
         inputs.properties(props)
-        filesMatching("META-INF/mods.toml") {
+        filesMatching("META-INF/neoforge.mods.toml") {
             expand(props)
         }
     }

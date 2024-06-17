@@ -2,8 +2,9 @@ package gripe._90.fulleng.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +26,7 @@ public abstract class FullBlockEntity extends AENetworkBlockEntity implements IC
     }
 
     @Override
-    protected boolean readFromStream(FriendlyByteBuf data) {
+    protected boolean readFromStream(RegistryFriendlyByteBuf data) {
         var needRedraw = super.readFromStream(data);
         var wasActive = isActive;
         isActive = data.readBoolean();
@@ -37,7 +38,7 @@ public abstract class FullBlockEntity extends AENetworkBlockEntity implements IC
     }
 
     @Override
-    protected void writeToStream(FriendlyByteBuf data) {
+    protected void writeToStream(RegistryFriendlyByteBuf data) {
         super.writeToStream(data);
         data.writeBoolean(getMainNode().isOnline());
         data.writeByte(paintedColour.ordinal());
@@ -56,14 +57,14 @@ public abstract class FullBlockEntity extends AENetworkBlockEntity implements IC
     }
 
     @Override
-    public void saveAdditional(CompoundTag data) {
-        super.saveAdditional(data);
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
         data.putByte("paintedColor", (byte) paintedColour.ordinal());
     }
 
     @Override
-    public void loadTag(CompoundTag data) {
-        super.loadTag(data);
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
 
         if (data.contains("paintedColor")) {
             paintedColour = AEColor.values()[data.getByte("paintedColor")];

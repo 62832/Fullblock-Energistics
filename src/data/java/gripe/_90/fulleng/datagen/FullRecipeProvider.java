@@ -1,7 +1,10 @@
 package gripe._90.fulleng.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -17,8 +20,8 @@ import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.Addons;
 
 public class FullRecipeProvider extends RecipeProvider {
-    public FullRecipeProvider(PackOutput output) {
-        super(output);
+    public FullRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
     }
 
     @Override

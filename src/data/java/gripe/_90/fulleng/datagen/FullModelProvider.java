@@ -41,9 +41,9 @@ public class FullModelProvider extends AE2BlockStateProvider {
 
     private void terminal(BlockDefinition<?> terminal, String texturePrefix) {
         var existing = models().existingFileHelper;
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_bright"), ModelProvider.TEXTURE);
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_medium"), ModelProvider.TEXTURE);
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_dark"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark"), ModelProvider.TEXTURE);
 
         var onModel = terminal != FullEngBlocks.TERMINAL
                 ? models().withExistingParent(
@@ -51,6 +51,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
                         .texture("lightsBright", texturePrefix + "_bright")
                         .texture("lightsMedium", texturePrefix + "_medium")
                         .texture("lightsDark", texturePrefix + "_dark")
+                        .renderType("cutout")
                 : models().getExistingFile(FullblockEnergistics.makeId("block/terminal"));
 
         multiVariantGenerator(terminal, Variant.variant())
@@ -62,27 +63,23 @@ public class FullModelProvider extends AE2BlockStateProvider {
 
     private void monitor(BlockDefinition<?> monitor, String texturePrefix) {
         var existing = models().existingFileHelper;
-        var storage = monitor == FullEngBlocks.STORAGE_MONITOR;
-
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_bright"), ModelProvider.TEXTURE);
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_medium"), ModelProvider.TEXTURE);
-        existing.trackGenerated(new ResourceLocation(texturePrefix + "_dark"), ModelProvider.TEXTURE);
-
-        existing.trackGenerated(
-                new ResourceLocation(texturePrefix + "_medium" + (storage ? "" : "_locked")), ModelProvider.TEXTURE);
-        existing.trackGenerated(
-                new ResourceLocation(texturePrefix + "_dark" + (!storage ? "" : "_locked")), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark"), ModelProvider.TEXTURE);
+        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark_locked"), ModelProvider.TEXTURE);
 
         var unlockedModel = models().withExistingParent(
                         "block/" + monitor.id().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                 .texture("lightsBright", texturePrefix + "_bright")
                 .texture("lightsMedium", texturePrefix + "_medium")
-                .texture("lightsDark", texturePrefix + "_dark");
+                .texture("lightsDark", texturePrefix + "_dark")
+                .renderType("cutout");
         var lockedModel = models().withExistingParent(
                         "block/" + monitor.id().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                 .texture("lightsBright", texturePrefix + "_bright")
-                .texture("lightsMedium", texturePrefix + "_medium" + (storage ? "" : "_locked"))
-                .texture("lightsDark", texturePrefix + "_dark" + (!storage ? "" : "_locked"));
+                .texture("lightsMedium", texturePrefix + "_medium")
+                .texture("lightsDark", texturePrefix + "_dark_locked")
+                .renderType("cutout");
 
         multiVariantGenerator(monitor, Variant.variant())
                 .with(createFacingSpinDispatch())

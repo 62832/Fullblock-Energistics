@@ -11,6 +11,7 @@ import appeng.api.config.ShowPatternProviders;
 import appeng.api.networking.IGridNode;
 import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.IPatternAccessTermMenuHost;
+import appeng.api.util.IConfigManagerBuilder;
 
 import gripe._90.fulleng.definition.FullEngBlockEntities;
 import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
@@ -18,7 +19,11 @@ import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 public class PatternAccessTerminalBlockEntity extends TerminalBlockEntity implements IPatternAccessTermMenuHost {
     public PatternAccessTerminalBlockEntity(BlockPos pos, BlockState blockState) {
         super(FullEngBlockEntities.PATTERN_ACCESS_TERMINAL, pos, blockState);
-        this.getConfigManager().registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
+    }
+
+    @Override
+    protected void registerSettings(IConfigManagerBuilder builder) {
+        builder.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
     }
 
     @Override

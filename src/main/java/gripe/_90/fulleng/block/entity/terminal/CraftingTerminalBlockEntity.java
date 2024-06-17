@@ -3,6 +3,7 @@ package gripe._90.fulleng.block.entity.terminal;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
@@ -34,15 +35,15 @@ public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
     }
 
     @Override
-    public void loadTag(CompoundTag data) {
-        super.loadTag(data);
-        craftingGrid.readFromNBT(data, "craftingGrid");
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
+        craftingGrid.readFromNBT(data, "craftingGrid", registries);
     }
 
     @Override
-    public void saveAdditional(CompoundTag data) {
-        super.saveAdditional(data);
-        craftingGrid.writeToNBT(data, "craftingGrid");
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
+        craftingGrid.writeToNBT(data, "craftingGrid", registries);
     }
 
     @Override

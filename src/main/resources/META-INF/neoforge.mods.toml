@@ -20,12 +20,8 @@ config = "fulleng.mixins.json"
 modId = "ae2"
 type = "required"
 versionRange = "[$ae2Version,$ae2VersionEnd)"
-ordering = "AFTER"
-side = "BOTH"
 
 [[dependencies]]
 modId = "merequester"
 type = "optional"
 versionRange = "[$requesterVersion,)"
-ordering = "AFTER"
-side = "BOTH"

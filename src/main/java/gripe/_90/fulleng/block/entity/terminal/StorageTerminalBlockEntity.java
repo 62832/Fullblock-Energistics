@@ -3,6 +3,7 @@ package gripe._90.fulleng.block.entity.terminal;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +22,7 @@ import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.MEStorage;
 import appeng.api.storage.SupplierStorage;
+import appeng.api.util.IConfigManagerBuilder;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.me.common.MEStorageMenu;
@@ -39,21 +41,25 @@ public class StorageTerminalBlockEntity extends TerminalBlockEntity
 
     public StorageTerminalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.getConfigManager().registerSetting(Settings.SORT_BY, SortOrder.NAME);
-        this.getConfigManager().registerSetting(Settings.VIEW_MODE, ViewItems.ALL);
-        this.getConfigManager().registerSetting(Settings.SORT_DIRECTION, SortDir.ASCENDING);
     }
 
     @Override
-    public void saveAdditional(CompoundTag data) {
-        super.saveAdditional(data);
-        viewCell.writeToNBT(data, "viewCell");
+    protected void registerSettings(IConfigManagerBuilder builder) {
+        builder.registerSetting(Settings.SORT_BY, SortOrder.NAME);
+        builder.registerSetting(Settings.VIEW_MODE, ViewItems.ALL);
+        builder.registerSetting(Settings.SORT_DIRECTION, SortDir.ASCENDING);
     }
 
     @Override
-    public void loadTag(CompoundTag data) {
-        super.loadTag(data);
-        viewCell.readFromNBT(data, "viewCell");
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
+        viewCell.writeToNBT(data, "viewCell", registries);
+    }
+
+    @Override
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
+        viewCell.readFromNBT(data, "viewCell", registries);
     }
 
     @Override

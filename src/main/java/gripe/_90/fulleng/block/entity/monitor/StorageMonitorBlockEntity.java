@@ -3,8 +3,9 @@ package gripe._90.fulleng.block.entity.monitor;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.UseOnContext;
@@ -85,7 +86,7 @@ public class StorageMonitorBlockEntity extends FullBlockEntity implements INetwo
     }
 
     @Override
-    protected boolean readFromStream(FriendlyByteBuf data) {
+    protected boolean readFromStream(RegistryFriendlyByteBuf data) {
         var needRedraw = super.readFromStream(data);
         var wasLocked = data.readBoolean();
         isLocked = wasLocked;
@@ -104,7 +105,7 @@ public class StorageMonitorBlockEntity extends FullBlockEntity implements INetwo
     }
 
     @Override
-    protected void writeToStream(FriendlyByteBuf data) {
+    protected void writeToStream(RegistryFriendlyByteBuf data) {
         super.writeToStream(data);
         data.writeBoolean(isLocked);
         data.writeBoolean(configuredItem != null);
@@ -131,20 +132,20 @@ public class StorageMonitorBlockEntity extends FullBlockEntity implements INetwo
     }
 
     @Override
-    public void saveAdditional(CompoundTag data) {
-        super.saveAdditional(data);
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
         data.putBoolean("isLocked", isLocked);
 
         if (configuredItem != null) {
-            data.put("configuredItem", configuredItem.toTagGeneric());
+            data.put("configuredItem", configuredItem.toTagGeneric(registries));
         }
     }
 
     @Override
-    public void loadTag(CompoundTag data) {
-        super.loadTag(data);
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
         isLocked = data.getBoolean("isLocked");
-        configuredItem = AEKey.fromTagGeneric(data.getCompound("configuredItem"));
+        configuredItem = AEKey.fromTagGeneric(registries, data.getCompound("configuredItem"));
     }
 
     public void onActivated(Player player, InteractionHand hand) {

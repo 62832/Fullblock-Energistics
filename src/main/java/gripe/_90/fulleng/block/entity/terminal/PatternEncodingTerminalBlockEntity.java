@@ -3,6 +3,7 @@ package gripe._90.fulleng.block.entity.terminal;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -32,15 +33,15 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
     }
 
     @Override
-    public void loadTag(CompoundTag data) {
-        super.loadTag(data);
-        logic.readFromNBT(data);
+    public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
+        super.loadTag(data, registries);
+        logic.readFromNBT(data, registries);
     }
 
     @Override
-    public void saveAdditional(CompoundTag data) {
-        super.saveAdditional(data);
-        logic.writeToNBT(data);
+    public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
+        super.saveAdditional(data, registries);
+        logic.writeToNBT(data, registries);
     }
 
     @Override
