@@ -231,6 +231,6 @@ public class StorageMonitorBlockEntity extends FullBlockEntity implements INetwo
 
     @Override
     public boolean showNetworkInfo(UseOnContext context) {
-        return false;
+        return context.getClickedFace() != getFront();
     }
 }

@@ -12,12 +12,11 @@ public final class MonitorDataProvider implements BodyProvider<StorageMonitorBlo
     @Override
     public void buildTooltip(StorageMonitorBlockEntity monitor, TooltipContext context, TooltipBuilder tooltip) {
         var displayed = monitor.getDisplayed();
-        var isLocked = monitor.isLocked();
 
         if (displayed != null) {
             tooltip.addLine(InGameTooltip.Showing.text().append(": ").append(displayed.getDisplayName()));
         }
 
-        tooltip.addLine(isLocked ? InGameTooltip.Locked.text() : InGameTooltip.Unlocked.text());
+        tooltip.addLine(monitor.isLocked() ? InGameTooltip.Locked.text() : InGameTooltip.Unlocked.text());
     }
 }
