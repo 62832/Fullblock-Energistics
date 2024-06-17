@@ -17,6 +17,11 @@ description = "A more retrospective feel for AE2."
 config = "fulleng.mixins.json"
 
 [[dependencies]]
+modId = "minecraft"
+type = "required"
+versionRange = "[$mcVersion,)"
+
+[[dependencies]]
 modId = "ae2"
 type = "required"
 versionRange = "[$ae2Version,$ae2VersionEnd)"

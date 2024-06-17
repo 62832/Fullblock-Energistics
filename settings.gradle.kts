@@ -11,6 +11,7 @@ dependencyResolutionManagement {
             plugin("moddev", "net.neoforged.moddev").version("0.1.85")
             plugin("spotless", "com.diffplug.spotless").version("6.23.3")
 
+            version("minecraft", "1.21")
             version("neoforge", "21.0.13-beta")
 
             version("ae2", "19.0.2-alpha")

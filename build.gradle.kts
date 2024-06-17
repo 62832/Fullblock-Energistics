@@ -103,6 +103,7 @@ tasks {
 
         val props = mapOf(
             "version" to version,
+            "mcVersion" to libs.versions.minecraft.get(),
             "ae2Version" to libs.versions.ae2.get(),
             "ae2VersionEnd" to libs.versions.ae2.get().substringBefore('.').toInt() + 1,
             "requesterVersion" to libs.versions.requester.get(),
