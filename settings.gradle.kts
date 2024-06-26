@@ -1,28 +1,54 @@
 pluginManagement {
-    repositories {
-        maven { url = uri("https://maven.neoforged.net/releases") }
-        gradlePluginPortal()
+    plugins {
+        id("net.neoforged.moddev") version "0.1.112"
+        id("net.neoforged.moddev.repositories") version "0.1.112"
+        id("com.diffplug.spotless") version "6.25.0"
     }
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            plugin("moddev", "net.neoforged.moddev").version("0.1.85")
-            plugin("spotless", "com.diffplug.spotless").version("6.23.3")
+plugins {
+    id("net.neoforged.moddev.repositories")
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
 
-            version("minecraft", "1.21")
-            version("neoforge", "21.0.13-beta")
+run {
+    @Suppress("UnstableApiUsage")
+    dependencyResolutionManagement {
+        repositoriesMode = RepositoriesMode.PREFER_SETTINGS
+        rulesMode = RulesMode.PREFER_SETTINGS
 
-            version("ae2", "19.0.2-alpha")
-            library("ae2", "appeng", "appliedenergistics2-neoforge").versionRef("ae2")
+        repositories {
+            mavenCentral()
 
-            version("requester", "1.20.4-1.1.6")
-            library("requester", "maven.modrinth", "merequester").version("cj9FGAyI")
+            maven {
+                name = "ModMaven (K4U-NL)"
+                url = uri("https://modmaven.dev/")
+                content {
+                    includeGroup("appeng")
+                }
+            }
 
-            library("jade", "maven.modrinth", "jade").version("gF1TRsRm")
+            maven {
+                name = "Modrinth Maven"
+                url = uri("https://api.modrinth.com/maven")
+                content {
+                    includeGroup("maven.modrinth")
+                }
+            }
+        }
+
+        versionCatalogs {
+            create("libs") {
+                version("neoforge", "21.0.13-beta")
+
+                version("ae2", "19.0.5-alpha")
+                library("ae2", "appeng", "appliedenergistics2").versionRef("ae2")
+
+                version("requester", "1.20.4-1.1.6")
+                library("requester", "maven.modrinth", "merequester").version("cj9FGAyI")
+
+                library("jade", "maven.modrinth", "jade").version("gF1TRsRm")
+            }
         }
     }
 }
-
-rootProject.name = "FullblockEnergistics"

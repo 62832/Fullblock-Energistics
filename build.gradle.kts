@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.moddev)
-    alias(libs.plugins.spotless)
+    id("net.neoforged.moddev")
+    id("com.diffplug.spotless")
 }
 
 val modId = "fulleng"
@@ -10,27 +10,6 @@ version = System.getenv("FULLENG_VERSION") ?: "0.0.0"
 group = "gripe.90"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-
-    maven {
-        name = "ModMaven (K4U-NL)"
-        url = uri("https://modmaven.dev/")
-        content {
-            includeGroup("appeng")
-        }
-    }
-
-    maven {
-        name = "Modrinth Maven"
-        url = uri("https://api.modrinth.com/maven")
-        content {
-            includeGroup("maven.modrinth")
-        }
-    }
-}
 
 dependencies {
     implementation(libs.ae2)
@@ -103,9 +82,7 @@ tasks {
 
         val props = mapOf(
             "version" to version,
-            "mcVersion" to libs.versions.minecraft.get(),
             "ae2Version" to libs.versions.ae2.get(),
-            "ae2VersionEnd" to libs.versions.ae2.get().substringBefore('.').toInt() + 1,
             "requesterVersion" to libs.versions.requester.get(),
         )
 
