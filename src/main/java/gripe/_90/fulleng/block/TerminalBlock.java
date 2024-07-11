@@ -45,7 +45,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
-        return this == FullEngBlocks.PATTERN_ENCODING_TERMINAL.block();
+        return state.is(FullEngBlocks.PATTERN_ENCODING_TERMINAL.block());
     }
 
     @Override
