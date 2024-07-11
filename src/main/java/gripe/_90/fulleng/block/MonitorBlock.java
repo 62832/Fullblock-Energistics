@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.util.DimensionalBlockPos;
-import appeng.util.InteractionUtil;
 import appeng.util.Platform;
 
 import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
@@ -52,7 +51,7 @@ public class MonitorBlock<M extends StorageMonitorBlockEntity> extends FullBlock
             if (!level.isClientSide()) {
                 if (hit.getDirection().equals(be.getFront())) {
                     if (be.getMainNode().isActive() && Platform.hasPermissions(new DimensionalBlockPos(be), player)) {
-                        if (InteractionUtil.isInAlternateUseMode(player)) {
+                        if (player.isShiftKeyDown()) {
                             be.onShiftActivated(player, player.swingingArm);
                         } else {
                             be.onActivated(player, player.swingingArm);

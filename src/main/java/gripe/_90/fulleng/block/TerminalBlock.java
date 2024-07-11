@@ -10,7 +10,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import appeng.core.definitions.ItemDefinition;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
-import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
@@ -24,7 +23,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
     @Override
     public InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (InteractionUtil.isInAlternateUseMode(player)) {
+        if (player.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }
 
