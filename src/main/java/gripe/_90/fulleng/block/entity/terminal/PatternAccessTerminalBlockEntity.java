@@ -12,9 +12,9 @@ import appeng.api.networking.IGridNode;
 import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.IPatternAccessTermMenuHost;
 import appeng.api.util.IConfigManagerBuilder;
+import appeng.menu.implementations.PatternAccessTermMenu;
 
 import gripe._90.fulleng.definition.FullEngBlockEntities;
-import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
 public class PatternAccessTerminalBlockEntity extends TerminalBlockEntity implements IPatternAccessTermMenuHost {
     public PatternAccessTerminalBlockEntity(BlockPos pos, BlockState blockState) {
@@ -28,7 +28,7 @@ public class PatternAccessTerminalBlockEntity extends TerminalBlockEntity implem
 
     @Override
     public MenuType<?> getMenuType() {
-        return PatternAccessTerminalMenu.TYPE_FULLBLOCK;
+        return PatternAccessTermMenu.TYPE;
     }
 
     @Nullable

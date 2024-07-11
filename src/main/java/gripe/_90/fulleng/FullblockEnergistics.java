@@ -26,12 +26,10 @@ import appeng.api.AECapabilities;
 import appeng.api.ids.AECreativeTabIds;
 import appeng.api.networking.IInWorldGridNodeHost;
 import appeng.api.util.AEColor;
-import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.core.AppEng;
 import appeng.core.network.serverbound.PartLeftClickPacket;
-import appeng.init.client.InitScreens;
 import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
@@ -41,7 +39,6 @@ import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.Addons;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
-import gripe._90.fulleng.menu.PatternAccessTerminalMenu;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullblockEnergistics {
@@ -69,11 +66,6 @@ public class FullblockEnergistics {
 
         event.register(Registries.BLOCK_ENTITY_TYPE, helper -> FullEngBlockEntities.getBlockEntities()
                 .forEach(helper::register));
-
-        event.register(
-                Registries.MENU,
-                AppEng.makeId("patternaccessterminal_f"),
-                () -> PatternAccessTerminalMenu.TYPE_FULLBLOCK);
 
         if (Addons.REQUESTER.isLoaded()) {
             event.register(
@@ -111,12 +103,6 @@ public class FullblockEnergistics {
         }
 
         private void initScreens(RegisterMenuScreensEvent event) {
-            InitScreens.register(
-                    event,
-                    PatternAccessTerminalMenu.TYPE_FULLBLOCK,
-                    PatternAccessTermScreen<PatternAccessTerminalMenu>::new,
-                    "/screens/terminals/pattern_access_terminal.json");
-
             if (Addons.REQUESTER.isLoaded()) {
                 RequesterIntegration.initScreen(event);
             }
