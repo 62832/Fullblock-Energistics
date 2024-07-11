@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ae2:storage_monitor"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fulleng:storage_monitor"
+  }
+}

@@ -15,7 +15,6 @@ import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
 import gripe._90.fulleng.definition.FullEngBlocks;
-import gripe._90.fulleng.integration.Addons;
 
 public class FullModelProvider extends AE2BlockStateProvider {
     private static final ResourceLocation TERMINAL_OFF = FullblockEnergistics.makeId("block/terminal_off");
@@ -34,9 +33,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
         monitor(FullEngBlocks.STORAGE_MONITOR, "ae2:part/storage_monitor");
         monitor(FullEngBlocks.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
 
-        if (Addons.REQUESTER.isLoaded()) {
-            terminal(FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
-        }
+        terminal(FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
     }
 
     private void terminal(BlockDefinition<?> terminal, String texturePrefix) {

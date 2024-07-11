@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fulleng:conversion_monitor"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ae2:conversion_monitor"
+  }
+}

@@ -39,7 +39,7 @@ public class FullRecipeProvider extends RecipeProvider {
         }
     }
 
-    private void block(@NotNull RecipeOutput output, BlockDefinition<? extends FullBlock<?>> block) {
+    private void block(RecipeOutput output, BlockDefinition<? extends FullBlock<?>> block) {
         var part = block.block().getEquivalentPart();
         var partId = BuiltInRegistries.ITEM.getKey(part.asItem()).getPath();
 

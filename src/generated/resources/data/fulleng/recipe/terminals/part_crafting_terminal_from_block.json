@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fulleng:crafting_terminal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "ae2:crafting_terminal"
+  }
+}

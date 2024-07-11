@@ -1,0 +1,11 @@
+{
+  "values": [
+    "fulleng:terminal",
+    "fulleng:crafting_terminal",
+    "fulleng:pattern_encoding_terminal",
+    "fulleng:pattern_access_terminal",
+    "fulleng:storage_monitor",
+    "fulleng:conversion_monitor",
+    "fulleng:requester_terminal"
+  ]
+}
