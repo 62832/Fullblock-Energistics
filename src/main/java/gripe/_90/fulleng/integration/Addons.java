@@ -11,22 +11,20 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import gripe._90.fulleng.FullblockEnergistics;
 
 public enum Addons {
-    REQUESTER("merequester", "ME Requester");
+    MEREQUESTER("ME Requester");
 
-    private final String modId;
     private final String modName;
 
-    Addons(String modId, String modName) {
-        this.modId = modId;
+    Addons(String modName) {
         this.modName = modName;
-    }
-
-    public String getModId() {
-        return modId;
     }
 
     public String getModName() {
         return modName;
+    }
+
+    public String getModId() {
+        return name().toLowerCase();
     }
 
     public boolean isLoaded() {
@@ -36,11 +34,11 @@ public enum Addons {
     }
 
     public Component getNotInstalledTooltip() {
-        return Component.translatable("gui." + FullblockEnergistics.MODID + ".not_installed." + modId)
+        return Component.translatable("gui." + FullblockEnergistics.MODID + ".not_installed." + getModId())
                 .withStyle(ChatFormatting.GRAY);
     }
 
     public RecipeOutput conditionalOutput(RecipeOutput output) {
-        return output.withConditions(new ModLoadedCondition(modId));
+        return output.withConditions(new ModLoadedCondition(getModId()));
     }
 }

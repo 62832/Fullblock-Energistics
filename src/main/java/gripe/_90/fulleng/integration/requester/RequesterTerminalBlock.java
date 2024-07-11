@@ -9,12 +9,12 @@ import gripe._90.fulleng.integration.Addons;
 
 public class RequesterTerminalBlock extends TerminalBlock<RequesterTerminalBlockEntity> {
     public RequesterTerminalBlock() {
-        super(Addons.REQUESTER.isLoaded() ? RequesterIntegration.getRequesterTerminalPart() : AEParts.TERMINAL);
+        super(Addons.MEREQUESTER.isLoaded() ? RequesterIntegration.getRequesterTerminalPart() : AEParts.TERMINAL);
     }
 
     @NotNull
     @Override
     public String getDescriptionId() {
-        return "item." + Addons.REQUESTER.getModId() + ".requester_terminal";
+        return "item." + Addons.MEREQUESTER.getModId() + ".requester_terminal";
     }
 }

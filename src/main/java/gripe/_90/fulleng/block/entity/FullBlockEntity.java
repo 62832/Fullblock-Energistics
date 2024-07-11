@@ -22,7 +22,7 @@ public abstract class FullBlockEntity extends AENetworkBlockEntity implements IC
 
     public FullBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(0.5);
+        getMainNode().setFlags(GridFlags.REQUIRE_CHANNEL).setIdlePowerUsage(0.5);
     }
 
     @Override

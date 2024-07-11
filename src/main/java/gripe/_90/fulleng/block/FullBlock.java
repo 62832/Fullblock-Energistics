@@ -28,7 +28,7 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
                 .mapColor(MapColor.METAL)
                 .sound(SoundType.METAL)
                 .lightLevel(state -> state.getValue(POWERED) ? 9 : 0));
-        this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
+        registerDefaultState(defaultBlockState().setValue(POWERED, false));
         this.equivalentPart = equivalentPart;
     }
 

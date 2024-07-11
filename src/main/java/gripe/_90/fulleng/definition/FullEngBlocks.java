@@ -18,7 +18,6 @@ import appeng.parts.reporting.AbstractDisplayPart;
 import appeng.parts.reporting.AbstractMonitorPart;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
 import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
@@ -50,19 +49,11 @@ public class FullEngBlocks {
     public static final BlockDefinition<MonitorBlock<ConversionMonitorBlockEntity>> CONVERSION_MONITOR = monitor(AEParts.CONVERSION_MONITOR);
     // spotless:on
 
-    public static final BlockDefinition<FullBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block(
+    public static final BlockDefinition<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block(
             "ME Requester Terminal",
             "requester_terminal",
             RequesterTerminalBlock::new,
-            block -> new IntegrationBlockItem(block, Addons.REQUESTER));
-
-    static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
-            BlockDefinition<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
-        return block(
-                equivalentPart.getEnglishName(),
-                equivalentPart.id().getPath(),
-                () -> new MonitorBlock<>(equivalentPart));
-    }
+            block -> new IntegrationBlockItem(block, Addons.MEREQUESTER));
 
     static <P extends AbstractDisplayPart, E extends TerminalBlockEntity> BlockDefinition<TerminalBlock<E>> terminal(
             ItemDefinition<PartItem<P>> equivalentPart) {
@@ -70,6 +61,14 @@ public class FullEngBlocks {
                 equivalentPart.getEnglishName(),
                 equivalentPart.id().getPath(),
                 () -> new TerminalBlock<>(equivalentPart));
+    }
+
+    static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
+            BlockDefinition<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
+        return block(
+                equivalentPart.getEnglishName(),
+                equivalentPart.id().getPath(),
+                () -> new MonitorBlock<>(equivalentPart));
     }
 
     static <T extends Block> BlockDefinition<T> block(String englishName, String id, Supplier<T> supplier) {

@@ -34,8 +34,8 @@ public class FullRecipeProvider extends RecipeProvider {
         block(output, FullEngBlocks.STORAGE_MONITOR);
         block(output, FullEngBlocks.CONVERSION_MONITOR);
 
-        if (Addons.REQUESTER.isLoaded()) {
-            block(Addons.REQUESTER.conditionalOutput(output), FullEngBlocks.REQUESTER_TERMINAL);
+        if (Addons.MEREQUESTER.isLoaded()) {
+            block(Addons.MEREQUESTER.conditionalOutput(output), FullEngBlocks.REQUESTER_TERMINAL);
         }
     }
 

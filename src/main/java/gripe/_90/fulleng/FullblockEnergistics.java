@@ -67,7 +67,7 @@ public class FullblockEnergistics {
         event.register(Registries.BLOCK_ENTITY_TYPE, helper -> FullEngBlockEntities.getBlockEntities()
                 .forEach(helper::register));
 
-        if (Addons.REQUESTER.isLoaded()) {
+        if (Addons.MEREQUESTER.isLoaded()) {
             event.register(
                     Registries.MENU, AppEng.makeId("requester_terminal_f"), () -> RequesterTerminalMenu.TYPE_FULLBLOCK);
         }
@@ -103,7 +103,7 @@ public class FullblockEnergistics {
         }
 
         private void initScreens(RegisterMenuScreensEvent event) {
-            if (Addons.REQUESTER.isLoaded()) {
+            if (Addons.MEREQUESTER.isLoaded()) {
                 RequesterIntegration.initScreen(event);
             }
         }
