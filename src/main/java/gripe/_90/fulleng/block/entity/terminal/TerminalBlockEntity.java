@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block.entity.terminal;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -36,6 +38,7 @@ public abstract class TerminalBlockEntity extends FullBlockEntity implements ICo
         cm.readFromNBT(data, registries);
     }
 
+    @Nullable
     public abstract MenuType<?> getMenuType();
 
     protected abstract void registerSettings(IConfigManagerBuilder builder);

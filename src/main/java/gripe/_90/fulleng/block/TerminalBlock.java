@@ -32,7 +32,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
         if (be != null) {
             if (!level.isClientSide()) {
-                if (hit.getDirection().equals(be.getFront())) {
+                if (hit.getDirection().equals(be.getFront()) && be.getMenuType() != null) {
                     MenuOpener.open(be.getMenuType(), player, MenuLocators.forBlockEntity(be));
                 }
             }

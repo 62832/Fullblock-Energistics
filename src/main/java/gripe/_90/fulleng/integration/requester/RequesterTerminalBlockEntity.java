@@ -5,7 +5,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import appeng.api.util.IConfigManagerBuilder;
-import appeng.menu.me.common.MEStorageMenu;
 
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.definition.FullEngBlockEntities;
@@ -18,7 +17,7 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType() {
-        return Addons.REQUESTER.isLoaded() ? RequesterTerminalMenu.TYPE_FULLBLOCK : MEStorageMenu.TYPE;
+        return Addons.REQUESTER.isLoaded() ? RequesterTerminalMenu.TYPE_FULLBLOCK : null;
     }
 
     @Override
