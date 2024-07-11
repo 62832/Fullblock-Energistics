@@ -19,7 +19,6 @@ import appeng.menu.me.crafting.CraftAmountMenu;
 import appeng.util.inv.PlayerInternalInventory;
 
 import gripe._90.fulleng.definition.FullEngBlockEntities;
-import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity implements ISubMenuHost {
     public ConversionMonitorBlockEntity(BlockPos pos, BlockState state) {
@@ -28,11 +27,11 @@ public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity impl
 
     @Override
     public void onActivated(Player player, InteractionHand hand) {
-        var eq = player.getItemInHand(hand);
+        var holding = player.getItemInHand(hand);
 
         if (isLocked()) {
-            insertItem(player, hand, eq.isEmpty());
-        } else if (getDisplayed() != null && AEItemKey.matches(getDisplayed(), eq)) {
+            insertItem(player, hand, holding.isEmpty());
+        } else if (getDisplayed() != null && AEItemKey.matches(getDisplayed(), holding)) {
             insertItem(player, hand, false);
         } else {
             super.onActivated(player, hand);
@@ -42,7 +41,7 @@ public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity impl
     private void insertItem(Player player, InteractionHand hand, boolean allItems) {
         getMainNode().ifPresent(grid -> {
             var energy = grid.getEnergyService();
-            var cell = grid.getStorageService().getInventory();
+            var storage = grid.getStorageService().getInventory();
 
             if (allItems) {
                 if (getDisplayed() instanceof AEItemKey itemKey) {
@@ -56,7 +55,11 @@ public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity impl
 
                             if (!canExtract.isEmpty()) {
                                 var inserted = StorageHelper.poweredInsert(
-                                        energy, cell, itemKey, canExtract.getCount(), new PlayerSource(player, this));
+                                        energy,
+                                        storage,
+                                        itemKey,
+                                        canExtract.getCount(),
+                                        new PlayerSource(player, this));
                                 inv.extractItem(x, (int) inserted, false);
                             }
                         }
@@ -68,7 +71,7 @@ public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity impl
                 if (!input.isEmpty()) {
                     var inserted = StorageHelper.poweredInsert(
                             energy,
-                            cell,
+                            storage,
                             Objects.requireNonNull(AEItemKey.of(input)),
                             input.getCount(),
                             new PlayerSource(player, this));
@@ -121,6 +124,6 @@ public class ConversionMonitorBlockEntity extends StorageMonitorBlockEntity impl
 
     @Override
     public ItemStack getMainMenuIcon() {
-        return new ItemStack(FullEngBlocks.CONVERSION_MONITOR);
+        return new ItemStack(getItemFromBlockEntity());
     }
 }

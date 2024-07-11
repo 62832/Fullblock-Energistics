@@ -4,5 +4,5 @@
   "package": "gripe._90.fulleng.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": ["PartLeftClickPacketMixin"],
-  "client": ["ModelManagerMixin", "UnlitQuadHooksAccessor"]
+  "client": ["client.ModelManagerMixin", "client.UnlitQuadHooksAccessor"]
 }
