@@ -39,9 +39,9 @@ run {
 
         versionCatalogs {
             create("libs") {
-                version("neoforge", "21.0.13-beta")
+                version("neoforge", "21.0.87-beta")
 
-                version("ae2", "19.0.5-alpha")
+                version("ae2", "19.0.11-alpha")
                 library("ae2", "appeng", "appliedenergistics2").versionRef("ae2")
 
                 version("requester", "1.20.4-1.1.6")

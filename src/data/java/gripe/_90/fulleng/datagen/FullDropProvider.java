@@ -40,13 +40,13 @@ public class FullDropProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            for (var block : FullEngBlocks.getBlocks()) {
+            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
                 add(
-                        block.block(),
+                        block.get(),
                         LootTable.lootTable()
                                 .withPool(LootPool.lootPool()
                                         .setRolls(ConstantValue.exactly(1))
-                                        .add(LootItem.lootTableItem(block))
+                                        .add(LootItem.lootTableItem(block.get()))
                                         .when(ExplosionCondition.survivesExplosion())));
             }
         }

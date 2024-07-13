@@ -20,8 +20,8 @@ public class FullTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        FullEngBlocks.getBlocks().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(BuiltInRegistries.BLOCK.getResourceKey(b.block()).orElseThrow()));
+        FullEngBlocks.BLOCKS.getEntries().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(BuiltInRegistries.BLOCK.getResourceKey(b.get()).orElseThrow()));
     }
 
     @NotNull

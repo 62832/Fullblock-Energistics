@@ -34,7 +34,7 @@ import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 import gripe._90.fulleng.client.MonitorBlockEntityRenderer;
-import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBEs;
 import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.Addons;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
@@ -49,7 +49,10 @@ public class FullblockEnergistics {
     }
 
     public FullblockEnergistics(IEventBus modEventBus) {
-        modEventBus.addListener(this::registerAll);
+        FullEngBlocks.register(modEventBus);
+        FullEngBEs.DR.register(modEventBus);
+
+        modEventBus.addListener(this::register);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::addToCreativeTab);
 
@@ -58,15 +61,7 @@ public class FullblockEnergistics {
         }
     }
 
-    private void registerAll(RegisterEvent event) {
-        FullEngBlocks.getBlocks().forEach(block -> {
-            event.register(Registries.BLOCK, block.id(), block::block);
-            event.register(Registries.ITEM, block.id(), block::asItem);
-        });
-
-        event.register(Registries.BLOCK_ENTITY_TYPE, helper -> FullEngBlockEntities.getBlockEntities()
-                .forEach(helper::register));
-
+    private void register(RegisterEvent event) {
         if (Addons.MEREQUESTER.isLoaded()) {
             event.register(
                     Registries.MENU, AppEng.makeId("requester_terminal_f"), () -> RequesterTerminalMenu.TYPE_FULLBLOCK);
@@ -74,14 +69,14 @@ public class FullblockEnergistics {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        for (var type : FullEngBlockEntities.getBlockEntities().values()) {
+        for (var type : FullEngBEs.DR.getEntries()) {
             event.registerBlockEntity(
-                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type, (be, context) -> (IInWorldGridNodeHost) be);
+                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
         }
 
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
-                FullEngBlockEntities.PATTERN_ENCODING_TERMINAL,
+                FullEngBEs.PATTERN_ENCODING_TERMINAL.get(),
                 (be, context) -> context != Direction.NORTH
                         ? be.getLogic().getBlankPatternInv().toItemHandler()
                         : null);
@@ -89,7 +84,7 @@ public class FullblockEnergistics {
 
     private void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
-            FullEngBlocks.getBlocks().forEach(event::accept);
+            FullEngBlocks.BLOCKS.getEntries().forEach(b -> event.accept(b.get()));
         }
     }
 
@@ -109,19 +104,19 @@ public class FullblockEnergistics {
         }
 
         private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders ignoredEvent) {
-            BlockEntityRenderers.register(FullEngBlockEntities.STORAGE_MONITOR, MonitorBlockEntityRenderer::new);
-            BlockEntityRenderers.register(FullEngBlockEntities.CONVERSION_MONITOR, MonitorBlockEntityRenderer::new);
+            BlockEntityRenderers.register(FullEngBEs.STORAGE_MONITOR.get(), MonitorBlockEntityRenderer::new);
+            BlockEntityRenderers.register(FullEngBEs.CONVERSION_MONITOR.get(), MonitorBlockEntityRenderer::new);
         }
 
         private void registerBlockColourProviders(RegisterColorHandlersEvent.Block event) {
-            for (var block : FullEngBlocks.getBlocks()) {
-                event.register(new ColorableBlockEntityBlockColor(), block.block());
+            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
+                event.register(new ColorableBlockEntityBlockColor(), block.get());
             }
         }
 
         private void registerItemColourProviders(RegisterColorHandlersEvent.Item event) {
-            for (var block : FullEngBlocks.getBlocks()) {
-                event.register(new StaticItemColor(AEColor.TRANSPARENT), block.asItem());
+            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
+                event.register(new StaticItemColor(AEColor.TRANSPARENT), block.get());
             }
         }
 

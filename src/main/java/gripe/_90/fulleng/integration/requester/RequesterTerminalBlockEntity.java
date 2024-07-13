@@ -7,12 +7,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import appeng.api.util.IConfigManagerBuilder;
 
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
-import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBEs;
 import gripe._90.fulleng.integration.Addons;
 
 public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     public RequesterTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullEngBlockEntities.REQUESTER_TERMINAL, pos, blockState);
+        super(FullEngBEs.REQUESTER_TERMINAL.get(), pos, blockState);
     }
 
     @Override

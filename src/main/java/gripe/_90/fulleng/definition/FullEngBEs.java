@@ -1,15 +1,13 @@
 package gripe._90.fulleng.definition;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.Supplier;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import appeng.block.AEBaseEntityBlock;
 import appeng.blockentity.AEBaseBlockEntity;
-import appeng.core.definitions.BlockDefinition;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
@@ -20,58 +18,56 @@ import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntit
 import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
 
-public class FullEngBlockEntities {
-    private static final Map<ResourceLocation, BlockEntityType<?>> BLOCK_ENTITIES = new HashMap<>();
+public class FullEngBEs {
+    public static final DeferredRegister<BlockEntityType<?>> DR =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, FullblockEnergistics.MODID);
 
-    public static Map<ResourceLocation, BlockEntityType<?>> getBlockEntities() {
-        return Collections.unmodifiableMap(BLOCK_ENTITIES);
-    }
-
-    public static final BlockEntityType<StorageTerminalBlockEntity> TERMINAL = blockEntity(
-            "terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
-    public static final BlockEntityType<CraftingTerminalBlockEntity> CRAFTING_TERMINAL = blockEntity(
+    public static final Supplier<BlockEntityType<StorageTerminalBlockEntity>> TERMINAL =
+            be("terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, FullEngBlocks.TERMINAL);
+    public static final Supplier<BlockEntityType<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL = be(
             "crafting_terminal",
             CraftingTerminalBlockEntity.class,
             CraftingTerminalBlockEntity::new,
             FullEngBlocks.CRAFTING_TERMINAL);
-    public static final BlockEntityType<PatternEncodingTerminalBlockEntity> PATTERN_ENCODING_TERMINAL = blockEntity(
+    public static final Supplier<BlockEntityType<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL = be(
             "pattern_encoding_terminal",
             PatternEncodingTerminalBlockEntity.class,
             PatternEncodingTerminalBlockEntity::new,
             FullEngBlocks.PATTERN_ENCODING_TERMINAL);
-    public static final BlockEntityType<PatternAccessTerminalBlockEntity> PATTERN_ACCESS_TERMINAL = blockEntity(
+    public static final Supplier<BlockEntityType<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL = be(
             "pattern_access_terminal",
             PatternAccessTerminalBlockEntity.class,
             PatternAccessTerminalBlockEntity::new,
             FullEngBlocks.PATTERN_ACCESS_TERMINAL);
 
-    public static final BlockEntityType<StorageMonitorBlockEntity> STORAGE_MONITOR = blockEntity(
+    public static final Supplier<BlockEntityType<StorageMonitorBlockEntity>> STORAGE_MONITOR = be(
             "storage_monitor",
             StorageMonitorBlockEntity.class,
             StorageMonitorBlockEntity::new,
             FullEngBlocks.STORAGE_MONITOR);
-    public static final BlockEntityType<ConversionMonitorBlockEntity> CONVERSION_MONITOR = blockEntity(
+    public static final Supplier<BlockEntityType<ConversionMonitorBlockEntity>> CONVERSION_MONITOR = be(
             "conversion_monitor",
             ConversionMonitorBlockEntity.class,
             ConversionMonitorBlockEntity::new,
             FullEngBlocks.CONVERSION_MONITOR);
 
-    public static final BlockEntityType<RequesterTerminalBlockEntity> REQUESTER_TERMINAL = blockEntity(
+    public static final Supplier<BlockEntityType<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = be(
             "requester_terminal",
             RequesterTerminalBlockEntity.class,
             RequesterTerminalBlockEntity::new,
             FullEngBlocks.REQUESTER_TERMINAL);
 
     @SuppressWarnings("DataFlowIssue")
-    static <T extends AEBaseBlockEntity> BlockEntityType<T> blockEntity(
+    static <T extends AEBaseBlockEntity> Supplier<BlockEntityType<T>> be(
             String id,
             Class<T> entityClass,
             BlockEntityType.BlockEntitySupplier<T> supplier,
-            BlockDefinition<? extends AEBaseEntityBlock<T>> block) {
-        var type = BlockEntityType.Builder.of(supplier, block.block()).build(null);
-        BLOCK_ENTITIES.put(FullblockEnergistics.makeId(id), type);
-        AEBaseBlockEntity.registerBlockEntityItem(type, block.asItem());
-        block.block().setBlockEntity(entityClass, type, null, null);
-        return type;
+            Supplier<? extends AEBaseEntityBlock<T>> block) {
+        return DR.register(id, () -> {
+            var type = BlockEntityType.Builder.of(supplier, block.get()).build(null);
+            AEBaseBlockEntity.registerBlockEntityItem(type, block.get().asItem());
+            block.get().setBlockEntity(entityClass, type, null, null);
+            return type;
+        });
     }
 }

@@ -29,14 +29,14 @@ import appeng.menu.me.common.MEStorageMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-import gripe._90.fulleng.definition.FullEngBlockEntities;
+import gripe._90.fulleng.definition.FullEngBEs;
 
 public class StorageTerminalBlockEntity extends TerminalBlockEntity
         implements ITerminalHost, IViewCellStorage, InternalInventoryHost {
     private final AppEngInternalInventory viewCell = new AppEngInternalInventory(this, 5);
 
     public StorageTerminalBlockEntity(BlockPos pos, BlockState state) {
-        this(FullEngBlockEntities.TERMINAL, pos, state);
+        this(FullEngBEs.TERMINAL.get(), pos, state);
     }
 
     public StorageTerminalBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {

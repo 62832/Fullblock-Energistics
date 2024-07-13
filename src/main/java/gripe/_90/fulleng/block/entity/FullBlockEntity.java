@@ -14,9 +14,9 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
-import appeng.blockentity.grid.AENetworkBlockEntity;
+import appeng.blockentity.grid.AENetworkedBlockEntity;
 
-public abstract class FullBlockEntity extends AENetworkBlockEntity implements IColorableBlockEntity {
+public abstract class FullBlockEntity extends AENetworkedBlockEntity implements IColorableBlockEntity {
     private AEColor paintedColour = AEColor.TRANSPARENT;
     private boolean isActive = false;
 

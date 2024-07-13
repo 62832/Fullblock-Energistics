@@ -11,8 +11,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-
-import appeng.core.definitions.BlockDefinition;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.FullBlock;
@@ -39,8 +38,8 @@ public class FullRecipeProvider extends RecipeProvider {
         }
     }
 
-    private void block(RecipeOutput output, BlockDefinition<? extends FullBlock<?>> block) {
-        var part = block.block().getEquivalentPart();
+    private void block(RecipeOutput output, DeferredBlock<? extends FullBlock<?>> block) {
+        var part = block.get().getEquivalentPart();
         var partId = BuiltInRegistries.ITEM.getKey(part.asItem()).getPath();
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block)

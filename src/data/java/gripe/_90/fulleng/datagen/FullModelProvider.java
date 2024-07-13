@@ -1,14 +1,15 @@
 package gripe._90.fulleng.datagen;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
-import appeng.core.definitions.BlockDefinition;
 import appeng.datagen.providers.models.AE2BlockStateProvider;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -36,7 +37,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
         terminal(FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
     }
 
-    private void terminal(BlockDefinition<?> terminal, String texturePrefix) {
+    private void terminal(DeferredBlock<?> terminal, String texturePrefix) {
         var existing = models().existingFileHelper;
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
@@ -44,21 +45,22 @@ public class FullModelProvider extends AE2BlockStateProvider {
 
         var onModel = terminal != FullEngBlocks.TERMINAL
                 ? models().withExistingParent(
-                                "block/" + terminal.id().getPath(), FullblockEnergistics.MODID + ":block/terminal")
+                                "block/" + terminal.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                         .texture("lightsBright", texturePrefix + "_bright")
                         .texture("lightsMedium", texturePrefix + "_medium")
                         .texture("lightsDark", texturePrefix + "_dark")
                         .renderType("cutout")
                 : models().getExistingFile(FullblockEnergistics.makeId("block/terminal"));
 
-        multiVariantGenerator(terminal, Variant.variant())
+        var builder = MultiVariantGenerator.multiVariant(terminal.get())
                 .with(createFacingSpinDispatch())
                 .with(PropertyDispatch.property(FullBlock.POWERED).generate(powered -> Variant.variant()
                         .with(VariantProperties.MODEL, powered ? onModel.getLocation() : TERMINAL_OFF)));
-        simpleBlockItem(terminal.block(), onModel);
+        registeredBlocks.put(terminal.get(), () -> builder.get().getAsJsonObject());
+        simpleBlockItem(terminal.get(), onModel);
     }
 
-    private void monitor(BlockDefinition<?> monitor, String texturePrefix) {
+    private void monitor(DeferredBlock<?> monitor, String texturePrefix) {
         var existing = models().existingFileHelper;
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
@@ -66,19 +68,19 @@ public class FullModelProvider extends AE2BlockStateProvider {
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark_locked"), ModelProvider.TEXTURE);
 
         var unlockedModel = models().withExistingParent(
-                        "block/" + monitor.id().getPath(), FullblockEnergistics.MODID + ":block/terminal")
+                        "block/" + monitor.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                 .texture("lightsBright", texturePrefix + "_bright")
                 .texture("lightsMedium", texturePrefix + "_medium")
                 .texture("lightsDark", texturePrefix + "_dark")
                 .renderType("cutout");
         var lockedModel = models().withExistingParent(
-                        "block/" + monitor.id().getPath(), FullblockEnergistics.MODID + ":block/terminal")
+                        "block/" + monitor.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                 .texture("lightsBright", texturePrefix + "_bright")
                 .texture("lightsMedium", texturePrefix + "_medium")
                 .texture("lightsDark", texturePrefix + "_dark_locked")
                 .renderType("cutout");
 
-        multiVariantGenerator(monitor, Variant.variant())
+        var builder = MultiVariantGenerator.multiVariant(monitor.get())
                 .with(createFacingSpinDispatch())
                 .with(PropertyDispatch.properties(FullBlock.POWERED, MonitorBlock.LOCKED)
                         .generate((powered, locked) -> Variant.variant()
@@ -87,7 +89,8 @@ public class FullModelProvider extends AE2BlockStateProvider {
                                         !powered
                                                 ? TERMINAL_OFF
                                                 : locked ? lockedModel.getLocation() : unlockedModel.getLocation())));
-        simpleBlockItem(monitor.block(), unlockedModel);
+        registeredBlocks.put(monitor.get(), () -> builder.get().getAsJsonObject());
+        simpleBlockItem(monitor.get(), unlockedModel);
     }
 
     @Override
