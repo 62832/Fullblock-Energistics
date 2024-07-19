@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import gripe._90.fulleng.definition.FullEngBlocks;
+import gripe._90.fulleng.FullblockEnergistics;
 
 public class FullDropProvider extends LootTableProvider {
     public FullDropProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -40,7 +40,7 @@ public class FullDropProvider extends LootTableProvider {
 
         @Override
         public void generate() {
-            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
+            for (var block : FullblockEnergistics.BLOCKS.getEntries()) {
                 add(
                         block.get(),
                         LootTable.lootTable()

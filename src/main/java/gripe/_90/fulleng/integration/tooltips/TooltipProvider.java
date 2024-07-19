@@ -1,5 +1,7 @@
 package gripe._90.fulleng.integration.tooltips;
 
+import net.minecraft.resources.ResourceLocation;
+
 import appeng.api.integrations.igtooltip.ClientRegistration;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -15,7 +17,7 @@ public class TooltipProvider implements appeng.api.integrations.igtooltip.Toolti
         registration.addBlockEntityBody(
                 StorageMonitorBlockEntity.class,
                 MonitorBlock.class,
-                FullblockEnergistics.makeId(STORAGE_MONITOR),
+                ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, STORAGE_MONITOR),
                 new MonitorDataProvider());
     }
 }

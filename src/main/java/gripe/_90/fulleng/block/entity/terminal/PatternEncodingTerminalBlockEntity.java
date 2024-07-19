@@ -16,14 +16,14 @@ import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.parts.encoding.PatternEncodingLogic;
 import appeng.util.inv.AppEngInternalInventory;
 
-import gripe._90.fulleng.definition.FullEngBEs;
+import gripe._90.fulleng.FullblockEnergistics;
 
 public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEntity
         implements IPatternTerminalLogicHost, IPatternTerminalMenuHost {
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
     public PatternEncodingTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullEngBEs.PATTERN_ENCODING_TERMINAL.get(), pos, blockState);
+        super(FullblockEnergistics.PATTERN_ENCODING_TERMINAL_BE.get(), pos, blockState);
     }
 
     @Override

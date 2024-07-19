@@ -15,10 +15,10 @@ import appeng.datagen.providers.models.AE2BlockStateProvider;
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.FullBlock;
 import gripe._90.fulleng.block.MonitorBlock;
-import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class FullModelProvider extends AE2BlockStateProvider {
-    private static final ResourceLocation TERMINAL_OFF = FullblockEnergistics.makeId("block/terminal_off");
+    private static final ResourceLocation TERMINAL_OFF =
+            ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, "block/terminal_off");
 
     public FullModelProvider(PackOutput output, ExistingFileHelper existing) {
         super(output, FullblockEnergistics.MODID, existing);
@@ -26,15 +26,15 @@ public class FullModelProvider extends AE2BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        terminal(FullEngBlocks.TERMINAL, "ae2:part/terminal");
-        terminal(FullEngBlocks.CRAFTING_TERMINAL, "ae2:part/crafting_terminal");
-        terminal(FullEngBlocks.PATTERN_ENCODING_TERMINAL, "ae2:part/pattern_encoding_terminal");
-        terminal(FullEngBlocks.PATTERN_ACCESS_TERMINAL, "ae2:part/pattern_access_terminal");
+        terminal(FullblockEnergistics.TERMINAL, "ae2:part/terminal");
+        terminal(FullblockEnergistics.CRAFTING_TERMINAL, "ae2:part/crafting_terminal");
+        terminal(FullblockEnergistics.PATTERN_ENCODING_TERMINAL, "ae2:part/pattern_encoding_terminal");
+        terminal(FullblockEnergistics.PATTERN_ACCESS_TERMINAL, "ae2:part/pattern_access_terminal");
 
-        monitor(FullEngBlocks.STORAGE_MONITOR, "ae2:part/storage_monitor");
-        monitor(FullEngBlocks.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
+        monitor(FullblockEnergistics.STORAGE_MONITOR, "ae2:part/storage_monitor");
+        monitor(FullblockEnergistics.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
 
-        terminal(FullEngBlocks.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
+        terminal(FullblockEnergistics.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
     }
 
     private void terminal(DeferredBlock<?> terminal, String texturePrefix) {
@@ -43,14 +43,15 @@ public class FullModelProvider extends AE2BlockStateProvider {
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
         existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark"), ModelProvider.TEXTURE);
 
-        var onModel = terminal != FullEngBlocks.TERMINAL
+        var onModel = terminal != FullblockEnergistics.TERMINAL
                 ? models().withExistingParent(
                                 "block/" + terminal.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                         .texture("lightsBright", texturePrefix + "_bright")
                         .texture("lightsMedium", texturePrefix + "_medium")
                         .texture("lightsDark", texturePrefix + "_dark")
                         .renderType("cutout")
-                : models().getExistingFile(FullblockEnergistics.makeId("block/terminal"));
+                : models().getExistingFile(
+                                ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, "block/terminal"));
 
         var builder = MultiVariantGenerator.multiVariant(terminal.get())
                 .with(createFacingSpinDispatch())

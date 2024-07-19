@@ -23,8 +23,8 @@ import appeng.api.stacks.AmountFormat;
 import appeng.api.util.INetworkToolAware;
 import appeng.core.localization.PlayerMessages;
 
+import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.FullBlockEntity;
-import gripe._90.fulleng.definition.FullEngBEs;
 
 @SuppressWarnings("UnstableApiUsage")
 public class StorageMonitorBlockEntity extends FullBlockEntity implements INetworkToolAware {
@@ -39,7 +39,7 @@ public class StorageMonitorBlockEntity extends FullBlockEntity implements INetwo
     private IStackWatcher craftingWatcher;
 
     public StorageMonitorBlockEntity(BlockPos pos, BlockState state) {
-        this(FullEngBEs.STORAGE_MONITOR.get(), pos, state);
+        this(FullblockEnergistics.STORAGE_MONITOR_BE.get(), pos, state);
     }
 
     public StorageMonitorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

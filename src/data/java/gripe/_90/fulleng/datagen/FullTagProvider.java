@@ -11,7 +11,6 @@ import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 
 import gripe._90.fulleng.FullblockEnergistics;
-import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class FullTagProvider extends BlockTagsProvider {
     public FullTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
@@ -20,7 +19,7 @@ public class FullTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
-        FullEngBlocks.BLOCKS.getEntries().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        FullblockEnergistics.BLOCKS.getEntries().forEach(b -> tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(BuiltInRegistries.BLOCK.getResourceKey(b.get()).orElseThrow()));
     }
 

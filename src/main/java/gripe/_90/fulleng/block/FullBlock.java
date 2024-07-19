@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.MapColor;
 import appeng.api.orientation.IOrientationStrategy;
 import appeng.api.orientation.OrientationStrategies;
 import appeng.block.AEBaseEntityBlock;
+import appeng.core.definitions.AEItems;
 
 import gripe._90.fulleng.block.entity.FullBlockEntity;
 
@@ -50,6 +51,10 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
 
     public ItemLike getEquivalentPart() {
         return equivalentPart;
+    }
+
+    public boolean shouldShowInCreative() {
+        return equivalentPart != AEItems.MISSING_CONTENT;
     }
 
     @NotNull

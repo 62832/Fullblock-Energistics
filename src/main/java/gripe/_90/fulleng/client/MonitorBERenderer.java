@@ -12,8 +12,8 @@ import appeng.client.render.BlockEntityRenderHelper;
 
 import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 
-public class MonitorBlockEntityRenderer<E extends StorageMonitorBlockEntity> implements BlockEntityRenderer<E> {
-    public MonitorBlockEntityRenderer(BlockEntityRendererProvider.Context ignoredContext) {}
+public class MonitorBERenderer<E extends StorageMonitorBlockEntity> implements BlockEntityRenderer<E> {
+    public MonitorBERenderer(BlockEntityRendererProvider.Context ignoredContext) {}
 
     @Override
     public void render(

@@ -11,11 +11,11 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.FullBlock;
-import gripe._90.fulleng.definition.FullEngBlocks;
 import gripe._90.fulleng.integration.Addons;
 
 public class FullRecipeProvider extends RecipeProvider {
@@ -25,16 +25,16 @@ public class FullRecipeProvider extends RecipeProvider {
 
     @Override
     public void buildRecipes(@NotNull RecipeOutput output) {
-        block(output, FullEngBlocks.TERMINAL);
-        block(output, FullEngBlocks.CRAFTING_TERMINAL);
-        block(output, FullEngBlocks.PATTERN_ENCODING_TERMINAL);
-        block(output, FullEngBlocks.PATTERN_ACCESS_TERMINAL);
+        block(output, FullblockEnergistics.TERMINAL);
+        block(output, FullblockEnergistics.CRAFTING_TERMINAL);
+        block(output, FullblockEnergistics.PATTERN_ENCODING_TERMINAL);
+        block(output, FullblockEnergistics.PATTERN_ACCESS_TERMINAL);
 
-        block(output, FullEngBlocks.STORAGE_MONITOR);
-        block(output, FullEngBlocks.CONVERSION_MONITOR);
+        block(output, FullblockEnergistics.STORAGE_MONITOR);
+        block(output, FullblockEnergistics.CONVERSION_MONITOR);
 
         if (Addons.MEREQUESTER.isLoaded()) {
-            block(Addons.MEREQUESTER.conditionalOutput(output), FullEngBlocks.REQUESTER_TERMINAL);
+            block(Addons.MEREQUESTER.conditionalOutput(output), FullblockEnergistics.REQUESTER_TERMINAL);
         }
     }
 
@@ -45,10 +45,16 @@ public class FullRecipeProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, block)
                 .requires(part)
                 .unlockedBy("has_" + partId, has(part))
-                .save(output, FullblockEnergistics.makeId("terminals/block_" + partId + "_from_part"));
+                .save(
+                        output,
+                        ResourceLocation.fromNamespaceAndPath(
+                                FullblockEnergistics.MODID, "terminals/block_" + partId + "_from_part"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, part)
                 .requires(block)
                 .unlockedBy("has_" + partId, has(part))
-                .save(output, FullblockEnergistics.makeId("terminals/part_" + partId + "_from_block"));
+                .save(
+                        output,
+                        ResourceLocation.fromNamespaceAndPath(
+                                FullblockEnergistics.MODID, "terminals/part_" + partId + "_from_block"));
     }
 }

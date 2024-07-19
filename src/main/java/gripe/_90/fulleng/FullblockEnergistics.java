@@ -1,140 +1,151 @@
 package gripe._90.fulleng;
 
-import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import appeng.api.AECapabilities;
 import appeng.api.ids.AECreativeTabIds;
 import appeng.api.networking.IInWorldGridNodeHost;
-import appeng.api.util.AEColor;
-import appeng.client.render.ColorableBlockEntityBlockColor;
-import appeng.client.render.StaticItemColor;
-import appeng.core.AppEng;
-import appeng.core.network.serverbound.PartLeftClickPacket;
+import appeng.block.AEBaseBlockItem;
+import appeng.block.AEBaseEntityBlock;
+import appeng.blockentity.AEBaseBlockEntity;
+import appeng.core.definitions.AEItems;
+import appeng.core.definitions.AEParts;
+import appeng.core.definitions.ItemDefinition;
+import appeng.items.parts.PartItem;
+import appeng.parts.reporting.AbstractDisplayPart;
+import appeng.parts.reporting.AbstractMonitorPart;
 
+import gripe._90.fulleng.block.FullBlock;
+import gripe._90.fulleng.block.MonitorBlock;
+import gripe._90.fulleng.block.TerminalBlock;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
-import gripe._90.fulleng.client.MonitorBlockEntityRenderer;
-import gripe._90.fulleng.definition.FullEngBEs;
-import gripe._90.fulleng.definition.FullEngBlocks;
+import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.CraftingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.PatternAccessTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
+import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.integration.Addons;
+import gripe._90.fulleng.integration.IntegrationBlockItem;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
-import gripe._90.fulleng.integration.requester.RequesterTerminalMenu;
+import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
 
 @Mod(FullblockEnergistics.MODID)
 public class FullblockEnergistics {
     public static final String MODID = "fulleng";
 
-    public static ResourceLocation makeId(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
-    }
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
-    public FullblockEnergistics(IEventBus modEventBus) {
-        FullEngBlocks.register(modEventBus);
-        FullEngBEs.DR.register(modEventBus);
+    // spotless:off
+    public static final DeferredBlock<TerminalBlock<StorageTerminalBlockEntity>> TERMINAL = terminal(AEParts.TERMINAL);
+    public static final DeferredBlock<TerminalBlock<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL = terminal(AEParts.CRAFTING_TERMINAL);
+    public static final DeferredBlock<TerminalBlock<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL = terminal(AEParts.PATTERN_ENCODING_TERMINAL);
+    public static final DeferredBlock<TerminalBlock<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL = terminal(AEParts.PATTERN_ACCESS_TERMINAL);
 
-        modEventBus.addListener(this::register);
-        modEventBus.addListener(this::registerCapabilities);
-        modEventBus.addListener(this::addToCreativeTab);
+    public static final DeferredBlock<MonitorBlock<StorageMonitorBlockEntity>> STORAGE_MONITOR = monitor(AEParts.STORAGE_MONITOR);
+    public static final DeferredBlock<MonitorBlock<ConversionMonitorBlockEntity>> CONVERSION_MONITOR = monitor(AEParts.CONVERSION_MONITOR);
+    // spotless:on
 
-        if (FMLEnvironment.dist.isClient()) {
-            new Client(modEventBus);
-        }
-    }
+    public static final DeferredBlock<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block(
+            "requester_terminal",
+            () -> new TerminalBlock<>(
+                    Addons.MEREQUESTER.isLoaded()
+                            ? RequesterIntegration.getRequesterTerminalPart()
+                            : AEItems.MISSING_CONTENT),
+            block -> new IntegrationBlockItem(block, Addons.MEREQUESTER));
 
-    private void register(RegisterEvent event) {
-        if (Addons.MEREQUESTER.isLoaded()) {
-            event.register(
-                    Registries.MENU, AppEng.makeId("requester_terminal_f"), () -> RequesterTerminalMenu.TYPE_FULLBLOCK);
-        }
-    }
+    private static final DeferredRegister<BlockEntityType<?>> BE_TYPES =
+            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 
-    private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        for (var type : FullEngBEs.DR.getEntries()) {
+    // spotless:off
+    public static final Supplier<BlockEntityType<StorageTerminalBlockEntity>> TERMINAL_BE = be("terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, TERMINAL);
+    public static final Supplier<BlockEntityType<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL_BE = be("crafting_terminal", CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, CRAFTING_TERMINAL);
+    public static final Supplier<BlockEntityType<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL_BE = be("pattern_encoding_terminal", PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, PATTERN_ENCODING_TERMINAL);
+    public static final Supplier<BlockEntityType<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL_BE = be("pattern_access_terminal", PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, PATTERN_ACCESS_TERMINAL);
+
+    public static final Supplier<BlockEntityType<StorageMonitorBlockEntity>> STORAGE_MONITOR_BE = be("storage_monitor", StorageMonitorBlockEntity.class, StorageMonitorBlockEntity::new, STORAGE_MONITOR);
+    public static final Supplier<BlockEntityType<ConversionMonitorBlockEntity>> CONVERSION_MONITOR_BE = be("conversion_monitor", ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, CONVERSION_MONITOR);
+
+    public static final Supplier<BlockEntityType<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BE = be("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL);
+    // spotless:on
+
+    public FullblockEnergistics(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
+        BE_TYPES.register(eventBus);
+
+        eventBus.addListener((RegisterCapabilitiesEvent event) -> {
+            for (var type : BE_TYPES.getEntries()) {
+                event.registerBlockEntity(
+                        AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
+            }
+
             event.registerBlockEntity(
-                    AECapabilities.IN_WORLD_GRID_NODE_HOST, type.get(), (be, context) -> (IInWorldGridNodeHost) be);
-        }
+                    Capabilities.ItemHandler.BLOCK,
+                    PATTERN_ENCODING_TERMINAL_BE.get(),
+                    (be, context) -> context != Direction.NORTH
+                            ? be.getLogic().getBlankPatternInv().toItemHandler()
+                            : null);
+        });
 
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
-                FullEngBEs.PATTERN_ENCODING_TERMINAL.get(),
-                (be, context) -> context != Direction.NORTH
-                        ? be.getLogic().getBlankPatternInv().toItemHandler()
-                        : null);
-    }
-
-    private void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
-            FullEngBlocks.BLOCKS.getEntries().forEach(b -> event.accept(b.get()));
-        }
-    }
-
-    private static class Client {
-        private Client(IEventBus modEventBus) {
-            modEventBus.addListener(this::initScreens);
-            modEventBus.addListener(this::initBlockEntityRenders);
-            modEventBus.addListener(this::registerBlockColourProviders);
-            modEventBus.addListener(this::registerItemColourProviders);
-            NeoForge.EVENT_BUS.addListener(this::addConversionMonitorHook);
-        }
-
-        private void initScreens(RegisterMenuScreensEvent event) {
-            if (Addons.MEREQUESTER.isLoaded()) {
-                RequesterIntegration.initScreen(event);
-            }
-        }
-
-        private void initBlockEntityRenders(ModelEvent.RegisterGeometryLoaders ignoredEvent) {
-            BlockEntityRenderers.register(FullEngBEs.STORAGE_MONITOR.get(), MonitorBlockEntityRenderer::new);
-            BlockEntityRenderers.register(FullEngBEs.CONVERSION_MONITOR.get(), MonitorBlockEntityRenderer::new);
-        }
-
-        private void registerBlockColourProviders(RegisterColorHandlersEvent.Block event) {
-            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
-                event.register(new ColorableBlockEntityBlockColor(), block.get());
-            }
-        }
-
-        private void registerItemColourProviders(RegisterColorHandlersEvent.Item event) {
-            for (var block : FullEngBlocks.BLOCKS.getEntries()) {
-                event.register(new StaticItemColor(AEColor.TRANSPARENT), block.get());
-            }
-        }
-
-        private void addConversionMonitorHook(PlayerInteractEvent.LeftClickBlock event) {
-            var level = event.getLevel();
-
-            if (level.isClientSide()) {
-                if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
-                    return;
-                }
-
-                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor
-                        && hitResult.getDirection() == monitor.getFront()) {
-                    PacketDistributor.sendToServer(
-                            new PartLeftClickPacket(hitResult, event.getEntity().isShiftKeyDown()));
-                    Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
-                    event.setCanceled(true);
+        eventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
+            if (event.getTabKey().equals(AECreativeTabIds.MAIN)) {
+                for (var block : BLOCKS.getEntries()) {
+                    if (block.get() instanceof FullBlock<?> fullBlock && fullBlock.shouldShowInCreative()) {
+                        event.accept(fullBlock);
+                    }
                 }
             }
-        }
+        });
+    }
+
+    private static <P extends AbstractDisplayPart, E extends TerminalBlockEntity>
+            DeferredBlock<TerminalBlock<E>> terminal(ItemDefinition<PartItem<P>> equivalentPart) {
+        return block(equivalentPart.id().getPath(), () -> new TerminalBlock<>(equivalentPart));
+    }
+
+    private static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
+            DeferredBlock<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
+        return block(equivalentPart.id().getPath(), () -> new MonitorBlock<>(equivalentPart));
+    }
+
+    private static <T extends Block> DeferredBlock<T> block(String id, Supplier<T> supplier) {
+        return block(id, supplier, block -> new AEBaseBlockItem(block, new Item.Properties()));
+    }
+
+    private static <T extends Block> DeferredBlock<T> block(
+            String id, Supplier<T> blockSupplier, Function<T, ? extends AEBaseBlockItem> itemFunction) {
+        var block = BLOCKS.register(id, blockSupplier);
+        ITEMS.register(id, () -> itemFunction.apply(block.get()));
+        return block;
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    private static <T extends AEBaseBlockEntity> Supplier<BlockEntityType<T>> be(
+            String id,
+            Class<T> entityClass,
+            BlockEntityType.BlockEntitySupplier<T> supplier,
+            Supplier<? extends AEBaseEntityBlock<T>> block) {
+        return BE_TYPES.register(id, () -> {
+            var type = BlockEntityType.Builder.of(supplier, block.get()).build(null);
+            AEBaseBlockEntity.registerBlockEntityItem(type, block.get().asItem());
+            block.get().setBlockEntity(entityClass, type, null, null);
+            return type;
+        });
     }
 }

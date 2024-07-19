@@ -16,13 +16,13 @@ import appeng.menu.me.items.CraftingTermMenu;
 import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 
-import gripe._90.fulleng.definition.FullEngBEs;
+import gripe._90.fulleng.FullblockEnergistics;
 
 public class CraftingTerminalBlockEntity extends StorageTerminalBlockEntity {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
 
     public CraftingTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullEngBEs.CRAFTING_TERMINAL.get(), pos, blockState);
+        super(FullblockEnergistics.CRAFTING_TERMINAL_BE.get(), pos, blockState);
     }
 
     @Override

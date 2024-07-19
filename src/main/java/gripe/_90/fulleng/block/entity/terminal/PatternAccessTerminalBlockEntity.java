@@ -14,11 +14,11 @@ import appeng.api.storage.IPatternAccessTermMenuHost;
 import appeng.api.util.IConfigManagerBuilder;
 import appeng.menu.implementations.PatternAccessTermMenu;
 
-import gripe._90.fulleng.definition.FullEngBEs;
+import gripe._90.fulleng.FullblockEnergistics;
 
 public class PatternAccessTerminalBlockEntity extends TerminalBlockEntity implements IPatternAccessTermMenuHost {
     public PatternAccessTerminalBlockEntity(BlockPos pos, BlockState blockState) {
-        super(FullEngBEs.PATTERN_ACCESS_TERMINAL.get(), pos, blockState);
+        super(FullblockEnergistics.PATTERN_ACCESS_TERMINAL_BE.get(), pos, blockState);
     }
 
     @Override

@@ -11,9 +11,9 @@ import appeng.core.definitions.ItemDefinition;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
 
+import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
-import gripe._90.fulleng.definition.FullEngBlocks;
 
 public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
     public TerminalBlock(ItemDefinition<?> equivalentPart) {
@@ -44,7 +44,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
-        return state.is(FullEngBlocks.PATTERN_ENCODING_TERMINAL.get());
+        return state.is(FullblockEnergistics.PATTERN_ENCODING_TERMINAL.get());
     }
 
     @Override
