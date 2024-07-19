@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import appeng.api.util.IConfigManagerBuilder;
-
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.definition.FullEngBEs;
 import gripe._90.fulleng.integration.Addons;
@@ -19,7 +17,4 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
     public MenuType<?> getMenuType() {
         return Addons.MEREQUESTER.isLoaded() ? RequesterTerminalMenu.TYPE_FULLBLOCK : null;
     }
-
-    @Override
-    protected void registerSettings(IConfigManagerBuilder builder) {}
 }

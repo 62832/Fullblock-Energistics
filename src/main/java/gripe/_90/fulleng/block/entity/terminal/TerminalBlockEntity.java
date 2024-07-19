@@ -41,7 +41,7 @@ public abstract class TerminalBlockEntity extends FullBlockEntity implements ICo
     @Nullable
     public abstract MenuType<?> getMenuType();
 
-    protected abstract void registerSettings(IConfigManagerBuilder builder);
+    protected void registerSettings(IConfigManagerBuilder builder) {}
 
     @Override
     public IConfigManager getConfigManager() {
