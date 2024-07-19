@@ -30,7 +30,6 @@ import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.core.AppEng;
 import appeng.core.network.serverbound.PartLeftClickPacket;
-import appeng.util.InteractionUtil;
 
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 import gripe._90.fulleng.client.MonitorBlockEntityRenderer;
@@ -128,9 +127,10 @@ public class FullblockEnergistics {
                     return;
                 }
 
-                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity) {
-                    PacketDistributor.sendToServer(new PartLeftClickPacket(
-                            hitResult, InteractionUtil.isInAlternateUseMode(event.getEntity())));
+                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor
+                        && hitResult.getDirection() == monitor.getFront()) {
+                    PacketDistributor.sendToServer(
+                            new PartLeftClickPacket(hitResult, event.getEntity().isShiftKeyDown()));
                     Objects.requireNonNull(Minecraft.getInstance().gameMode).destroyDelay = 5;
                     event.setCanceled(true);
                 }
