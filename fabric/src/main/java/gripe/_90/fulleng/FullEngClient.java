@@ -54,7 +54,7 @@ public class FullEngClient implements IAEAddonEntrypoint {
         InitScreens.<PatternAccessTerminalMenu, PatternAccessTermScreen<PatternAccessTerminalMenu>>register(
                 PatternAccessTerminalMenu.TYPE_FULLBLOCK,
                 PatternAccessTermScreen::new,
-                "/screens/pattern_access_terminal.json");
+                "/screens/terminals/pattern_access_terminal.json");
 
         if (FullblockEnergistics.PLATFORM.isRequesterLoaded()) {
             RequesterIntegration.initScreen();
