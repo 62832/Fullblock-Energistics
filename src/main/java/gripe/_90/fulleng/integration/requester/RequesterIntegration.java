@@ -1,6 +1,7 @@
 package gripe._90.fulleng.integration.requester;
 
 import com.almostreliable.merequester.Registration;
+import com.almostreliable.merequester.terminal.RequesterTerminalMenu;
 
 import net.minecraft.world.inventory.MenuType;
 
@@ -12,7 +13,6 @@ public final class RequesterIntegration {
     }
 
     static MenuType<?> getRequesterTerminalMenu() {
-        // TODO
-        return null;
+        return RequesterTerminalMenu.TYPE;
     }
 }

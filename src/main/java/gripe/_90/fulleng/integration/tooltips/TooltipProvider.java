@@ -10,14 +10,12 @@ import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 
 @SuppressWarnings("UnstableApiUsage")
 public class TooltipProvider implements appeng.api.integrations.igtooltip.TooltipProvider {
-    public static final String STORAGE_MONITOR = "storage_monitor";
-
     @Override
     public void registerClient(ClientRegistration registration) {
         registration.addBlockEntityBody(
                 StorageMonitorBlockEntity.class,
                 MonitorBlock.class,
-                ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, STORAGE_MONITOR),
+                ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, "storage_monitor"),
                 new MonitorDataProvider());
     }
 }
