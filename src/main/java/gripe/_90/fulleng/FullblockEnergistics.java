@@ -73,15 +73,15 @@ public class FullblockEnergistics {
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
 
     // spotless:off
-    public static final Supplier<BlockEntityType<StorageTerminalBlockEntity>> TERMINAL_BE = be("terminal", StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, TERMINAL);
-    public static final Supplier<BlockEntityType<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL_BE = be("crafting_terminal", CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, CRAFTING_TERMINAL);
-    public static final Supplier<BlockEntityType<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL_BE = be("pattern_encoding_terminal", PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, PATTERN_ENCODING_TERMINAL);
-    public static final Supplier<BlockEntityType<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL_BE = be("pattern_access_terminal", PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, PATTERN_ACCESS_TERMINAL);
+    public static final Supplier<BlockEntityType<StorageTerminalBlockEntity>> TERMINAL_BE = be(StorageTerminalBlockEntity.class, StorageTerminalBlockEntity::new, TERMINAL);
+    public static final Supplier<BlockEntityType<CraftingTerminalBlockEntity>> CRAFTING_TERMINAL_BE = be(CraftingTerminalBlockEntity.class, CraftingTerminalBlockEntity::new, CRAFTING_TERMINAL);
+    public static final Supplier<BlockEntityType<PatternEncodingTerminalBlockEntity>> PATTERN_ENCODING_TERMINAL_BE = be(PatternEncodingTerminalBlockEntity.class, PatternEncodingTerminalBlockEntity::new, PATTERN_ENCODING_TERMINAL);
+    public static final Supplier<BlockEntityType<PatternAccessTerminalBlockEntity>> PATTERN_ACCESS_TERMINAL_BE = be(PatternAccessTerminalBlockEntity.class, PatternAccessTerminalBlockEntity::new, PATTERN_ACCESS_TERMINAL);
 
-    public static final Supplier<BlockEntityType<StorageMonitorBlockEntity>> STORAGE_MONITOR_BE = be("storage_monitor", StorageMonitorBlockEntity.class, StorageMonitorBlockEntity::new, STORAGE_MONITOR);
-    public static final Supplier<BlockEntityType<ConversionMonitorBlockEntity>> CONVERSION_MONITOR_BE = be("conversion_monitor", ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, CONVERSION_MONITOR);
+    public static final Supplier<BlockEntityType<StorageMonitorBlockEntity>> STORAGE_MONITOR_BE = be(StorageMonitorBlockEntity.class, StorageMonitorBlockEntity::new, STORAGE_MONITOR);
+    public static final Supplier<BlockEntityType<ConversionMonitorBlockEntity>> CONVERSION_MONITOR_BE = be(ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, CONVERSION_MONITOR);
 
-    public static final Supplier<BlockEntityType<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BE = be("requester_terminal", RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL);
+    public static final Supplier<BlockEntityType<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BE = be(RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL);
     // spotless:on
 
     public FullblockEnergistics(IEventBus eventBus) {
@@ -137,11 +137,10 @@ public class FullblockEnergistics {
 
     @SuppressWarnings("DataFlowIssue")
     private static <T extends AEBaseBlockEntity> Supplier<BlockEntityType<T>> be(
-            String id,
             Class<T> entityClass,
             BlockEntityType.BlockEntitySupplier<T> supplier,
-            Supplier<? extends AEBaseEntityBlock<T>> block) {
-        return BE_TYPES.register(id, () -> {
+            DeferredBlock<? extends AEBaseEntityBlock<T>> block) {
+        return BE_TYPES.register(block.getId().getPath(), () -> {
             var type = BlockEntityType.Builder.of(supplier, block.get()).build(null);
             AEBaseBlockEntity.registerBlockEntityItem(type, block.get().asItem());
             block.get().setBlockEntity(entityClass, type, null, null);

@@ -76,7 +76,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
                                         VariantProperties.MODEL,
                                         !powered
                                                 ? TERMINAL_OFF
-                                                : locked ? lockedModel.getLocation() : unlockedModel.getLocation())));
+                                                : (locked ? lockedModel : unlockedModel).getLocation())));
         registeredBlocks.put(monitor.get(), builder.get()::getAsJsonObject);
         simpleBlockItem(monitor.get(), unlockedModel);
     }
