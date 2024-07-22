@@ -6,7 +6,6 @@ import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
 import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -37,18 +36,13 @@ public class FullModelProvider extends AE2BlockStateProvider {
         terminal(FullblockEnergistics.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
     }
 
-    private void terminal(DeferredBlock<?> terminal, String texturePrefix) {
-        var existing = models().existingFileHelper;
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark"), ModelProvider.TEXTURE);
-
+    private void terminal(DeferredBlock<?> terminal, String lightsTexture) {
         var onModel = terminal != FullblockEnergistics.TERMINAL
                 ? models().withExistingParent(
                                 "block/" + terminal.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
-                        .texture("lightsBright", texturePrefix + "_bright")
-                        .texture("lightsMedium", texturePrefix + "_medium")
-                        .texture("lightsDark", texturePrefix + "_dark")
+                        .texture("lightsBright", lightsTexture + "_bright")
+                        .texture("lightsMedium", lightsTexture + "_medium")
+                        .texture("lightsDark", lightsTexture + "_dark")
                         .renderType("cutout")
                 : models().getExistingFile(
                                 ResourceLocation.fromNamespaceAndPath(FullblockEnergistics.MODID, "block/terminal"));
@@ -57,22 +51,15 @@ public class FullModelProvider extends AE2BlockStateProvider {
                 .with(createFacingSpinDispatch())
                 .with(PropertyDispatch.property(FullBlock.POWERED).generate(powered -> Variant.variant()
                         .with(VariantProperties.MODEL, powered ? onModel.getLocation() : TERMINAL_OFF)));
-        registeredBlocks.put(terminal.get(), () -> builder.get().getAsJsonObject());
+        registeredBlocks.put(terminal.get(), builder.get()::getAsJsonObject);
         simpleBlockItem(terminal.get(), onModel);
     }
 
     private void monitor(DeferredBlock<?> monitor, String texturePrefix) {
-        var existing = models().existingFileHelper;
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_bright"), ModelProvider.TEXTURE);
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_medium"), ModelProvider.TEXTURE);
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark"), ModelProvider.TEXTURE);
-        existing.trackGenerated(ResourceLocation.parse(texturePrefix + "_dark_locked"), ModelProvider.TEXTURE);
-
         var unlockedModel = models().withExistingParent(
                         "block/" + monitor.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
                 .texture("lightsBright", texturePrefix + "_bright")
                 .texture("lightsMedium", texturePrefix + "_medium")
-                .texture("lightsDark", texturePrefix + "_dark")
                 .renderType("cutout");
         var lockedModel = models().withExistingParent(
                         "block/" + monitor.getId().getPath(), FullblockEnergistics.MODID + ":block/terminal")
@@ -90,7 +77,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
                                         !powered
                                                 ? TERMINAL_OFF
                                                 : locked ? lockedModel.getLocation() : unlockedModel.getLocation())));
-        registeredBlocks.put(monitor.get(), () -> builder.get().getAsJsonObject());
+        registeredBlocks.put(monitor.get(), builder.get()::getAsJsonObject);
         simpleBlockItem(monitor.get(), unlockedModel);
     }
 

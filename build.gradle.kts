@@ -59,7 +59,9 @@ neoForge {
                 "--mod", modId,
                 "--all",
                 "--output", file("src/generated/resources/").absolutePath,
-                "--existing", file("src/main/resources/").absolutePath
+                "--existing", file("src/main/resources/").absolutePath,
+                "--existing-mod", "ae2",
+                "--existing-mod", "merequester"
             )
             sourceSet = sourceSets.getByName("data")
         }
@@ -68,9 +70,7 @@ neoForge {
 
 tasks {
     jar {
-        from(rootProject.file("LICENSE")) {
-            rename { "${it}_$modId" }
-        }
+        from(rootProject.file("LICENSE"))
     }
 
     withType<JavaCompile> {
