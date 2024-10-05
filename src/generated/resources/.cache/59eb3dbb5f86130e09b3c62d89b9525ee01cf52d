@@ -1,0 +1,8 @@
+// 1.21.1	2024-10-05T23:48:33.621002084	Loot Tables
+6d48c91f75a4a70b114a88376df324d36feb3f82 data/fulleng/loot_table/blocks/conversion_monitor.json
+e76bf50874b1e9daf7a6fac48dbe8f4dde5c651b data/fulleng/loot_table/blocks/crafting_terminal.json
+56a0372cfde4f2ce279c6c6fa993ac4b811db24c data/fulleng/loot_table/blocks/pattern_access_terminal.json
+7617b19055e1f10180a6398383030f098ab9a78a data/fulleng/loot_table/blocks/pattern_encoding_terminal.json
+2f794e8097aa672055f64c6a673acc0c26564e57 data/fulleng/loot_table/blocks/requester_terminal.json
+45e82bc76070b7ee2fadbfa392afa54cb8fdca91 data/fulleng/loot_table/blocks/storage_monitor.json
+bac3178232cc8dacb955610360d34442078502ad data/fulleng/loot_table/blocks/terminal.json
