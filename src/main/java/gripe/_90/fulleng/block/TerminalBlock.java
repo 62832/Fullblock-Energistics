@@ -3,11 +3,11 @@ package gripe._90.fulleng.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import appeng.core.definitions.ItemDefinition;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
 
@@ -16,7 +16,7 @@ import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntit
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 
 public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
-    public TerminalBlock(ItemDefinition<?> equivalentPart) {
+    public TerminalBlock(ItemLike equivalentPart) {
         super(equivalentPart);
     }
 

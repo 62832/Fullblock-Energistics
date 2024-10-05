@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "merequester"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "merequester:requester_terminal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fulleng:requester_terminal"
+  }
+}

@@ -39,13 +39,13 @@ run {
 
         versionCatalogs {
             create("libs") {
-                version("neoforge", "21.0.87-beta")
+                version("neoforge", "21.1.36")
 
-                version("ae2", "19.0.11-alpha")
+                version("ae2", "19.0.21-beta")
                 library("ae2", "appeng", "appliedenergistics2").versionRef("ae2")
 
-                version("requester", "1.20.4-1.1.6")
-                library("requester", "maven.modrinth", "merequester").version("cj9FGAyI")
+                version("requester", "1.21.1-1.1.8")
+                library("requester", "maven.modrinth", "merequester").version("a7QNsSHf")
 
                 library("jade", "maven.modrinth", "jade").version("gF1TRsRm")
             }

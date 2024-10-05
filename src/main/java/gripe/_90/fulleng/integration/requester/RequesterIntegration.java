@@ -1,14 +1,13 @@
 package gripe._90.fulleng.integration.requester;
 
-import com.almostreliable.merequester.Registration;
+import com.almostreliable.merequester.core.Registration;
 import com.almostreliable.merequester.terminal.RequesterTerminalMenu;
 
 import net.minecraft.world.inventory.MenuType;
-
-import appeng.core.definitions.ItemDefinition;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 public final class RequesterIntegration {
-    public static ItemDefinition<?> getRequesterTerminalPart() {
+    public static DeferredItem<?> getRequesterTerminalPart() {
         return Registration.REQUESTER_TERMINAL;
     }
 

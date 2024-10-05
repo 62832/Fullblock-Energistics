@@ -4,6 +4,11 @@
   "package": "gripe._90.fulleng.mixin",
   "plugin": "gripe._90.fulleng.mixin.Plugin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["PartLeftClickPacketMixin"],
-  "client": ["client.ModelManagerMixin", "client.UnlitQuadHooksAccessor"]
+  "mixins": [
+    "PartLeftClickPacketMixin",
+    "merequester.RequesterTerminalBlockEntityMixin"
+  ],
+  "client": [
+    "client.ModelManagerMixin",
+    "client.UnlitQuadHooksAccessor"]
 }
