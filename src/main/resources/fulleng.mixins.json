@@ -8,7 +8,5 @@
     "PartLeftClickPacketMixin",
     "merequester.RequesterTerminalBlockEntityMixin"
   ],
-  "client": [
-    "client.ModelManagerMixin",
-    "client.UnlitQuadHooksAccessor"]
+  "client": ["client.ModelManagerMixin", "client.UnlitQuadHooksAccessor"]
 }
