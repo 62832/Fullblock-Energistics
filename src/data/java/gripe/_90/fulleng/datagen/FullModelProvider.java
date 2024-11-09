@@ -34,6 +34,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
         monitor(FullblockEnergistics.CONVERSION_MONITOR, "ae2:part/conversion_monitor");
 
         terminal(FullblockEnergistics.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
+        terminal(FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL, "extendedae:part/ex_pattern_access_terminal");
     }
 
     private void terminal(DeferredBlock<?> terminal, String lightsTexture) {

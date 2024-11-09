@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "extendedae"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "extendedae:ex_pattern_access_part"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fulleng:extended_pattern_access_terminal"
+  }
+}

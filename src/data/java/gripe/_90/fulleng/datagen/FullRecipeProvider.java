@@ -33,9 +33,8 @@ public class FullRecipeProvider extends RecipeProvider {
         block(output, FullblockEnergistics.STORAGE_MONITOR);
         block(output, FullblockEnergistics.CONVERSION_MONITOR);
 
-        if (Addons.MEREQUESTER.isLoaded()) {
-            block(Addons.MEREQUESTER.conditionalOutput(output), FullblockEnergistics.REQUESTER_TERMINAL);
-        }
+        block(Addons.MEREQUESTER.conditionalOutput(output), FullblockEnergistics.REQUESTER_TERMINAL);
+        block(Addons.EXTENDEDAE.conditionalOutput(output), FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL);
     }
 
     private void block(RecipeOutput output, DeferredBlock<? extends FullBlock<?>> block) {

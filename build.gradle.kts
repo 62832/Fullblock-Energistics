@@ -13,7 +13,11 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
     implementation(libs.ae2)
+
     implementation(libs.requester)
+    implementation(libs.extendedae)
+    runtimeOnly(libs.glodium)
+
     runtimeOnly(libs.jade)
 }
 
@@ -61,7 +65,8 @@ neoForge {
                 "--output", file("src/generated/resources/").absolutePath,
                 "--existing", file("src/main/resources/").absolutePath,
                 "--existing-mod", "ae2",
-                "--existing-mod", "merequester"
+                "--existing-mod", "merequester",
+                "--existing-mod", "extendedae"
             )
             sourceSet = sourceSets.getByName("data")
         }
@@ -84,6 +89,7 @@ tasks {
             "version" to version,
             "ae2Version" to libs.versions.ae2.get(),
             "requesterVersion" to libs.versions.requester.get(),
+            "extendedAeVersion" to libs.versions.extendedae.get()
         )
 
         inputs.properties(props)

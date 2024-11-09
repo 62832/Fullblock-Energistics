@@ -29,6 +29,14 @@ run {
             }
 
             maven {
+                name = "Curse Maven"
+                url = uri("https://cursemaven.com")
+                content {
+                    includeGroup("curse.maven")
+                }
+            }
+
+            maven {
                 name = "Modrinth Maven"
                 url = uri("https://api.modrinth.com/maven")
                 content {
@@ -46,6 +54,10 @@ run {
 
                 version("requester", "1.21.1-1.1.8")
                 library("requester", "maven.modrinth", "merequester").version("a7QNsSHf")
+
+                version("extendedae", "1.21-2.1.4-neoforge")
+                library("extendedae", "curse.maven", "ex-pattern-provider-892005").version("5887634")
+                library("glodium", "curse.maven", "glodium-957920").version("5821676")
 
                 library("jade", "maven.modrinth", "jade").version("gF1TRsRm")
             }

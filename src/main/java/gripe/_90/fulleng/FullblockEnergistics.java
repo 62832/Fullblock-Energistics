@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -41,6 +42,8 @@ import gripe._90.fulleng.block.entity.terminal.StorageTerminalBlockEntity;
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 import gripe._90.fulleng.integration.Addons;
 import gripe._90.fulleng.integration.IntegrationBlockItem;
+import gripe._90.fulleng.integration.extendedae.ExtendedAEIntegration;
+import gripe._90.fulleng.integration.extendedae.ExtendedPatternAccessTerminalBlockEntity;
 import gripe._90.fulleng.integration.requester.RequesterIntegration;
 import gripe._90.fulleng.integration.requester.RequesterTerminalBlockEntity;
 
@@ -59,15 +62,10 @@ public class FullblockEnergistics {
 
     public static final DeferredBlock<MonitorBlock<StorageMonitorBlockEntity>> STORAGE_MONITOR = monitor(AEParts.STORAGE_MONITOR);
     public static final DeferredBlock<MonitorBlock<ConversionMonitorBlockEntity>> CONVERSION_MONITOR = monitor(AEParts.CONVERSION_MONITOR);
-    // spotless:on
 
-    public static final DeferredBlock<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = block(
-            "requester_terminal",
-            () -> new TerminalBlock<>(
-                    Addons.MEREQUESTER.isLoaded()
-                            ? RequesterIntegration.getRequesterTerminalPart()
-                            : AEItems.MISSING_CONTENT),
-            block -> new IntegrationBlockItem(block, Addons.MEREQUESTER));
+    public static final DeferredBlock<TerminalBlock<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL = terminal("requester_terminal", Addons.MEREQUESTER, () -> RequesterIntegration.REQUESTER_TERMINAL);
+    public static final DeferredBlock<TerminalBlock<ExtendedPatternAccessTerminalBlockEntity>> EXTENDED_PATTERN_ACCESS_TERMINAL = terminal("extended_pattern_access_terminal", Addons.EXTENDEDAE, () -> ExtendedAEIntegration.EXTENDED_PATTERN_TERMINAL);
+    // spotless:on
 
     private static final DeferredRegister<BlockEntityType<?>> BE_TYPES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
@@ -82,6 +80,7 @@ public class FullblockEnergistics {
     public static final Supplier<BlockEntityType<ConversionMonitorBlockEntity>> CONVERSION_MONITOR_BE = be(ConversionMonitorBlockEntity.class, ConversionMonitorBlockEntity::new, CONVERSION_MONITOR);
 
     public static final Supplier<BlockEntityType<RequesterTerminalBlockEntity>> REQUESTER_TERMINAL_BE = be(RequesterTerminalBlockEntity.class, RequesterTerminalBlockEntity::new, REQUESTER_TERMINAL);
+    public static final Supplier<BlockEntityType<ExtendedPatternAccessTerminalBlockEntity>> EXTENDED_PATTERN_ACCESS_TERMINAL_BE = be(ExtendedPatternAccessTerminalBlockEntity.class, ExtendedPatternAccessTerminalBlockEntity::new, EXTENDED_PATTERN_ACCESS_TERMINAL);
     // spotless:on
 
     public FullblockEnergistics(IEventBus eventBus) {
@@ -122,6 +121,14 @@ public class FullblockEnergistics {
     private static <P extends AbstractMonitorPart, E extends StorageMonitorBlockEntity>
             DeferredBlock<MonitorBlock<E>> monitor(ItemDefinition<PartItem<P>> equivalentPart) {
         return block(equivalentPart.id().getPath(), () -> new MonitorBlock<>(equivalentPart));
+    }
+
+    private static <E extends TerminalBlockEntity> DeferredBlock<TerminalBlock<E>> terminal(
+            String id, Addons addon, Supplier<ItemLike> equivalentPart) {
+        return block(
+                id,
+                () -> new TerminalBlock<>(addon.isLoaded() ? equivalentPart.get() : AEItems.MISSING_CONTENT),
+                block -> new IntegrationBlockItem(block, addon));
     }
 
     private static <T extends Block> DeferredBlock<T> block(String id, Supplier<T> supplier) {

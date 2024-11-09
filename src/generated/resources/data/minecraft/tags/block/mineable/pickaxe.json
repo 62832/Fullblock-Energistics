@@ -6,6 +6,7 @@
     "fulleng:pattern_access_terminal",
     "fulleng:storage_monitor",
     "fulleng:conversion_monitor",
-    "fulleng:requester_terminal"
+    "fulleng:requester_terminal",
+    "fulleng:extended_pattern_access_terminal"
   ]
 }

@@ -24,3 +24,8 @@ versionRange = "[$ae2Version,)"
 modId = "merequester"
 type = "optional"
 versionRange = "[$requesterVersion,)"
+
+[[dependencies]]
+modId = "extendedae"
+type = "optional"
+versionRange = "[$extendedAeVersion,)"

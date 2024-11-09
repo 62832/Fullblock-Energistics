@@ -4,12 +4,10 @@ import com.almostreliable.merequester.core.Registration;
 import com.almostreliable.merequester.terminal.RequesterTerminalMenu;
 
 import net.minecraft.world.inventory.MenuType;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraft.world.level.ItemLike;
 
 public final class RequesterIntegration {
-    public static DeferredItem<?> getRequesterTerminalPart() {
-        return Registration.REQUESTER_TERMINAL;
-    }
+    public static final ItemLike REQUESTER_TERMINAL = Registration.REQUESTER_TERMINAL;
 
     static MenuType<?> getRequesterTerminalMenu() {
         return RequesterTerminalMenu.TYPE;
