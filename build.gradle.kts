@@ -16,7 +16,7 @@ dependencies {
 
     implementation(libs.requester)
     implementation(libs.extendedae)
-    runtimeOnly(libs.glodium)
+    implementation(libs.glodium)
 
     runtimeOnly(libs.jade)
 }

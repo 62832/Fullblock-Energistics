@@ -6,6 +6,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "PartLeftClickPacketMixin",
+    "extendedae.GlodUtilMixin",
+    "extendedae.ItemPatternAccessTerminalUpgradeMixin",
     "merequester.RequesterTerminalBlockEntityMixin"
   ],
   "client": ["client.ModelManagerMixin", "client.UnlitQuadHooksAccessor"]
