@@ -19,7 +19,5 @@ public final class ExtendedAEIntegration {
         }
     };
 
-    static MenuType<?> getExtendedTerminalMenu() {
-        return ContainerExPatternTerminal.TYPE;
-    }
+    static final MenuType<?> EXTENDED_TERMINAL_MENU = ContainerExPatternTerminal.TYPE;
 }

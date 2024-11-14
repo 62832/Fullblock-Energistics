@@ -31,7 +31,7 @@ public class ExtendedPatternAccessTerminalBlockEntity extends TerminalBlockEntit
     @Nullable
     @Override
     public MenuType<?> getMenuType() {
-        return Addons.EXTENDEDAE.isLoaded() ? ExtendedAEIntegration.getExtendedTerminalMenu() : null;
+        return Addons.EXTENDEDAE.isLoaded() ? ExtendedAEIntegration.EXTENDED_TERMINAL_MENU : null;
     }
 
     @Nullable

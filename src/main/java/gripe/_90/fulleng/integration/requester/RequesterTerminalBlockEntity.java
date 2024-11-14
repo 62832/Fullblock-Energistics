@@ -15,6 +15,6 @@ public class RequesterTerminalBlockEntity extends TerminalBlockEntity {
 
     @Override
     public MenuType<?> getMenuType() {
-        return Addons.MEREQUESTER.isLoaded() ? RequesterIntegration.getRequesterTerminalMenu() : null;
+        return Addons.MEREQUESTER.isLoaded() ? RequesterIntegration.REQUESTER_TERMINAL_MENU : null;
     }
 }
