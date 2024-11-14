@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -36,6 +38,7 @@ public class MonitorBlock<M extends StorageMonitorBlockEntity> extends FullBlock
         return super.updateBlockStateFromBlockEntity(currentState, be).setValue(LOCKED, be.isLocked());
     }
 
+    @NotNull
     @Override
     protected ItemInteractionResult useItemOn(
             ItemStack heldItem,

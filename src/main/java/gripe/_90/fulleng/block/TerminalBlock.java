@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,7 @@ public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
         super(equivalentPart);
     }
 
+    @NotNull
     @Override
     public InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {

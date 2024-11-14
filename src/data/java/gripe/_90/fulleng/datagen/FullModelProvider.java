@@ -1,5 +1,7 @@
 package gripe._90.fulleng.datagen;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
@@ -82,6 +84,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
         simpleBlockItem(monitor.get(), unlockedModel);
     }
 
+    @NotNull
     @Override
     public String getName() {
         return "Block States / Models";
