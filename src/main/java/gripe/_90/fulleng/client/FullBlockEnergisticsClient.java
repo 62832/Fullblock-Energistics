@@ -1,4 +1,4 @@
-package gripe._90.fulleng;
+package gripe._90.fulleng.client;
 
 import java.util.Objects;
 
@@ -19,8 +19,8 @@ import appeng.client.render.ColorableBlockEntityBlockColor;
 import appeng.client.render.StaticItemColor;
 import appeng.core.network.serverbound.PartLeftClickPacket;
 
+import gripe._90.fulleng.FullblockEnergistics;
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
-import gripe._90.fulleng.client.MonitorBERenderer;
 
 @SuppressWarnings("unused")
 @Mod(value = FullblockEnergistics.MODID, dist = Dist.CLIENT)
