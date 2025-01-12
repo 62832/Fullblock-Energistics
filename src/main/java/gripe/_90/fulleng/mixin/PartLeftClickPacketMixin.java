@@ -14,7 +14,7 @@ import appeng.core.network.serverbound.PartLeftClickPacket;
 
 import gripe._90.fulleng.block.entity.monitor.ConversionMonitorBlockEntity;
 
-@Mixin(value = PartLeftClickPacket.class, remap = false)
+@Mixin(PartLeftClickPacket.class)
 public abstract class PartLeftClickPacketMixin {
     @Final
     @Shadow
