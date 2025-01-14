@@ -20,7 +20,7 @@
 
     "fabric-datagen": ["gripe._90.fulleng.FullEngData"]
   },
-  "mixins": ["fulleng.mixins.json"],
+  "mixins": ["fulleng.mixins.json", "fulleng.mixins.fabric.json"],
 
   "depends": {
     "fabricloader": "*",

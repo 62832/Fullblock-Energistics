@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8.5",
-  "package": "gripe._90.fulleng.mixin",
+  "package": "gripe._90.fulleng.mixin.client",
   "compatibilityLevel": "JAVA_17",
-  "mixins": ["PartLeftClickPacketMixin"],
+  "client": ["ModelManagerMixin", "UnlitQuadHooksAccessor"],
   "injectors": {
     "defaultRequire": 1
   }

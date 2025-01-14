@@ -1,4 +1,4 @@
-package gripe._90.fulleng.mixin;
+package gripe._90.fulleng.mixin.client;
 
 import java.util.Map;
 
