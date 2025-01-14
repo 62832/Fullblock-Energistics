@@ -12,6 +12,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 import gripe._90.fulleng.FullblockEnergistics;
@@ -33,8 +34,8 @@ public class FullRecipeProvider extends RecipeProvider {
         block(output, FullblockEnergistics.STORAGE_MONITOR);
         block(output, FullblockEnergistics.CONVERSION_MONITOR);
 
-        block(Addons.MEREQUESTER.conditionalOutput(output), FullblockEnergistics.REQUESTER_TERMINAL);
-        block(Addons.EXTENDEDAE.conditionalOutput(output), FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL);
+        block(conditionalOutput(output, Addons.MEREQUESTER), FullblockEnergistics.REQUESTER_TERMINAL);
+        block(conditionalOutput(output, Addons.EXTENDEDAE), FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL);
     }
 
     private void block(RecipeOutput output, DeferredBlock<? extends FullBlock<?>> block) {
@@ -55,5 +56,9 @@ public class FullRecipeProvider extends RecipeProvider {
                         output,
                         ResourceLocation.fromNamespaceAndPath(
                                 FullblockEnergistics.MODID, "terminals/part_" + partId + "_from_block"));
+    }
+
+    private RecipeOutput conditionalOutput(RecipeOutput output, Addons addon) {
+        return output.withConditions(new ModLoadedCondition(addon.getModId()));
     }
 }
