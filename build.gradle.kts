@@ -6,7 +6,7 @@ plugins {
 val modId = "fulleng"
 
 base.archivesName = modId
-version = System.getenv("FULLENG_VERSION") ?: "0.0.0"
+version = if (System.getenv("GITHUB_REF_TYPE") == "tag") System.getenv("GITHUB_REF_NAME") else "0.0.0"
 group = "gripe.90"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -35,6 +35,7 @@ sourceSets {
 
 neoForge {
     version = libs.versions.neoforge.get()
+    validateAccessTransformers = true
 
     mods {
         create(modId) {
