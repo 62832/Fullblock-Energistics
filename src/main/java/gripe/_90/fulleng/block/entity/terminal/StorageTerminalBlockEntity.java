@@ -23,6 +23,8 @@ import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.MEStorage;
 import appeng.api.storage.SupplierStorage;
 import appeng.api.util.IConfigManagerBuilder;
+import appeng.api.util.KeyTypeSelection;
+import appeng.api.util.KeyTypeSelectionHost;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.me.common.MEStorageMenu;
@@ -32,7 +34,8 @@ import appeng.util.inv.InternalInventoryHost;
 import gripe._90.fulleng.FullblockEnergistics;
 
 public class StorageTerminalBlockEntity extends TerminalBlockEntity
-        implements ITerminalHost, IViewCellStorage, InternalInventoryHost {
+        implements ITerminalHost, IViewCellStorage, InternalInventoryHost, KeyTypeSelectionHost {
+    private final KeyTypeSelection keyTypeSelection = new KeyTypeSelection(this::saveChanges, keyType -> true);
     private final AppEngInternalInventory viewCell = new AppEngInternalInventory(this, 5);
 
     public StorageTerminalBlockEntity(BlockPos pos, BlockState state) {
@@ -53,13 +56,20 @@ public class StorageTerminalBlockEntity extends TerminalBlockEntity
     @Override
     public void saveAdditional(CompoundTag data, HolderLookup.Provider registries) {
         super.saveAdditional(data, registries);
+        keyTypeSelection.writeToNBT(data);
         viewCell.writeToNBT(data, "viewCell", registries);
     }
 
     @Override
     public void loadTag(CompoundTag data, HolderLookup.Provider registries) {
         super.loadTag(data, registries);
+        keyTypeSelection.readFromNBT(data, registries);
         viewCell.readFromNBT(data, "viewCell", registries);
+    }
+
+    @Override
+    public KeyTypeSelection getKeyTypeSelection() {
+        return keyTypeSelection;
     }
 
     @Override
