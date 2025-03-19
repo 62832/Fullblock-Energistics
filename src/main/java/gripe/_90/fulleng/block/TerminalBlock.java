@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +20,7 @@ import gripe._90.fulleng.block.entity.terminal.PatternEncodingTerminalBlockEntit
 import gripe._90.fulleng.block.entity.terminal.TerminalBlockEntity;
 
 public class TerminalBlock<T extends TerminalBlockEntity> extends FullBlock<T> {
-    public TerminalBlock(ItemLike equivalentPart) {
+    public TerminalBlock(Supplier<ItemLike> equivalentPart) {
         super(equivalentPart);
     }
 

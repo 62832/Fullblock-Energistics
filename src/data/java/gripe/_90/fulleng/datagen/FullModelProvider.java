@@ -37,6 +37,7 @@ public class FullModelProvider extends AE2BlockStateProvider {
 
         terminal(FullblockEnergistics.REQUESTER_TERMINAL, "merequester:part/requester_terminal");
         terminal(FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL, "extendedae:part/ex_pattern_access_terminal");
+        terminal(FullblockEnergistics.TRANSMUTATION_TERMINAL, "appliede:part/transmutation_terminal");
     }
 
     private void terminal(DeferredBlock<?> terminal, String lightsTexture) {

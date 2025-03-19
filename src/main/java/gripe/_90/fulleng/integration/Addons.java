@@ -10,7 +10,8 @@ import gripe._90.fulleng.FullblockEnergistics;
 
 public enum Addons {
     MEREQUESTER("ME Requester"),
-    EXTENDEDAE("ExtendedAE");
+    EXTENDEDAE("ExtendedAE"),
+    APPLIEDE("AppliedE");
 
     private final String modName;
 

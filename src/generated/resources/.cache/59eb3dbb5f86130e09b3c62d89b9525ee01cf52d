@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-05T14:13:15.097680539	Loot Tables
+// 1.21.1	2025-03-18T21:21:29.418671546	Loot Tables
 6d48c91f75a4a70b114a88376df324d36feb3f82 data/fulleng/loot_table/blocks/conversion_monitor.json
 e76bf50874b1e9daf7a6fac48dbe8f4dde5c651b data/fulleng/loot_table/blocks/crafting_terminal.json
 65d3651c4848b35b6c9322ce7584983732df67d5 data/fulleng/loot_table/blocks/extended_pattern_access_terminal.json
@@ -7,3 +7,4 @@ e76bf50874b1e9daf7a6fac48dbe8f4dde5c651b data/fulleng/loot_table/blocks/crafting
 2f794e8097aa672055f64c6a673acc0c26564e57 data/fulleng/loot_table/blocks/requester_terminal.json
 45e82bc76070b7ee2fadbfa392afa54cb8fdca91 data/fulleng/loot_table/blocks/storage_monitor.json
 bac3178232cc8dacb955610360d34442078502ad data/fulleng/loot_table/blocks/terminal.json
+100355746ece655cd7805f98905864aeb6fad435 data/fulleng/loot_table/blocks/transmutation_terminal.json

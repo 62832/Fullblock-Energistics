@@ -18,15 +18,7 @@ run {
         rulesMode = RulesMode.PREFER_SETTINGS
 
         repositories {
-            mavenCentral()
-
-            maven {
-                name = "ModMaven (K4U-NL)"
-                url = uri("https://modmaven.dev/")
-                content {
-                    includeGroup("appeng")
-                }
-            }
+            mavenLocal()
 
             maven {
                 name = "Curse Maven"
@@ -47,17 +39,20 @@ run {
 
         versionCatalogs {
             create("libs") {
-                version("neoforge", "21.1.36")
+                version("neoforge", "21.1.119")
 
-                version("ae2", "19.0.21-beta")
-                library("ae2", "appeng", "appliedenergistics2").versionRef("ae2")
+                version("ae2", "19.2.5-beta")
+                library("ae2", "org.appliedenergistics", "appliedenergistics2").versionRef("ae2")
 
                 version("requester", "1.21.1-1.1.8")
                 library("requester", "maven.modrinth", "merequester").version("a7QNsSHf")
 
-                version("extendedae", "1.21-2.1.4-neoforge")
-                library("extendedae", "curse.maven", "ex-pattern-provider-892005").version("5887634")
+                version("extendedae", "1.21-2.2.6-neoforge")
+                library("extendedae", "curse.maven", "ex-pattern-provider-892005").version("6283473")
                 library("glodium", "curse.maven", "glodium-957920").version("5821676")
+
+                library("appliede", "curse.maven", "appliede-1009940").version("6320071")
+                library("projecte", "curse.maven", "projecte-226410").version("6301953")
 
                 library("jade", "maven.modrinth", "jade").version("gF1TRsRm")
             }

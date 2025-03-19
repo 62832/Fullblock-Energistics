@@ -31,27 +31,26 @@ public class FullBlockEnergisticsClient {
             BlockEntityRenderers.register(FullblockEnergistics.CONVERSION_MONITOR_BE.get(), MonitorBERenderer::new);
         });
 
-        eventBus.addListener((RegisterColorHandlersEvent.Block event) -> {
+        eventBus.addListener(RegisterColorHandlersEvent.Block.class, event -> {
             for (var block : FullblockEnergistics.BLOCKS.getEntries()) {
                 event.register(ColorableBlockEntityBlockColor.INSTANCE, block.get());
             }
         });
 
-        eventBus.addListener((RegisterColorHandlersEvent.Item event) -> {
+        eventBus.addListener(RegisterColorHandlersEvent.Item.class, event -> {
             for (var block : FullblockEnergistics.BLOCKS.getEntries()) {
                 event.register(new StaticItemColor(AEColor.TRANSPARENT), block.get());
             }
         });
 
-        NeoForge.EVENT_BUS.addListener((PlayerInteractEvent.LeftClickBlock event) -> {
-            var level = event.getLevel();
-
-            if (level.isClientSide()) {
+        NeoForge.EVENT_BUS.addListener(PlayerInteractEvent.LeftClickBlock.class, event -> {
+            if (event.getLevel().isClientSide()) {
                 if (!(Minecraft.getInstance().hitResult instanceof BlockHitResult hitResult)) {
                     return;
                 }
 
-                if (level.getBlockEntity(hitResult.getBlockPos()) instanceof ConversionMonitorBlockEntity monitor
+                if (event.getLevel().getBlockEntity(hitResult.getBlockPos())
+                                instanceof ConversionMonitorBlockEntity monitor
                         && hitResult.getDirection() == monitor.getFront()) {
                     PacketDistributor.sendToServer(
                             new PartLeftClickPacket(hitResult, event.getEntity().isShiftKeyDown()));

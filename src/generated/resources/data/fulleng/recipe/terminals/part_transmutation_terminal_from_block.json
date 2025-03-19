@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "appliede"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fulleng:transmutation_terminal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "appliede:transmutation_terminal"
+  }
+}

@@ -12,11 +12,14 @@ group = "gripe.90"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
-    implementation(libs.ae2)
-
+    api(libs.ae2)
     implementation(libs.requester)
+
     implementation(libs.extendedae)
     implementation(libs.glodium)
+
+    implementation(libs.appliede)
+    runtimeOnly(libs.projecte)
 
     runtimeOnly(libs.jade)
 }
@@ -67,7 +70,8 @@ neoForge {
                 "--existing", file("src/main/resources/").absolutePath,
                 "--existing-mod", "ae2",
                 "--existing-mod", "merequester",
-                "--existing-mod", "extendedae"
+                "--existing-mod", "extendedae",
+                "--existing-mod", "appliede"
             )
             sourceSet = sourceSets.getByName("data")
         }

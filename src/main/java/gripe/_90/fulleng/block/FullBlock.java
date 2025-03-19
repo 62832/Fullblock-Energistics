@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.level.ItemLike;
@@ -10,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import appeng.api.orientation.IOrientationStrategy;
 import appeng.api.orientation.OrientationStrategies;
@@ -21,16 +24,17 @@ import gripe._90.fulleng.block.entity.FullBlockEntity;
 public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityBlock<F> {
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
 
-    private final ItemLike equivalentPart;
+    // Uses suppliers to avoid problems when attempting to retrieve a DeferredItem directly
+    private final Supplier<ItemLike> equivalentPart;
 
-    public FullBlock(ItemLike equivalentPart) {
+    public FullBlock(Supplier<ItemLike> equivalentPart) {
         super(BlockBehaviour.Properties.of()
                 .strength(2.2f, 11.0f)
                 .mapColor(MapColor.METAL)
                 .sound(SoundType.METAL)
                 .lightLevel(state -> state.getValue(POWERED) ? 9 : 0));
         registerDefaultState(defaultBlockState().setValue(POWERED, false));
-        this.equivalentPart = equivalentPart;
+        this.equivalentPart = Lazy.of(equivalentPart);
     }
 
     @Override
@@ -50,16 +54,16 @@ public abstract class FullBlock<F extends FullBlockEntity> extends AEBaseEntityB
     }
 
     public ItemLike getEquivalentPart() {
-        return equivalentPart;
+        return equivalentPart.get();
     }
 
     public boolean shouldShowInCreative() {
-        return equivalentPart != AEItems.MISSING_CONTENT;
+        return equivalentPart.get() != AEItems.MISSING_CONTENT;
     }
 
     @NotNull
     @Override
     public String getDescriptionId() {
-        return equivalentPart.asItem().getDescriptionId();
+        return equivalentPart.get().asItem().getDescriptionId();
     }
 }

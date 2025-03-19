@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "appliede"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "fulleng:terminals/block_transmutation_terminal_from_part"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_transmutation_terminal": {
+      "conditions": {
+        "items": [
+          {
+            "items": "appliede:transmutation_terminal"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_transmutation_terminal"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "fulleng:terminals/block_transmutation_terminal_from_part"
+    ]
+  }
+}

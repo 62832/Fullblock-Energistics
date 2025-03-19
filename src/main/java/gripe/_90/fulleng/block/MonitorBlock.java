@@ -1,5 +1,7 @@
 package gripe._90.fulleng.block;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
@@ -23,7 +25,7 @@ import gripe._90.fulleng.block.entity.monitor.StorageMonitorBlockEntity;
 public class MonitorBlock<M extends StorageMonitorBlockEntity> extends FullBlock<M> {
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
-    public MonitorBlock(ItemLike equivalentPart) {
+    public MonitorBlock(Supplier<ItemLike> equivalentPart) {
         super(equivalentPart);
     }
 

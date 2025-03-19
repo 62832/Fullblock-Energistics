@@ -36,6 +36,7 @@ public class FullRecipeProvider extends RecipeProvider {
 
         block(conditionalOutput(output, Addons.MEREQUESTER), FullblockEnergistics.REQUESTER_TERMINAL);
         block(conditionalOutput(output, Addons.EXTENDEDAE), FullblockEnergistics.EXTENDED_PATTERN_ACCESS_TERMINAL);
+        block(conditionalOutput(output, Addons.APPLIEDE), FullblockEnergistics.TRANSMUTATION_TERMINAL);
     }
 
     private void block(RecipeOutput output, DeferredBlock<? extends FullBlock<?>> block) {
