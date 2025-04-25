@@ -16,16 +16,16 @@ description = "A more retrospective feel for AE2."
 [[mixins]]
 config = "fulleng.mixins.json"
 
-[[dependencies]]
+[[dependencies.fulleng]]
 modId = "ae2"
 versionRange = "[$ae2Version,)"
 
-[[dependencies]]
+[[dependencies.fulleng]]
 modId = "merequester"
 type = "optional"
 versionRange = "[$requesterVersion,)"
 
-[[dependencies]]
+[[dependencies.fulleng]]
 modId = "extendedae"
 type = "optional"
 versionRange = "[$extendedAeVersion,)"
