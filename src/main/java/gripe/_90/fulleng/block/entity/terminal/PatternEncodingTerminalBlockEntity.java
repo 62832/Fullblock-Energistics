@@ -14,7 +14,6 @@ import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.parts.encoding.PatternEncodingLogic;
-import appeng.util.inv.AppEngInternalInventory;
 
 import gripe._90.fulleng.FullblockEnergistics;
 
@@ -61,12 +60,6 @@ public class PatternEncodingTerminalBlockEntity extends StorageTerminalBlockEnti
 
     @Override
     public void markForSave() {
-        saveChanges();
-        markForUpdate();
-    }
-
-    @Override
-    public void saveChangedInventory(AppEngInternalInventory inv) {
         saveChanges();
         markForUpdate();
     }

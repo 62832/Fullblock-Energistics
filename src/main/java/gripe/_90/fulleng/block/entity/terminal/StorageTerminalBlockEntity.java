@@ -98,6 +98,7 @@ public class StorageTerminalBlockEntity extends TerminalBlockEntity
 
     @Override
     public void saveChangedInventory(AppEngInternalInventory inv) {
+        saveChanges();
         markForUpdate();
     }
 
