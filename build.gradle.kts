@@ -94,7 +94,8 @@ tasks {
             "version" to version,
             "ae2Version" to libs.versions.ae2.get(),
             "requesterVersion" to libs.versions.requester.get(),
-            "extendedAeVersion" to libs.versions.extendedae.get()
+            "extendedAeVersion" to libs.versions.extendedae.get(),
+            "appliedeVersion" to libs.versions.appliede.get()
         )
 
         inputs.properties(props)

@@ -39,7 +39,7 @@ run {
 
         versionCatalogs {
             create("libs") {
-                version("neoforge", "21.1.119")
+                version("neoforge", "21.1.192")
 
                 version("ae2", "19.2.5-beta")
                 library("ae2", "org.appliedenergistics", "appliedenergistics2").versionRef("ae2")
@@ -51,7 +51,8 @@ run {
                 library("extendedae", "curse.maven", "ex-pattern-provider-892005").version("6283473")
                 library("glodium", "curse.maven", "glodium-957920").version("5821676")
 
-                library("appliede", "curse.maven", "appliede-1009940").version("6320071")
+                version("appliede", "1.0.8-beta")
+                library("appliede", "curse.maven", "appliede-1009940").version("6500056")
                 library("projecte", "curse.maven", "projecte-226410").version("6301953")
 
                 library("jade", "maven.modrinth", "jade").version("gF1TRsRm")

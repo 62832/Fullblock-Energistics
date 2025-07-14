@@ -29,3 +29,8 @@ versionRange = "[$requesterVersion,)"
 modId = "extendedae"
 type = "optional"
 versionRange = "[$extendedAeVersion,)"
+
+[[dependencies.fulleng]]
+modId = "appliede"
+type = "optional"
+versionRange = "[$appliedeVersion,)"
